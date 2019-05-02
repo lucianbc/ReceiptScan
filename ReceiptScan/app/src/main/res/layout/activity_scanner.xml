@@ -6,4 +6,9 @@
         android:layout_height="match_parent"
         tools:context=".view.activity.Scanner">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scanner_container"
+    />
 </androidx.constraintlayout.widget.ConstraintLayout>
