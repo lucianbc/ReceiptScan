@@ -7,4 +7,5 @@
     </string>
     <string name="allow_camera_btn">Allow Camera</string>
     <string name="request_camera_msg">Allow camera usage</string>
+    <string name="toggle_flash_btn">Toggle Flash</string>
 </resources>
