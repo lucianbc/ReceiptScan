@@ -2,7 +2,9 @@
     <string name="app_name">ReceiptScan</string>
     <string name="scan_link_btn">Scan</string>
     <string name="scanner_error">There was an error with the camera</string>
-    <string name="scanner_permission_message">We need you to allow the usage of the cammera. Tap on the button bellow to
+    <string name="scanner_permission_message">We need you to allow the usage of the camera. Tap on the button bellow to
         give camera permission.
     </string>
+    <string name="allow_camera_btn">Allow Camera</string>
+    <string name="request_camera_msg">Allow camera usage</string>
 </resources>
