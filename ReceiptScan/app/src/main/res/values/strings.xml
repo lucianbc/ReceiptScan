@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ReceiptScan</string>
+    <string name="scan_link_btn">Scan</string>
 </resources>
