@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,11 +8,28 @@
         tools:context=".view.activity.MainActivity">
 
 
-    <Button
-            android:text="@string/scan_link_btn"
+    <!--<Button-->
+            <!--android:text="@string/scan_link_btn"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/scan_btn" app:layout_constraintTop_toTopOf="parent"-->
+            <!--android:layout_marginTop="496dp" app:layout_constraintStart_toStartOf="parent"-->
+            <!--android:layout_marginStart="161dp"/>-->
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:backgroundTint="@color/colorPrimary"
+            app:fabAlignmentMode="center"
+            android:id="@+id/bottom_bar"
+    />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/scan_btn" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="496dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="161dp"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:id="@+id/scan_btn"
+            android:src="@drawable/ic_camera_white_24dp"
+            app:layout_anchor="@id/bottom_bar"
+    />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
