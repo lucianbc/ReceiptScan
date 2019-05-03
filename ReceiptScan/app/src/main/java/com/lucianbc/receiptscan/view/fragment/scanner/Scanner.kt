@@ -2,6 +2,7 @@ package com.lucianbc.receiptscan.view.fragment.scanner
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,18 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.ml.vision.FirebaseVision
+import com.google.firebase.ml.vision.common.FirebaseVisionImage
+import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
+import com.google.firebase.ml.vision.text.FirebaseVisionText
 
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.databinding.FragmentScannerBinding
+import com.lucianbc.receiptscan.view.fragment.scanner.widget.OcrGraphic
 import com.lucianbc.receiptscan.viewmodel.scanner.LiveViewVM
 import com.otaliastudios.cameraview.Flash
+import com.otaliastudios.cameraview.Frame
+import com.otaliastudios.cameraview.FrameProcessor
 import kotlinx.android.synthetic.main.fragment_scanner.*
 
 class Scanner : Fragment() {
@@ -43,9 +51,43 @@ class Scanner : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         scanner_view.setLifecycleOwner(viewLifecycleOwner)
+        ocr_overlay.setCameraInfo(scanner_view.width, scanner_view.height, scanner_view.facing)
+//        scanner_view.addFrameProcessor(frameProcessor)
+    }
+
+    private val frameProcessor = FrameProcessor {
+        Log.d("Frame Processor", it.size.toString())
+        val metadata = FirebaseVisionImageMetadata.Builder()
+            .setFormat(it.format)
+            .setRotation(rotation(it.rotation))
+            .setHeight(it.size.height)
+            .setWidth(it.size.width)
+            .build()
+        val image = FirebaseVisionImage.fromByteArray(it.data, metadata)
+        val detector = FirebaseVision.getInstance().onDeviceTextRecognizer
+        detector.processImage(image)
+            .addOnSuccessListener(cb)
+    }
+
+    private val cb: (FirebaseVisionText) -> Unit = { result ->
+        val graphics = result.textBlocks
+            .asSequence()
+            .flatMap { it.lines.asSequence() }
+            .map { OcrGraphic(ocr_overlay.graphicPresenter, it) }
+        ocr_overlay.setGraphics(graphics)
+    }
+
+
+    private fun rotation(rotation: Int): Int {
+        return when (rotation) {
+            0 -> FirebaseVisionImageMetadata.ROTATION_0
+            90 -> FirebaseVisionImageMetadata.ROTATION_90
+            180 -> FirebaseVisionImageMetadata.ROTATION_180
+            270 -> FirebaseVisionImageMetadata.ROTATION_270
+            else -> FirebaseVisionImageMetadata.ROTATION_0
+        }
     }
 }

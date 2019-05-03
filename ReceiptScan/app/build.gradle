@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -46,4 +48,7 @@ dependencies {
     api 'com.otaliastudios:cameraview:2.0.0-beta04'
     implementation "androidx.exifinterface:exifinterface:1.0.0"
 
+    // firebase ml vision
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-ml-vision:19.0.3'
 }
