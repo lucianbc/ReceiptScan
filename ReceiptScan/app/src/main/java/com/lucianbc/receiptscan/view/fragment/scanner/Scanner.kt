@@ -3,24 +3,22 @@ package com.lucianbc.receiptscan.view.fragment.scanner
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.google.firebase.ml.vision.text.FirebaseVisionText
-
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.databinding.FragmentScannerBinding
 import com.lucianbc.receiptscan.view.fragment.scanner.widget.OcrGraphic
 import com.lucianbc.receiptscan.viewmodel.scanner.LiveViewVM
 import com.otaliastudios.cameraview.Flash
-import com.otaliastudios.cameraview.Frame
 import com.otaliastudios.cameraview.FrameProcessor
 import kotlinx.android.synthetic.main.fragment_scanner.*
 

@@ -2,16 +2,20 @@ package com.lucianbc.receiptscan.view.activity
 
 import android.Manifest
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.data.logd
 import com.lucianbc.receiptscan.view.fragment.scanner.Error
 import com.lucianbc.receiptscan.view.fragment.scanner.Permission
 import com.lucianbc.receiptscan.view.fragment.scanner.Scanner
+import com.lucianbc.receiptscan.viewmodel.Event
 import com.lucianbc.receiptscan.viewmodel.scanner.ScannerViewModel
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -55,6 +59,25 @@ class Scanner : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
             .replace(R.id.scanner_container, fragment)
             .commit()
     }
+
+    //region Event Bus
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe
+    @Suppress("unused")
+    fun onImportImage(event: Event.ImportImage) {
+        logd("Importing image from activity")
+    }
+
+    //endregion
 
     //region Permission Management
     @AfterPermissionGranted(CAMERA_PERMISSION_REQUEST)
