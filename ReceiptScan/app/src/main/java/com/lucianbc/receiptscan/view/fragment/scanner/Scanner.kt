@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
@@ -20,9 +20,14 @@ import com.lucianbc.receiptscan.view.fragment.scanner.widget.OcrGraphic
 import com.lucianbc.receiptscan.viewmodel.scanner.LiveViewVM
 import com.otaliastudios.cameraview.Flash
 import com.otaliastudios.cameraview.FrameProcessor
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_scanner.*
+import javax.inject.Inject
 
-class Scanner : Fragment() {
+class Scanner: DaggerFragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory // = LiveViewVM.Factory(EventBus.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +40,7 @@ class Scanner : Fragment() {
             false
         )
 
-        val vm = ViewModelProviders.of(this).get(LiveViewVM::class.java)
+        val vm = ViewModelProviders.of(this, viewModelFactory).get(LiveViewVM::class.java)
         binding.viewModel = vm
         binding.lifecycleOwner = this
 

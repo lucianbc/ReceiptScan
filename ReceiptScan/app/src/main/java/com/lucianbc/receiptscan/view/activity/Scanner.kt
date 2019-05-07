@@ -14,13 +14,14 @@ import com.lucianbc.receiptscan.view.fragment.scanner.Permission
 import com.lucianbc.receiptscan.view.fragment.scanner.Scanner
 import com.lucianbc.receiptscan.viewmodel.Event
 import com.lucianbc.receiptscan.viewmodel.scanner.ScannerViewModel
+import dagger.android.support.DaggerAppCompatActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
-class Scanner : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
+class Scanner : DaggerAppCompatActivity(), EasyPermissions.PermissionCallbacks {
     private lateinit var viewModel: ScannerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +74,7 @@ class Scanner : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     @Subscribe
     @Suppress("unused")
-    fun onImportImage(event: Event.ImportImage) {
+    fun onImportImage(@Suppress("UNUSED_PARAMETER")event: Event.ImportImage) {
         logd("Importing image from activity")
     }
 
