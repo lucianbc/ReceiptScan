@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.data
+package com.lucianbc.receiptscan.util
 
 sealed class Optional<out T: Any>
 

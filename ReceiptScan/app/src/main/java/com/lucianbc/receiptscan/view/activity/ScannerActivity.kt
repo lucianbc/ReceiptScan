@@ -3,12 +3,11 @@ package com.lucianbc.receiptscan.view.activity
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.data.logd
+import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.view.fragment.scanner.Error
 import com.lucianbc.receiptscan.view.fragment.scanner.Permission
 import com.lucianbc.receiptscan.view.fragment.scanner.Scanner
@@ -21,7 +20,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
-class Scanner : DaggerAppCompatActivity(), EasyPermissions.PermissionCallbacks {
+class ScannerActivity : DaggerAppCompatActivity(), EasyPermissions.PermissionCallbacks {
     private lateinit var viewModel: ScannerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

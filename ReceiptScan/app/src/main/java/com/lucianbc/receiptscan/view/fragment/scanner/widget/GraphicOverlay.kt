@@ -6,9 +6,9 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import com.google.firebase.ml.vision.text.FirebaseVisionText
-import com.lucianbc.receiptscan.data.Just
-import com.lucianbc.receiptscan.data.None
-import com.lucianbc.receiptscan.data.Optional
+import com.lucianbc.receiptscan.util.Just
+import com.lucianbc.receiptscan.util.None
+import com.lucianbc.receiptscan.util.Optional
 import com.otaliastudios.cameraview.Facing
 
 class GraphicOverlay (

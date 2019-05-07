@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.view.activity.Scanner
+import com.lucianbc.receiptscan.view.activity.ScannerActivity
 import com.lucianbc.receiptscan.viewmodel.scanner.ScannerViewModel
 import kotlinx.android.synthetic.main.fragment_scanner_permission.*
 import pub.devrel.easypermissions.EasyPermissions
@@ -37,7 +37,7 @@ class Permission : Fragment() {
         EasyPermissions.requestPermissions(
             activity!!,
             getString(R.string.request_camera_msg),
-            Scanner.CAMERA_PERMISSION_REQUEST,
+            ScannerActivity.CAMERA_PERMISSION_REQUEST,
             Manifest.permission.CAMERA
         )
     }

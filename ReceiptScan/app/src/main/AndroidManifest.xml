@@ -17,7 +17,7 @@
             tools:ignore="AllowBackup,GoogleAppIndexingWarning"
             android:name=".ReceiptScan"
     >
-        <activity android:name=".view.activity.Scanner"
+        <activity android:name=".view.activity.ScannerActivity"
                   android:theme="@style/Scanner"
                   android:fitsSystemWindows="true">
         </activity>

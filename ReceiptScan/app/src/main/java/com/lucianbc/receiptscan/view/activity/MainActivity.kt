@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         scan_btn.setOnClickListener {
-            startActivity(Intent(this, Scanner::class.java))
+            startActivity(Intent(this, ScannerActivity::class.java))
         }
     }
 }
