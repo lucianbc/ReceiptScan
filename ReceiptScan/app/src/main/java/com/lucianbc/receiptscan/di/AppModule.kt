@@ -1,31 +1,26 @@
 package com.lucianbc.receiptscan.di
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.ml.vision.FirebaseVision
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.ReceiptScan
-import com.lucianbc.receiptscan.view.fragment.scanner.Scanner
-import com.lucianbc.receiptscan.viewmodel.scanner.LiveViewVM
-import dagger.*
-import dagger.android.AndroidInjector
-import dagger.android.ContributesAndroidInjector
-import dagger.android.support.AndroidSupportInjectionModule
-import dagger.multibindings.IntoMap
+import dagger.Module
+import dagger.Provides
 import org.greenrobot.eventbus.EventBus
-import java.lang.Exception
-import java.lang.RuntimeException
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
-import kotlin.reflect.KClass
 
 @Module
 class AppModule {
     @Provides
-    fun provideContext(application: ReceiptScan): Context = application.applicationContext
+    fun provideContext(application: ReceiptScan): Context =
+        application.applicationContext
 
     @Provides
-    fun eventBus(): EventBus = EventBus.getDefault()
+    fun eventBus(): EventBus =
+        EventBus.getDefault()
+
+    @Provides
+    fun firebaseRecognizer(): FirebaseVisionTextRecognizer =
+            FirebaseVision.getInstance().onDeviceTextRecognizer
 }
 
 
