@@ -6,11 +6,15 @@ import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.lucianbc.receiptscan.domain.service.ReceiptScanner
 import com.lucianbc.receiptscan.viewmodel.Event
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
-class LiveViewVM @Inject constructor(private val eventBus: EventBus): ViewModel() {
+class LiveViewVM @Inject constructor(
+    private val eventBus: EventBus,
+    private val receiptScanner: ReceiptScanner
+): ViewModel() {
     val flash = MutableLiveData<Boolean>(false)
 
     fun toggleFlash() {

@@ -6,7 +6,7 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.domain.model.ReceiptDraft
-import com.lucianbc.receiptscan.domain.model.ScanInfo
+import com.lucianbc.receiptscan.domain.model.ScanAnnotations
 import com.lucianbc.receiptscan.domain.model.ScanInfoBox
 import com.otaliastudios.cameraview.Frame
 import io.reactivex.Observer
@@ -19,7 +19,7 @@ class ReceiptScanner(
     private val draftRepository: ReceiptDraftRepository
 ) {
     private val receiptDraftOutput = PublishSubject.create<ReceiptDraft>()
-    private val scanInfoOutput = PublishSubject.create<ScanInfo>()
+    private val scanInfoOutput = PublishSubject.create<ScanAnnotations>()
 
     fun processFrame(frame: Frame) {
         val subject = scanInfoOutput
@@ -50,7 +50,7 @@ class ReceiptScanner(
             .addOnFailureListener (receiptDraftOutput::onError)
     }
 
-    fun scanInfoSubscribe(subscriber: Observer<ScanInfo>) {
+    fun scanInfoSubscribe(subscriber: Observer<ScanAnnotations>) {
         scanInfoOutput.subscribe(subscriber)
     }
 
@@ -68,8 +68,8 @@ class ReceiptScanner(
             .map { ScanInfoBox(
                 it.boundingBox!!.top,
                 it.boundingBox!!.bottom,
-                it.boundingBox!!.width(),
-                it.boundingBox!!.height(),
+                it.boundingBox!!.left,
+                it.boundingBox!!.right,
                 it.text
             ) }
     }
