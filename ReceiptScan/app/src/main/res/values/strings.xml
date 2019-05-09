@@ -9,4 +9,7 @@
     <string name="request_camera_msg">Allow camera usage</string>
     <string name="toggle_flash_btn">Toggle Flash</string>
     <string name="scanner_import_btn">Import Photo</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -25,6 +25,3 @@ data class ScanInfoBox(
 ) {
     constructor(): this(0,0,0,0,"")
 }
-
-
-typealias ScanAnnotations = List<ScanInfoBox>

@@ -8,13 +8,12 @@
         tools:context=".view.activity.MainActivity">
 
 
-    <!--<Button-->
-            <!--android:text="@string/scan_link_btn"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/scan_btn" app:layout_constraintTop_toTopOf="parent"-->
-            <!--android:layout_marginTop="496dp" app:layout_constraintStart_toStartOf="parent"-->
-            <!--android:layout_marginStart="161dp"/>-->
+    <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/drafts_fragment"
+            android:name="com.lucianbc.receiptscan.view.fragment.homepage.Drafts"
+    />
 
     <com.google.android.material.bottomappbar.BottomAppBar
             android:layout_width="match_parent"
