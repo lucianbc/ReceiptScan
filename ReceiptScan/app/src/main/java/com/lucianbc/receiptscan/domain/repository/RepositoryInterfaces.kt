@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.domain.service
+package com.lucianbc.receiptscan.domain.repository
 
 import android.graphics.Bitmap
 import com.lucianbc.receiptscan.domain.model.ReceiptDraft

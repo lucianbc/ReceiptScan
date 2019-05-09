@@ -8,6 +8,8 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.domain.model.ReceiptDraft
 import com.lucianbc.receiptscan.domain.model.ScanAnnotations
 import com.lucianbc.receiptscan.domain.model.ScanInfoBox
+import com.lucianbc.receiptscan.domain.repository.ImageRepository
+import com.lucianbc.receiptscan.domain.repository.ReceiptDraftRepository
 import com.otaliastudios.cameraview.Frame
 import io.reactivex.Observer
 import io.reactivex.subjects.PublishSubject
@@ -62,7 +64,7 @@ class ReceiptScanner(
         return FirebaseVisionImage.fromBitmap(this)
     }
 
-    private fun FirebaseVisionText.toScanInfo(): Collection<ScanInfoBox> {
+    private fun FirebaseVisionText.toScanInfo(): ScanAnnotations {
         return this.textBlocks
             .flatMap { it.lines }
             .map { ScanInfoBox(
