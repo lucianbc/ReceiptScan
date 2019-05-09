@@ -6,6 +6,10 @@ import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.ReceiptScan
 import com.lucianbc.receiptscan.domain.dao.AppDatabase
+import com.lucianbc.receiptscan.domain.repository.DummyImageRepo
+import com.lucianbc.receiptscan.domain.repository.DummyReceiptDraftRepo
+import com.lucianbc.receiptscan.domain.repository.ImageRepository
+import com.lucianbc.receiptscan.domain.repository.ReceiptDraftRepository
 import dagger.Module
 import dagger.Provides
 import org.greenrobot.eventbus.EventBus
@@ -30,6 +34,12 @@ class AppModule {
     fun appDatabase(context: Context): AppDatabase {
         return AppDatabase.getInstance(context)
     }
+
+    @Provides
+    fun rdrepo(): ReceiptDraftRepository = DummyReceiptDraftRepo()
+
+    @Provides
+    fun direpo(): ImageRepository = DummyImageRepo()
 }
 
 

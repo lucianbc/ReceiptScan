@@ -10,54 +10,72 @@ import com.lucianbc.receiptscan.domain.model.ScanAnnotations
 import com.lucianbc.receiptscan.domain.model.ScanInfoBox
 import com.lucianbc.receiptscan.domain.repository.ImageRepository
 import com.lucianbc.receiptscan.domain.repository.ReceiptDraftRepository
+import com.lucianbc.receiptscan.util.logd
 import com.otaliastudios.cameraview.Frame
+import io.reactivex.Observable
 import io.reactivex.Observer
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.lang.Exception
+import java.lang.Thread.currentThread
+import javax.inject.Inject
 
-class ReceiptScanner(
+class ReceiptScanner @Inject constructor(
     private val recognizer: FirebaseVisionTextRecognizer,
     private val imageRepository: ImageRepository,
     private val draftRepository: ReceiptDraftRepository
 ) {
-    private val receiptDraftOutput = PublishSubject.create<ReceiptDraft>()
     private val scanInfoOutput = PublishSubject.create<ScanAnnotations>()
 
     fun processFrame(frame: Frame) {
         val subject = scanInfoOutput
-        val metadata = frame.toFirebaseMetadata()
-        val image = FirebaseVisionImage.fromByteArray(frame.data, metadata)
         recognizer
-            .processImage(image)
+            .processImage(frame.toFirebaseImage())
             .addOnSuccessListener {
                 subject.onNext(it.toScanInfo())
             }
             .addOnFailureListener(subject::onError)
     }
 
-    fun scan(image: Bitmap) {
-        val subject = receiptDraftOutput
+    fun scan(bitmapProvider: () -> Bitmap): Observable<ReceiptDraft> = Observable
+        .fromCallable {
+            logd("Read file on thread ${currentThread().name}")
+            bitmapProvider()
+        }
+        .flatMap {
+            logd("OCR on thread ${currentThread().name}")
+            process(it)
+        }
+        .observeOn(Schedulers.io())
+        .map {
+            logd("Save on thread ${currentThread().name}")
+            saveDraft(it)
+        }
+        .subscribeOn(Schedulers.io())
+        .map {
+            logd("Ajuns la final pe thread ${currentThread().name}")
+            logd(it.toString())
+            it
+        }
+
+    private fun process(image: Bitmap): PublishSubject<Pair<Bitmap, FirebaseVisionText>> {
+        val result = PublishSubject
+            .create<Pair<Bitmap, FirebaseVisionText>>()
         recognizer
             .processImage(image.toFirebaseImage())
-            .addOnSuccessListener {
-                try {
-                    val filePath = imageRepository.saveImage(image)
-                    val metadata = it.toScanInfo()
-                    val receiptDraft = draftRepository.saveDraft(filePath, metadata)
-                    subject.onNext(receiptDraft)
-                } catch (e: Exception) {
-                    subject.onError(e)
-                }
-            }
-            .addOnFailureListener (receiptDraftOutput::onError)
+            .addOnSuccessListener { result.onNext(image to it) }
+            .addOnFailureListener { result.onError(it) }
+        return result
+    }
+
+    private fun saveDraft(rawData: Pair<Bitmap, FirebaseVisionText>): ReceiptDraft {
+        val filePath = imageRepository.saveImage(rawData.first)
+        val annotations = rawData.second.toScanInfo()
+        return draftRepository.saveDraft(filePath, annotations)
     }
 
     fun scanInfoSubscribe(subscriber: Observer<ScanAnnotations>) {
         scanInfoOutput.subscribe(subscriber)
-    }
-
-    fun receiptDraftSubscribe(subscriber: Observer<ReceiptDraft>) {
-        receiptDraftOutput.subscribe(subscriber)
     }
 
     private fun Bitmap.toFirebaseImage(): FirebaseVisionImage {
@@ -86,11 +104,13 @@ class ReceiptScanner(
         }
     }
 
-    private fun Frame.toFirebaseMetadata() =
-        FirebaseVisionImageMetadata.Builder()
+    private fun Frame.toFirebaseImage(): FirebaseVisionImage {
+        val metadata = FirebaseVisionImageMetadata.Builder()
             .setFormat(this.format)
             .setRotation(rotation(this.rotation))
             .setHeight(this.size.height)
             .setWidth(this.size.width)
             .build()
+        return FirebaseVisionImage.fromByteArray(this.data, metadata)
+    }
 }
