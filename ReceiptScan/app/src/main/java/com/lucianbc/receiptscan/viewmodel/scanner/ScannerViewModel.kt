@@ -4,9 +4,12 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.ml.vision.common.FirebaseVisionImage
+import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.lucianbc.receiptscan.domain.service.ReceiptScanner
 import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.viewmodel.Event
+import com.otaliastudios.cameraview.Frame
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 

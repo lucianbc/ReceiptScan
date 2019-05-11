@@ -3,9 +3,8 @@ package com.lucianbc.receiptscan.view.fragment.scanner.widget
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import com.google.firebase.ml.vision.text.FirebaseVisionText
+import com.lucianbc.receiptscan.domain.model.ScanInfoBox
 import com.lucianbc.receiptscan.util.Just
 import com.lucianbc.receiptscan.util.None
 import com.lucianbc.receiptscan.util.Optional
@@ -36,7 +35,7 @@ class GraphicOverlay (
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        Log.d("GRAPHIC OVERLAY", "Drawing overlay")
+//        Log.d("GRAPHIC OVERLAY", "Drawing overlay")
         synchronized(this) {
             graphicPresenter.render(canvas!!)
         }
@@ -87,7 +86,7 @@ class GraphicPresenter(
     }
 }
 
-typealias TextElement = FirebaseVisionText.Line
+typealias TextElement = ScanInfoBox
 
 class OcrGraphic (
     presenter: GraphicPresenter,
@@ -131,4 +130,7 @@ class OcrGraphic (
         return rect
     }
 }
+
+val ScanInfoBox.boundingBox: Rect
+    get() = Rect(this.left, this.top, this.right, this.bottom)
 

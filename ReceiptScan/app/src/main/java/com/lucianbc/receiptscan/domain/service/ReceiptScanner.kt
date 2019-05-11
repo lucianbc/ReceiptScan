@@ -2,7 +2,6 @@ package com.lucianbc.receiptscan.domain.service
 
 import android.graphics.Bitmap
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.domain.model.ReceiptDraft
@@ -11,13 +10,13 @@ import com.lucianbc.receiptscan.domain.model.ScanInfoBox
 import com.lucianbc.receiptscan.domain.repository.ImageRepository
 import com.lucianbc.receiptscan.domain.repository.ReceiptDraftRepository
 import com.lucianbc.receiptscan.util.logd
-import com.otaliastudios.cameraview.Frame
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import java.lang.Exception
 import java.lang.Thread.currentThread
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ReceiptScanner @Inject constructor(
@@ -25,40 +24,36 @@ class ReceiptScanner @Inject constructor(
     private val imageRepository: ImageRepository,
     private val draftRepository: ReceiptDraftRepository
 ) {
-    private val scanInfoOutput = PublishSubject.create<ScanAnnotations>()
+    private val frameProducer = PublishSubject.create<FirebaseVisionImage>()
 
-    fun processFrame(frame: Frame) {
-        val subject = scanInfoOutput
-        recognizer
-            .processImage(frame.toFirebaseImage())
-            .addOnSuccessListener {
-                subject.onNext(it.toScanInfo())
-            }
-            .addOnFailureListener(subject::onError)
-    }
+    val scanAnnotations: Flowable<ScanAnnotations> =
+        frameProducer
+            .throttleLast(FRAME_RATE, FRAME_UNIT)
+            .flatMap(this::process)
+            .map { it.toScanInfo() }
+            .doOnNext { logd("Finished processing on thread ${currentThread().name}") }
+            .toFlowable(BackpressureStrategy.LATEST)
+
 
     fun scan(bitmapProvider: () -> Bitmap): Observable<ReceiptDraft> = Observable
         .fromCallable {
             logd("Read file on thread ${currentThread().name}")
             bitmapProvider()
         }
-        .flatMap {
-            logd("OCR on thread ${currentThread().name}")
-            process(it)
-        }
-        .observeOn(Schedulers.io())
-        .map {
-            logd("Save on thread ${currentThread().name}")
-            saveDraft(it)
-        }
         .subscribeOn(Schedulers.io())
-        .map {
+        .doOnNext { logd("OCR on thread ${currentThread().name}") }
+        .flatMap { process(it) }
+        .observeOn(Schedulers.io())
+        .doOnNext { logd("Save on thread ${currentThread().name}") }
+        .map { saveDraft(it) }
+        .doOnNext {
             logd("Ajuns la final pe thread ${currentThread().name}")
             logd(it.toString())
-            it
         }
 
-    private fun process(image: Bitmap): PublishSubject<Pair<Bitmap, FirebaseVisionText>> {
+    fun processFrame(frame: FirebaseVisionImage) = frameProducer.onNext(frame)
+
+    private fun process(image: Bitmap): Observable<Pair<Bitmap, FirebaseVisionText>> {
         val result = PublishSubject
             .create<Pair<Bitmap, FirebaseVisionText>>()
         recognizer
@@ -68,14 +63,21 @@ class ReceiptScanner @Inject constructor(
         return result
     }
 
+    private fun process(image: FirebaseVisionImage): Observable<FirebaseVisionText> {
+        val result = PublishSubject
+            .create<FirebaseVisionText>()
+
+        recognizer
+            .processImage(image)
+            .addOnSuccessListener { result.onNext(it) }
+            .addOnFailureListener { result.onError(it) }
+        return result
+    }
+
     private fun saveDraft(rawData: Pair<Bitmap, FirebaseVisionText>): ReceiptDraft {
         val filePath = imageRepository.saveImage(rawData.first)
         val annotations = rawData.second.toScanInfo()
         return draftRepository.saveDraft(filePath, annotations)
-    }
-
-    fun scanInfoSubscribe(subscriber: Observer<ScanAnnotations>) {
-        scanInfoOutput.subscribe(subscriber)
     }
 
     private fun Bitmap.toFirebaseImage(): FirebaseVisionImage {
@@ -94,23 +96,9 @@ class ReceiptScanner @Inject constructor(
             ) }
     }
 
-    private fun rotation(rotation: Int): Int {
-        return when (rotation) {
-            0 -> FirebaseVisionImageMetadata.ROTATION_0
-            90 -> FirebaseVisionImageMetadata.ROTATION_90
-            180 -> FirebaseVisionImageMetadata.ROTATION_180
-            270 -> FirebaseVisionImageMetadata.ROTATION_270
-            else -> FirebaseVisionImageMetadata.ROTATION_0
-        }
-    }
-
-    private fun Frame.toFirebaseImage(): FirebaseVisionImage {
-        val metadata = FirebaseVisionImageMetadata.Builder()
-            .setFormat(this.format)
-            .setRotation(rotation(this.rotation))
-            .setHeight(this.size.height)
-            .setWidth(this.size.width)
-            .build()
-        return FirebaseVisionImage.fromByteArray(this.data, metadata)
+    companion object {
+        private const val FPS = 1
+        private val FRAME_UNIT = TimeUnit.MILLISECONDS
+        private const val FRAME_RATE = ((1F / FPS) * 1000).toLong()
     }
 }

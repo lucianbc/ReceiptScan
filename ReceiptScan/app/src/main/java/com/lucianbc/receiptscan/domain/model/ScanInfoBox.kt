@@ -19,7 +19,7 @@ data class ScanInfoBox(
     @ColumnInfo(name = "bottom")        var bottom  : Int,
     @ColumnInfo(name = "left")          var left    : Int,
     @ColumnInfo(name = "right")         var right   : Int,
-    @ColumnInfo(name = "value")         var value   : String,
+    @ColumnInfo(name = "value")         var text   : String,
     @PrimaryKey(autoGenerate = true)    var id      : ID = null,
     @ColumnInfo(name = "draft_id")      var draftId : ID = null
 ) {
