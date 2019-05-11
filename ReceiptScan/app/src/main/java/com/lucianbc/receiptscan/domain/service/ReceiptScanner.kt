@@ -13,7 +13,6 @@ import com.lucianbc.receiptscan.util.logd
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.lang.Thread.currentThread
 import java.util.concurrent.TimeUnit
@@ -37,11 +36,9 @@ class ReceiptScanner @Inject constructor(
 
     fun scan(bitmapProvider: Observable<Bitmap>): Observable<ReceiptDraft> =
         bitmapProvider
-            .doOnNext {
-                logd("OCR on thread ${currentThread().name}")
-            }
-            .flatMap { process(it) }
-            .observeOn(Schedulers.io())
+            .doOnNext { logd("OCR on thread ${currentThread().name}") }
+            .map { i -> i to i.firebaseImage() }
+            .flatMap { (i, f) -> process(f).map { t -> i to t } }
             .doOnNext { logd("Save on thread ${currentThread().name}") }
             .map { saveDraft(it) }
             .doOnNext {
@@ -49,17 +46,8 @@ class ReceiptScanner @Inject constructor(
                 logd(it.toString())
             }
 
-    fun processFrame(frame: FirebaseVisionImage) = frameProducer.onNext(frame)
 
-    private fun process(image: Bitmap): Observable<Pair<Bitmap, FirebaseVisionText>> {
-        val result = PublishSubject
-            .create<Pair<Bitmap, FirebaseVisionText>>()
-        recognizer
-            .processImage(image.toFirebaseImage())
-            .addOnSuccessListener { result.onNext(image to it) }
-            .addOnFailureListener { result.onError(it) }
-        return result
-    }
+    fun processFrame(frame: FirebaseVisionImage) = frameProducer.onNext(frame)
 
     private fun process(image: FirebaseVisionImage): Observable<FirebaseVisionText> {
         val result = PublishSubject
@@ -78,7 +66,7 @@ class ReceiptScanner @Inject constructor(
         return draftRepository.saveDraft(filePath, annotations)
     }
 
-    private fun Bitmap.toFirebaseImage(): FirebaseVisionImage {
+    private fun Bitmap.firebaseImage(): FirebaseVisionImage {
         return FirebaseVisionImage.fromBitmap(this)
     }
 
