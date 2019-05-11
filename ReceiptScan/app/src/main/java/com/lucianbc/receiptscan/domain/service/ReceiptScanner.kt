@@ -35,21 +35,19 @@ class ReceiptScanner @Inject constructor(
             .toFlowable(BackpressureStrategy.LATEST)
 
 
-    fun scan(bitmapProvider: () -> Bitmap): Observable<ReceiptDraft> = Observable
-        .fromCallable {
-            logd("Read file on thread ${currentThread().name}")
-            bitmapProvider()
-        }
-        .subscribeOn(Schedulers.io())
-        .doOnNext { logd("OCR on thread ${currentThread().name}") }
-        .flatMap { process(it) }
-        .observeOn(Schedulers.io())
-        .doOnNext { logd("Save on thread ${currentThread().name}") }
-        .map { saveDraft(it) }
-        .doOnNext {
-            logd("Ajuns la final pe thread ${currentThread().name}")
-            logd(it.toString())
-        }
+    fun scan(bitmapProvider: Observable<Bitmap>): Observable<ReceiptDraft> =
+        bitmapProvider
+            .doOnNext {
+                logd("OCR on thread ${currentThread().name}")
+            }
+            .flatMap { process(it) }
+            .observeOn(Schedulers.io())
+            .doOnNext { logd("Save on thread ${currentThread().name}") }
+            .map { saveDraft(it) }
+            .doOnNext {
+                logd("Ajuns la final pe thread ${currentThread().name}")
+                logd(it.toString())
+            }
 
     fun processFrame(frame: FirebaseVisionImage) = frameProducer.onNext(frame)
 

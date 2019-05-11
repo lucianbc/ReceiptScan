@@ -1,6 +1,7 @@
 package com.lucianbc.receiptscan.view.fragment.scanner
 
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,9 +16,14 @@ import com.lucianbc.receiptscan.domain.model.ScanAnnotations
 import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.view.fragment.scanner.widget.OcrGraphic
 import com.lucianbc.receiptscan.viewmodel.scanner.LiveViewVM
+import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.Flash
 import com.otaliastudios.cameraview.FrameProcessor
+import com.otaliastudios.cameraview.PictureResult
 import dagger.android.support.DaggerFragment
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_scanner.*
 import javax.inject.Inject
 
@@ -53,9 +59,10 @@ class Scanner: DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        scanner_view.setLifecycleOwner(viewLifecycleOwner)
         ocr_overlay.setCameraInfo(scanner_view.width, scanner_view.height, scanner_view.facing)
+        scanner_view.setLifecycleOwner(viewLifecycleOwner)
         scanner_view.addFrameProcessor(frameProcessor)
+        scanner_view.addCameraListener(cameraListener)
     }
 
     private fun observe(viewModel: LiveViewVM) {
@@ -79,5 +86,28 @@ class Scanner: DaggerFragment() {
 
     private val frameProcessor = FrameProcessor {
         viewModel.processFrame(it)
+    }
+
+    private val cameraListener = object: CameraListener() {
+        override fun onPictureTaken(result: PictureResult) {
+            val bmpResult = result.toBitmap()
+                .doOnNext {
+                    logd("Picture taken and converted")
+                }
+                .subscribeOn(Schedulers.io())
+            viewModel.processPicture(bmpResult).subscribe()
+        }
+    }
+
+    private fun PictureResult.toBitmap(): Observable<Bitmap> {
+        val bmpResult = PublishSubject.create<Bitmap>()
+        this.toBitmap {
+            if (it != null) bmpResult.onNext(it)
+            else {
+                val errMsg: String = resources.getString(R.string.picture_error_message)
+                bmpResult.onError(IllegalStateException(errMsg))
+            }
+        }
+        return bmpResult
     }
 }

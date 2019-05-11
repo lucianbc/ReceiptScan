@@ -10,6 +10,7 @@ import com.lucianbc.receiptscan.domain.service.ReceiptScanner
 import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.viewmodel.Event
 import com.otaliastudios.cameraview.Frame
+import io.reactivex.Observable
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
@@ -30,7 +31,7 @@ class ScannerViewModel @Inject constructor(
         eventBus.post(Event.ImportImage)
     }
 
-    fun scanImage(imageProvider: () -> Bitmap) {
+    fun scanImage(imageProvider: Observable<Bitmap>) {
         receiptScanner.scan(imageProvider).subscribe()
     }
 }

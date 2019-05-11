@@ -10,7 +10,6 @@
     <string name="toggle_flash_btn">Toggle Flash</string>
     <string name="scanner_import_btn">Import Photo</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="request_read_external_storage_msg">Allow read access to external storage</string>
+    <string name="picture_error_message">Picture could not be converted to bitmap</string>
 </resources>

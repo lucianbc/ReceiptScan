@@ -19,6 +19,8 @@ import com.lucianbc.receiptscan.view.fragment.scanner.Scanner
 import com.lucianbc.receiptscan.viewmodel.Event
 import com.lucianbc.receiptscan.viewmodel.scanner.ScannerViewModel
 import dagger.android.support.DaggerAppCompatActivity
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -141,7 +143,13 @@ class ScannerActivity : DaggerAppCompatActivity(), EasyPermissions.PermissionCal
 
     private fun callToScan(intent: Intent) {
         val uri: Uri = intent.data!!
-        viewModel.scanImage { MediaStore.Images.Media.getBitmap(contentResolver, uri) }
+
+        val bitmapObservable =
+            Observable
+                .fromCallable { MediaStore.Images.Media.getBitmap(contentResolver, uri) }
+                .subscribeOn(Schedulers.io())
+
+        viewModel.scanImage(bitmapObservable)
     }
 
     //endregion
