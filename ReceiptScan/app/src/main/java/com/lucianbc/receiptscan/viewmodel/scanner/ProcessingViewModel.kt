@@ -1,10 +1,9 @@
 package com.lucianbc.receiptscan.viewmodel.scanner
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.service.ReceiptScanner
+import com.lucianbc.receiptscan.util.map
 import javax.inject.Inject
 
 class ProcessingViewModel @Inject constructor(
@@ -15,10 +14,6 @@ class ProcessingViewModel @Inject constructor(
         .state
         .toLiveData()
         .map { it.message }
-
-    private fun <X, Y> LiveData<X>.map(func: (X) -> Y): LiveData<Y> {
-        return Transformations.map(this, func)
-    }
 
     private val ReceiptScanner.State.message: String
         get() = when(this) {
