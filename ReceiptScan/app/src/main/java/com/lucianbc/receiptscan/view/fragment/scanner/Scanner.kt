@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentScannerBinding
 import com.lucianbc.receiptscan.domain.model.ScanAnnotations
 import com.lucianbc.receiptscan.util.logd
@@ -21,19 +21,14 @@ import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.Flash
 import com.otaliastudios.cameraview.FrameProcessor
 import com.otaliastudios.cameraview.PictureResult
-import dagger.android.support.DaggerFragment
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_scanner.*
-import javax.inject.Inject
 
-class Scanner: DaggerFragment() {
+class Scanner:
+    BaseFragment<LiveViewVM>(LiveViewVM::class.java) {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var viewModel: LiveViewVM
     private lateinit var parentViewModel: ScannerViewModel
 
     override fun onCreateView(
@@ -47,9 +42,7 @@ class Scanner: DaggerFragment() {
             false
         )
 
-        viewModel = ViewModelProviders
-            .of(this, viewModelFactory)
-            .get(LiveViewVM::class.java)
+        initViewModel()
 
         parentViewModel = ViewModelProviders
             .of(activity!!, viewModelFactory)

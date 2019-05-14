@@ -8,9 +8,8 @@ import android.provider.MediaStore
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.base.BaseActivity
 import com.lucianbc.receiptscan.databinding.ActivityScannerBinding
 import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.view.fragment.scanner.Error
@@ -19,7 +18,6 @@ import com.lucianbc.receiptscan.view.fragment.scanner.Processing
 import com.lucianbc.receiptscan.view.fragment.scanner.Scanner
 import com.lucianbc.receiptscan.viewmodel.Event
 import com.lucianbc.receiptscan.viewmodel.scanner.ScannerViewModel
-import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
@@ -27,28 +25,22 @@ import org.greenrobot.eventbus.Subscribe
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
-import javax.inject.Inject
 
-class ScannerActivity : DaggerAppCompatActivity(), EasyPermissions.PermissionCallbacks {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory // = LiveViewVM.Factory(EventBus.getDefault())
-
-    private lateinit var viewModel: ScannerViewModel
+class ScannerActivity :
+    BaseActivity<ScannerViewModel>(ScannerViewModel::class.java),
+    EasyPermissions.PermissionCallbacks {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanner)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(ScannerViewModel::class.java)
-        setupBinding()
+        setupBinding(viewModel)
         observe(viewModel)
         checkCameraPermission()
     }
 
-    private fun setupBinding() {
+    private fun setupBinding(vm: ScannerViewModel) {
         val binding = DataBindingUtil.setContentView<ActivityScannerBinding>(this, R.layout.activity_scanner)
-        binding.viewModel = viewModel
+        binding.viewModel = vm
     }
 
     private fun observe(viewModel: ScannerViewModel) {
@@ -151,7 +143,7 @@ class ScannerActivity : DaggerAppCompatActivity(), EasyPermissions.PermissionCal
         if (requestCode == DRAFT_REVIEW_REQUEST)
             checkCameraPermission()
         if (requestCode == GALLERY_REQUEST)
-            callToScan(data!!)
+            data?.let { callToScan(data) }
     }
 
     private fun callToScan(intent: Intent) {
