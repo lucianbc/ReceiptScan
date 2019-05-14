@@ -9,6 +9,7 @@ import com.lucianbc.receiptscan.domain.model.ScanAnnotations
 import com.lucianbc.receiptscan.domain.model.ScanInfoBox
 import com.lucianbc.receiptscan.domain.repository.ImageRepository
 import com.lucianbc.receiptscan.domain.repository.ReceiptDraftRepository
+import com.lucianbc.receiptscan.viewmodel.DraftWithImage
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable
@@ -40,7 +41,7 @@ class ReceiptScanner @Inject constructor(
             .toFlowable(BackpressureStrategy.LATEST)
 
 
-    fun scan(bitmapProvider: Observable<Bitmap>): Observable<ReceiptDraft> =
+    fun scan(bitmapProvider: Observable<Bitmap>): Observable<DraftWithImage> =
         bitmapProvider
             .doOnNext { _state.onNext(State.OCR) }
             .map { i -> i to i.firebaseImage() }
@@ -64,10 +65,11 @@ class ReceiptScanner @Inject constructor(
         return result
     }
 
-    private fun saveDraft(rawData: Pair<Bitmap, FirebaseVisionText>): ReceiptDraft {
+    private fun saveDraft(rawData: Pair<Bitmap, FirebaseVisionText>): DraftWithImage {
         val filePath = imageRepository.saveImage(rawData.first)
         val annotations = rawData.second.toScanInfo()
-        return draftRepository.saveDraft(filePath, annotations)
+        val draft = draftRepository.saveDraft(filePath, annotations)
+        return draft to rawData.first
     }
 
     private fun Bitmap.firebaseImage() = FirebaseVisionImage.fromBitmap(this)

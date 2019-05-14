@@ -81,12 +81,21 @@ class ScannerActivity : DaggerAppCompatActivity(), EasyPermissions.PermissionCal
     }
 
     @Subscribe
-    @Suppress("unused")
-    fun onImportImage(@Suppress("UNUSED_PARAMETER")event: Event.ImportImage) {
+    fun onImportImage(event: Event.ImportImage) {
         checkGalleryPermission()
     }
 
+    @Subscribe
+    fun onImageScanned(event: Event.ImageScanned) {
+        goToDraftReview()
+    }
+
     //endregion
+
+    private fun goToDraftReview() {
+        val intent = Intent(this, DraftReviewActivity::class.java)
+        startActivityForResult(intent, DRAFT_REVIEW_REQUEST)
+    }
 
     //region Permission Management
 
@@ -139,6 +148,8 @@ class ScannerActivity : DaggerAppCompatActivity(), EasyPermissions.PermissionCal
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA_PERMISSION_REQUEST)
             checkCameraPermission()
+        if (requestCode == DRAFT_REVIEW_REQUEST)
+            checkCameraPermission()
         if (requestCode == GALLERY_REQUEST)
             callToScan(data!!)
     }
@@ -160,6 +171,7 @@ class ScannerActivity : DaggerAppCompatActivity(), EasyPermissions.PermissionCal
         const val CAMERA_PERMISSION_REQUEST = 100
         const val STORAGE_PERMISSION_REQUEST = 101
         const val GALLERY_REQUEST = 1000
+        const val DRAFT_REVIEW_REQUEST = 1001
         const val IMAGE_INTENT_TYPE = "image/*"
     }
 }
