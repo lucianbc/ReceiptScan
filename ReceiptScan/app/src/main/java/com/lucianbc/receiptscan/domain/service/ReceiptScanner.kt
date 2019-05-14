@@ -7,12 +7,12 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.domain.model.ReceiptDraft
 import com.lucianbc.receiptscan.domain.model.ScanAnnotations
 import com.lucianbc.receiptscan.domain.model.ScanInfoBox
-import com.lucianbc.receiptscan.domain.repository.ImageRepository
+import com.lucianbc.receiptscan.domain.repository.DraftWithImage
 import com.lucianbc.receiptscan.domain.repository.ReceiptDraftRepository
-import com.lucianbc.receiptscan.viewmodel.DraftWithImage
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
@@ -22,7 +22,6 @@ import javax.inject.Singleton
 @Singleton
 class ReceiptScanner @Inject constructor(
     private val recognizer: FirebaseVisionTextRecognizer,
-    private val imageRepository: ImageRepository,
     private val draftRepository: ReceiptDraftRepository
 ) {
     private val frameProducer = PublishSubject.create<FirebaseVisionImage>()
@@ -47,6 +46,7 @@ class ReceiptScanner @Inject constructor(
             .map { i -> i to i.firebaseImage() }
             .flatMap { (i, f) -> extractText(f).map { t -> i to t } }
             .doOnNext { _state.onNext(State.Saving) }
+            .observeOn(Schedulers.io())
             .map { saveDraft(it) }
             .doOnNext { _state.onNext(State.Idle) }
             .doOnSubscribe { _state.onNext(State.ReadingImage) }
@@ -66,10 +66,9 @@ class ReceiptScanner @Inject constructor(
     }
 
     private fun saveDraft(rawData: Pair<Bitmap, FirebaseVisionText>): DraftWithImage {
-        val filePath = imageRepository.saveImage(rawData.first)
-        val annotations = rawData.second.toScanInfo()
-        val draft = draftRepository.saveDraft(filePath, annotations)
-        return draft to rawData.first
+        val draft = ReceiptDraft(annotations = rawData.second.toScanInfo())
+        val result = draftRepository.saveDraft(draft, rawData.first)
+        return result to rawData.first
     }
 
     private fun Bitmap.firebaseImage() = FirebaseVisionImage.fromBitmap(this)

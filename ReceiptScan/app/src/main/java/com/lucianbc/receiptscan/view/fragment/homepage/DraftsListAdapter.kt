@@ -15,7 +15,7 @@ class DraftsListAdapter (
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DraftViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.draft_list_item, parent)
+            .inflate(R.layout.draft_list_item, parent, false)
         return DraftViewHolder(view)
     }
 

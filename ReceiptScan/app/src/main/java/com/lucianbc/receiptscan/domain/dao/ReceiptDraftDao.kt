@@ -1,7 +1,5 @@
 package com.lucianbc.receiptscan.domain.dao
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -12,36 +10,37 @@ import com.lucianbc.receiptscan.domain.model.ReceiptDraft
 import com.lucianbc.receiptscan.domain.model.ScanAnnotations
 
 @Dao
+@Suppress("FunctionName")
 abstract class ReceiptDraftDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertScanAnnotations(infoBoxes: ScanAnnotations)
 
-    @Query("SELECT * FROM scan_info_box WHERE draft_id = :receiptId")
-    abstract fun findAnnotations(receiptId: ID): ScanAnnotations
+    fun find(id: ID): ReceiptDraft {
+        val result = _find(id)
+        return withAnnotations(result)
+    }
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insert(receiptDraft: ReceiptDraft)
-
-    fun insertWithAnnotations(receiptDraft: ReceiptDraft) {
-        insert(receiptDraft)
-        insertScanAnnotations(receiptDraft.annotations)
+    fun insert(receiptDraft: ReceiptDraft): ID {
+        val id = _insert(receiptDraft)
+        _insertScanAnnotations(receiptDraft.annotations)
+        return id
     }
 
     @Query("SELECT * FROM receipt_draft")
-    abstract fun findAll(): LiveData<Drafts>
+    abstract fun findAll(): Response<Drafts>
 
-    fun findAllWithAnnotations(): LiveData<Drafts> {
-        val drafts = findAll()
+    @Query("SELECT * FROM receipt_draft WHERE id = :draftId")
+    abstract fun _find(draftId: ID): ReceiptDraft
 
-        return Transformations.map<Drafts, Drafts>(drafts) {
-            it.map { d ->
-                withAnnotations(d)
-            }
-        }
-    }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun _insert(receiptDraft: ReceiptDraft): ID
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun _insertScanAnnotations(infoBoxes: ScanAnnotations): List<ID>
+
+    @Query("SELECT * FROM scan_info_box WHERE draft_id = :receiptId")
+    abstract fun _findAnnotations(receiptId: ID): ScanAnnotations
 
     private fun withAnnotations(receiptDraft: ReceiptDraft): ReceiptDraft {
-        val annotations = findAnnotations(receiptDraft.id)
+        val annotations = _findAnnotations(receiptDraft.id)
         return ReceiptDraft(receiptDraft.imagePath, annotations, receiptDraft.id)
     }
 }
