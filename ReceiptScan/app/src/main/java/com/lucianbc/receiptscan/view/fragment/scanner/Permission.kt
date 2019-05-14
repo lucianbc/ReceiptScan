@@ -17,11 +17,8 @@ import pub.devrel.easypermissions.EasyPermissions
 
 class Permission : Fragment() {
 
-    private lateinit var viewModel: ScannerViewModel
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity!!).get(ScannerViewModel::class.java)
         allow_camera_btn.setOnClickListener(requestPermission)
     }
 
