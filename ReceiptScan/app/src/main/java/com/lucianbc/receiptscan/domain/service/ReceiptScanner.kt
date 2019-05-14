@@ -9,15 +9,16 @@ import com.lucianbc.receiptscan.domain.model.ScanAnnotations
 import com.lucianbc.receiptscan.domain.model.ScanInfoBox
 import com.lucianbc.receiptscan.domain.repository.ImageRepository
 import com.lucianbc.receiptscan.domain.repository.ReceiptDraftRepository
-import com.lucianbc.receiptscan.util.logd
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import java.lang.Thread.currentThread
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ReceiptScanner @Inject constructor(
     private val recognizer: FirebaseVisionTextRecognizer,
     private val imageRepository: ImageRepository,
@@ -28,28 +29,31 @@ class ReceiptScanner @Inject constructor(
     val scanAnnotations: Flowable<ScanAnnotations> =
         frameProducer
             .throttleLast(FRAME_RATE, FRAME_UNIT)
-            .flatMap(this::process)
+            .flatMap(this::extractText)
             .map { it.toScanInfo() }
-            .doOnNext { logd("Finished processing on thread ${currentThread().name}") }
+            .toFlowable(BackpressureStrategy.LATEST)
+
+
+    private val _state = BehaviorSubject.createDefault<State>(State.Idle)
+    val state: Flowable<State>
+        get() = _state
             .toFlowable(BackpressureStrategy.LATEST)
 
 
     fun scan(bitmapProvider: Observable<Bitmap>): Observable<ReceiptDraft> =
         bitmapProvider
-            .doOnNext { logd("OCR on thread ${currentThread().name}") }
+            .doOnNext { _state.onNext(State.OCR) }
             .map { i -> i to i.firebaseImage() }
-            .flatMap { (i, f) -> process(f).map { t -> i to t } }
-            .doOnNext { logd("Save on thread ${currentThread().name}") }
+            .flatMap { (i, f) -> extractText(f).map { t -> i to t } }
+            .doOnNext { _state.onNext(State.Saving) }
             .map { saveDraft(it) }
-            .doOnNext {
-                logd("Ajuns la final pe thread ${currentThread().name}")
-                logd(it.toString())
-            }
+            .doOnNext { _state.onNext(State.Idle) }
+            .doOnSubscribe { _state.onNext(State.ReadingImage) }
 
 
     fun processFrame(frame: FirebaseVisionImage) = frameProducer.onNext(frame)
 
-    private fun process(image: FirebaseVisionImage): Observable<FirebaseVisionText> {
+    private fun extractText(image: FirebaseVisionImage): Observable<FirebaseVisionText> {
         val result = PublishSubject
             .create<FirebaseVisionText>()
 
@@ -66,12 +70,10 @@ class ReceiptScanner @Inject constructor(
         return draftRepository.saveDraft(filePath, annotations)
     }
 
-    private fun Bitmap.firebaseImage(): FirebaseVisionImage {
-        return FirebaseVisionImage.fromBitmap(this)
-    }
+    private fun Bitmap.firebaseImage() = FirebaseVisionImage.fromBitmap(this)
 
-    private fun FirebaseVisionText.toScanInfo(): ScanAnnotations {
-        return this.textBlocks
+    private fun FirebaseVisionText.toScanInfo(): ScanAnnotations =
+        this.textBlocks
             .flatMap { it.lines }
             .map { ScanInfoBox(
                 it.boundingBox!!.top,
@@ -80,6 +82,12 @@ class ReceiptScanner @Inject constructor(
                 it.boundingBox!!.right,
                 it.text
             ) }
+
+    sealed class State {
+        object ReadingImage: State()
+        object OCR: State()
+        object Saving: State()
+        object Idle: State()
     }
 
     companion object {

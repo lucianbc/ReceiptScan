@@ -15,6 +15,7 @@ import com.lucianbc.receiptscan.databinding.ActivityScannerBinding
 import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.view.fragment.scanner.Error
 import com.lucianbc.receiptscan.view.fragment.scanner.Permission
+import com.lucianbc.receiptscan.view.fragment.scanner.Processing
 import com.lucianbc.receiptscan.view.fragment.scanner.Scanner
 import com.lucianbc.receiptscan.viewmodel.Event
 import com.lucianbc.receiptscan.viewmodel.scanner.ScannerViewModel
@@ -56,6 +57,7 @@ class ScannerActivity : DaggerAppCompatActivity(), EasyPermissions.PermissionCal
                 ScannerViewModel.State.NoPermission -> replaceFragment(Permission())
                 ScannerViewModel.State.Allowed -> replaceFragment(Scanner())
                 ScannerViewModel.State.Error -> replaceFragment(Error())
+                ScannerViewModel.State.Processing -> replaceFragment(Processing())
             }
         })
     }
@@ -81,9 +83,9 @@ class ScannerActivity : DaggerAppCompatActivity(), EasyPermissions.PermissionCal
     @Subscribe
     @Suppress("unused")
     fun onImportImage(@Suppress("UNUSED_PARAMETER")event: Event.ImportImage) {
-        logd("Importing image")
         checkGalleryPermission()
     }
+
     //endregion
 
     //region Permission Management

@@ -16,6 +16,7 @@ import com.lucianbc.receiptscan.domain.model.ScanAnnotations
 import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.view.fragment.scanner.widget.OcrGraphic
 import com.lucianbc.receiptscan.viewmodel.scanner.LiveViewVM
+import com.lucianbc.receiptscan.viewmodel.scanner.ScannerViewModel
 import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.Flash
 import com.otaliastudios.cameraview.FrameProcessor
@@ -33,6 +34,7 @@ class Scanner: DaggerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: LiveViewVM
+    private lateinit var parentViewModel: ScannerViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +51,10 @@ class Scanner: DaggerFragment() {
             .of(this, viewModelFactory)
             .get(LiveViewVM::class.java)
 
+        parentViewModel = ViewModelProviders
+            .of(activity!!, viewModelFactory)
+            .get(ScannerViewModel::class.java)
+        
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -91,11 +97,8 @@ class Scanner: DaggerFragment() {
     private val cameraListener = object: CameraListener() {
         override fun onPictureTaken(result: PictureResult) {
             val bmpResult = result.toBitmap()
-                .doOnNext {
-                    logd("Picture taken and converted")
-                }
                 .subscribeOn(Schedulers.io())
-            viewModel.processPicture(bmpResult).subscribe()
+            parentViewModel.scanImage(bmpResult)
         }
     }
 

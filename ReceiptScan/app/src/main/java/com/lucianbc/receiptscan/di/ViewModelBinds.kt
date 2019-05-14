@@ -3,6 +3,7 @@ package com.lucianbc.receiptscan.di
 import androidx.lifecycle.ViewModel
 import com.lucianbc.receiptscan.viewmodel.DraftsViewModel
 import com.lucianbc.receiptscan.viewmodel.scanner.LiveViewVM
+import com.lucianbc.receiptscan.viewmodel.scanner.ProcessingViewModel
 import com.lucianbc.receiptscan.viewmodel.scanner.ScannerViewModel
 import dagger.Binds
 import dagger.Module
@@ -25,6 +26,11 @@ abstract class ViewModelBinds {
     @IntoMap
     @ViewModelKey(LiveViewVM::class)
     abstract fun bindLiveViewVM(liveViewVM: LiveViewVM): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProcessingViewModel::class)
+    abstract fun bindProcessingVm(processingVM: ProcessingViewModel): ViewModel
 }
 
 

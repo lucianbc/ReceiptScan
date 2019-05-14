@@ -1,6 +1,5 @@
 package com.lucianbc.receiptscan.viewmodel.scanner
 
-import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,14 +7,18 @@ import androidx.lifecycle.toLiveData
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.lucianbc.receiptscan.domain.service.ReceiptScanner
+import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.util.loge
 import com.otaliastudios.cameraview.Frame
-import io.reactivex.Observable
 import javax.inject.Inject
 
 class LiveViewVM @Inject constructor(
     private val receiptScanner: ReceiptScanner
 ): ViewModel() {
+    init {
+        logd("Receipt scanner in LiveView View Model: ${receiptScanner.hashCode()}")
+    }
+
     val flash = MutableLiveData<Boolean>(false)
 
     val ocrOverlays = receiptScanner
@@ -35,9 +38,6 @@ class LiveViewVM @Inject constructor(
             loge("Camera passed a frame with errors", e)
         }
     }
-
-    fun processPicture(bitmapProvider: Observable<Bitmap>) =
-        receiptScanner.scan(bitmapProvider)
 
     private fun Frame.toFirebaseImage(): FirebaseVisionImage {
         val metadata = FirebaseVisionImageMetadata.Builder()
