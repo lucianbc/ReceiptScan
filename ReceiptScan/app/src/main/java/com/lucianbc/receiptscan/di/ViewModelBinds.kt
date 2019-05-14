@@ -1,6 +1,9 @@
+@file:Suppress("unused")
+
 package com.lucianbc.receiptscan.di
 
 import androidx.lifecycle.ViewModel
+import com.lucianbc.receiptscan.viewmodel.DraftReviewViewModel
 import com.lucianbc.receiptscan.viewmodel.DraftsViewModel
 import com.lucianbc.receiptscan.viewmodel.scanner.LiveViewVM
 import com.lucianbc.receiptscan.viewmodel.scanner.ProcessingViewModel
@@ -31,6 +34,11 @@ abstract class ViewModelBinds {
     @IntoMap
     @ViewModelKey(ProcessingViewModel::class)
     abstract fun bindProcessingVm(processingVM: ProcessingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DraftReviewViewModel::class)
+    abstract fun bindDraftReviewViewModel(draftReviewVM: DraftReviewViewModel): ViewModel
 }
 
 
