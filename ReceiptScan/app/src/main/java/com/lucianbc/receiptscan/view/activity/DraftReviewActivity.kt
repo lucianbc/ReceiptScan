@@ -6,7 +6,6 @@ import android.os.Bundle
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseActivity
 import com.lucianbc.receiptscan.domain.model.ID
-import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.util.loge
 import com.lucianbc.receiptscan.viewmodel.DraftReviewViewModel
 
@@ -19,14 +18,13 @@ class DraftReviewActivity :
         setContentView(R.layout.activity_draft_review)
     }
 
-
     private fun safeLoadDraft() {
         val default = -1L
         val bundle = intent.extras
 
-        when (bundle?.getLong(DRAFT_ID_KEY, default)) {
+        when (val id = bundle?.getLong(DRAFT_ID_KEY, default)) {
             null, default -> loge("No draft id passed to the DraftReviewActivity")
-            else -> logd("Safely loading the appropriate draft")
+            else -> viewModel.initialize(id)
         }
     }
 

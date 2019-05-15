@@ -26,25 +26,29 @@ class ReceiptDraftRepositoryImpl @Inject constructor(
         return result
     }
 
-    override fun loadDraftWithImage(id: ID): Response<DraftWithImage> {
+    override fun loadDraft(id: ID): Response<ReceiptDraft> {
         val cache = lastReceiptCache
         return when {
             cache is Just && cache.value.draft.id == id ->
                 Observable
-                    .just(cache.value)
+                    .just(cache.value.draft)
                     .toFlowable(BackpressureStrategy.LATEST)
-            else ->
-                Observable
-                    .just(readFromStorage(id))
-                    .subscribeOn(Schedulers.io())
-                    .toFlowable(BackpressureStrategy.LATEST)
+            else -> receiptDraftDao.find(id)
         }
     }
 
-    private fun readFromStorage(id: ID): DraftWithImage {
-        val draft = receiptDraftDao.find(id)
-        val image = receiptScansDao.readImage(draft.imagePath)
-        return draft to image
+    override fun loadImage(imagePath: String): Response<Bitmap> {
+        val cache = lastReceiptCache
+        return when {
+            cache is Just && cache.value.draft.imagePath == imagePath ->
+                Observable
+                    .just(cache.value.image)
+                    .toFlowable(BackpressureStrategy.LATEST)
+            else ->
+                Observable
+                    .just(receiptScansDao.readImage(imagePath))
+                    .toFlowable(BackpressureStrategy.LATEST)
+        }
     }
 
     private fun persistDraft(receiptDraft: ReceiptDraft, image: Bitmap): ReceiptDraft {

@@ -13,9 +13,11 @@ import com.lucianbc.receiptscan.domain.model.ScanAnnotations
 @Suppress("FunctionName")
 abstract class ReceiptDraftDao {
 
-    fun find(id: ID): ReceiptDraft {
+    fun find(id: ID): Response<ReceiptDraft> {
         val result = _find(id)
-        return withAnnotations(result)
+        return result.map {
+            withAnnotations(it)
+        }
     }
 
     fun insert(receiptDraft: ReceiptDraft): ID {
@@ -28,7 +30,7 @@ abstract class ReceiptDraftDao {
     abstract fun findAll(): Response<Drafts>
 
     @Query("SELECT * FROM receipt_draft WHERE id = :draftId")
-    abstract fun _find(draftId: ID): ReceiptDraft
+    abstract fun _find(draftId: ID): Response<ReceiptDraft>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun _insert(receiptDraft: ReceiptDraft): ID

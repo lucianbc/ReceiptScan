@@ -7,11 +7,9 @@ import com.lucianbc.receiptscan.domain.model.ReceiptDraft
 
 interface ReceiptDraftRepository {
     fun saveDraft(receiptDraft: ReceiptDraft, image: Bitmap): ReceiptDraft
-    fun loadDraftWithImage(id: ID): Response<DraftWithImage>
+    fun loadDraft(id: ID): Response<ReceiptDraft>
+    fun loadImage(imagePath: String): Response<Bitmap>
 }
-
-
-
 
 typealias DraftWithImage = Pair<ReceiptDraft, Bitmap>
 
