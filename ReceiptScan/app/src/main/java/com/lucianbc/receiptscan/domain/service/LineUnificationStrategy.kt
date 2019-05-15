@@ -25,7 +25,7 @@ class ThresholdBetweenNeighbors(private val threshold: Float): LineUnificationSt
 
             while (boxesIterator.hasNext()) {
                 val crtBox = boxesIterator.next()
-                val threshVal = threshold * (crtBox.height - lastBox.height).toFloat() / 2
+                val threshVal = threshold * (crtBox.height + lastBox.height).toFloat() / 2
                 if (crtBox.mid - lastBox.mid < threshVal) {
                     currentLine.add(crtBox)
                 } else {
