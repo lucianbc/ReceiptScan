@@ -7,7 +7,10 @@ import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseActivity
 import com.lucianbc.receiptscan.domain.model.ID
 import com.lucianbc.receiptscan.util.loge
+import com.lucianbc.receiptscan.view.fragment.review.DraftData
+import com.lucianbc.receiptscan.view.fragment.review.DraftImage
 import com.lucianbc.receiptscan.viewmodel.DraftReviewViewModel
+import kotlinx.android.synthetic.main.activity_draft_review.*
 
 class DraftReviewActivity :
     BaseActivity<DraftReviewViewModel>(DraftReviewViewModel::class.java) {
@@ -16,6 +19,7 @@ class DraftReviewActivity :
         super.onCreate(savedInstanceState)
         safeLoadDraft()
         setContentView(R.layout.activity_draft_review)
+        setupTabs()
     }
 
     private fun safeLoadDraft() {
@@ -26,6 +30,14 @@ class DraftReviewActivity :
             null, default -> loge("No draft id passed to the DraftReviewActivity")
             else -> viewModel.initialize(id)
         }
+    }
+
+    private fun setupTabs() {
+        val adapter = TabAdapter(supportFragmentManager)
+        adapter.add(DraftData(), "Data")
+        adapter.add(DraftImage(), "Image")
+        draft_pager.adapter = adapter
+        draft_tabs.setupWithViewPager(draft_pager)
     }
 
     companion object {
