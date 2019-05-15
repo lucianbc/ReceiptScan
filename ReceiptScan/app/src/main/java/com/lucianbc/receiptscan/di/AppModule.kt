@@ -6,7 +6,7 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.ReceiptScan
 import com.lucianbc.receiptscan.domain.dao.AppDatabase
 import com.lucianbc.receiptscan.domain.dao.ReceiptDraftDao
-import com.lucianbc.receiptscan.domain.repository.DummyReceiptDraftRepo
+import com.lucianbc.receiptscan.domain.repository.ReceiptDraftRepositoryImpl
 import com.lucianbc.receiptscan.domain.repository.ReceiptDraftRepository
 import dagger.Module
 import dagger.Provides
@@ -37,7 +37,7 @@ class AppModule {
         database.receiptDraftDao()
 
     @Provides
-    fun rdRepository(repo: DummyReceiptDraftRepo): ReceiptDraftRepository =
+    fun rdRepository(repo: ReceiptDraftRepositoryImpl): ReceiptDraftRepository =
         repo
 }
 
