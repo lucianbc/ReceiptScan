@@ -6,11 +6,18 @@
         android:layout_height="match_parent"
         tools:context=".view.activity.DraftReviewActivity">
 
-    <TextView
-            android:text="Bungalooooo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView2" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="230dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="142dp"/>
+    <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.lucianbc.receiptscan.view.fragment.review.DraftImage"
+            android:id="@+id/draft_image_container"
+    />
+
+    <!--<TextView-->
+            <!--android:text="Bungalooooo"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/textView2" app:layout_constraintTop_toTopOf="parent"-->
+            <!--android:layout_marginTop="230dp" app:layout_constraintStart_toStartOf="parent"-->
+            <!--android:layout_marginStart="142dp"/>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

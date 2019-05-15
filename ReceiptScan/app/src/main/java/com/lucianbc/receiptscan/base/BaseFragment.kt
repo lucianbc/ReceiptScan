@@ -19,4 +19,10 @@ abstract class BaseFragment<VM: ViewModel> (
             .of(this, viewModelFactory)
             .get(vm)
     }
+
+    protected fun initParentViewModel() {
+        viewModel = ViewModelProviders
+            .of(activity!!, viewModelFactory)
+            .get(vm)
+    }
 }
