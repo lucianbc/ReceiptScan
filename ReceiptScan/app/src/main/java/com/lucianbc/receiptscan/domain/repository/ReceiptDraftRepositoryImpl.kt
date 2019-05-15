@@ -2,12 +2,16 @@ package com.lucianbc.receiptscan.domain.repository
 
 import android.graphics.Bitmap
 import com.lucianbc.receiptscan.domain.dao.ReceiptDraftDao
+import com.lucianbc.receiptscan.domain.dao.Response
 import com.lucianbc.receiptscan.domain.dao.ScannedImageDao
 import com.lucianbc.receiptscan.domain.model.ID
 import com.lucianbc.receiptscan.domain.model.ReceiptDraft
 import com.lucianbc.receiptscan.util.Just
 import com.lucianbc.receiptscan.util.None
 import com.lucianbc.receiptscan.util.Optional
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class ReceiptDraftRepositoryImpl @Inject constructor(
@@ -22,11 +26,18 @@ class ReceiptDraftRepositoryImpl @Inject constructor(
         return result
     }
 
-    override fun loadDraftWithImage(id: ID): DraftWithImage {
+    override fun loadDraftWithImage(id: ID): Response<DraftWithImage> {
         val cache = lastReceiptCache
         return when {
-            cache is Just && cache.value.draft.id == id -> cache.value
-            else -> readFromStorage(id)
+            cache is Just && cache.value.draft.id == id ->
+                Observable
+                    .just(cache.value)
+                    .toFlowable(BackpressureStrategy.LATEST)
+            else ->
+                Observable
+                    .just(readFromStorage(id))
+                    .subscribeOn(Schedulers.io())
+                    .toFlowable(BackpressureStrategy.LATEST)
         }
     }
 

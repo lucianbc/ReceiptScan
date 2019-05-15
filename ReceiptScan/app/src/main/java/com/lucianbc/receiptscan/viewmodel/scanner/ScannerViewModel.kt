@@ -3,8 +3,8 @@ package com.lucianbc.receiptscan.viewmodel.scanner
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.lucianbc.receiptscan.domain.repository.draft
 import com.lucianbc.receiptscan.domain.service.ReceiptScanner
-import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.viewmodel.Event
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -37,8 +37,7 @@ class ScannerViewModel @Inject constructor (
             .scan(imageProvider)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                logd("Mothafuka finished")
-                eventBus.post(Event.ImageScanned)
+                eventBus.post(Event.ImageScanned(it.draft.id))
             }
             .addTo(disposables)
     }

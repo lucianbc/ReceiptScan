@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseActivity
 import com.lucianbc.receiptscan.databinding.ActivityScannerBinding
+import com.lucianbc.receiptscan.domain.model.ID
 import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.view.fragment.scanner.Error
 import com.lucianbc.receiptscan.view.fragment.scanner.Permission
@@ -79,13 +80,13 @@ class ScannerActivity :
 
     @Subscribe
     fun onImageScanned(event: Event.ImageScanned) {
-        goToDraftReview()
+        goToDraftReview(event.draftId)
     }
 
     //endregion
 
-    private fun goToDraftReview() {
-        val intent = Intent(this, DraftReviewActivity::class.java)
+    private fun goToDraftReview(draftId: ID) {
+        val intent = DraftReviewActivity.navIntent(this, draftId)
         startActivityForResult(intent, DRAFT_REVIEW_REQUEST)
     }
 

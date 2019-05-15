@@ -1,6 +1,8 @@
 package com.lucianbc.receiptscan.viewmodel
 
+import com.lucianbc.receiptscan.domain.model.ID
+
 sealed class Event {
     object ImportImage: Event()
-    object ImageScanned: Event()
+    class  ImageScanned(val draftId: ID): Event()
 }
