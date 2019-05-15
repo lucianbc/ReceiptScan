@@ -13,13 +13,13 @@ class DraftReviewViewModel @Inject constructor(
     private val receiptDraftRepository: ReceiptDraftRepository
 ): ViewModel()  {
     lateinit var image: LiveData<Bitmap>
-    lateinit var info: LiveData<ReceiptDraft>
+    lateinit var data: LiveData<ReceiptDraft>
 
     fun initialize(draftId: ID) {
         val draft = receiptDraftRepository.loadDraft(draftId)
         image = draft
             .flatMap { receiptDraftRepository.loadImage(it.imagePath) }
             .ioLiveData()
-        info = draft.ioLiveData()
+        data = draft.ioLiveData()
     }
 }

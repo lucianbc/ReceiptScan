@@ -1,6 +1,7 @@
 package com.lucianbc.receiptscan.di
 
 import com.lucianbc.receiptscan.view.fragment.homepage.Drafts
+import com.lucianbc.receiptscan.view.fragment.review.DraftData
 import com.lucianbc.receiptscan.view.fragment.review.DraftImage
 import com.lucianbc.receiptscan.view.fragment.scanner.Processing
 import com.lucianbc.receiptscan.view.fragment.scanner.Scanner
@@ -21,4 +22,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeDraftImage(): DraftImage
+
+    @ContributesAndroidInjector
+    abstract fun contributeDrafData(): DraftData
 }

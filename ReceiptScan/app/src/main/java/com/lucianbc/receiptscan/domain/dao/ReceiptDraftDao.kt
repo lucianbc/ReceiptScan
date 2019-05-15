@@ -22,11 +22,12 @@ abstract class ReceiptDraftDao {
 
     fun insert(receiptDraft: ReceiptDraft): ID {
         val id = _insert(receiptDraft)
+        receiptDraft.annotations.forEach { it.draftId = id }
         _insertScanAnnotations(receiptDraft.annotations)
         return id
     }
 
-    @Query("SELECT * FROM receipt_draft")
+    @Query("SELECT * FROM receipt_draft ORDER BY receipt_draft.id DESC")
     abstract fun findAll(): Response<Drafts>
 
     @Query("SELECT * FROM receipt_draft WHERE id = :draftId")

@@ -13,7 +13,9 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ReceiptDraftRepositoryImpl @Inject constructor(
     private val receiptScansDao: ScannedImageDao,
     private val receiptDraftDao: ReceiptDraftDao
