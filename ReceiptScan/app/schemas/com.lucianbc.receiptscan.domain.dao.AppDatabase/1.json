@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "10d63c9dcf64bf2c494804c515778c36",
+    "identityHash": "6bb0985948702576f1bbe025fe556a4c",
     "entities": [
       {
         "tableName": "receipt_draft",
@@ -32,7 +32,7 @@
       },
       {
         "tableName": "scan_info_box",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`top` INTEGER NOT NULL, `bottom` INTEGER NOT NULL, `left` INTEGER NOT NULL, `right` INTEGER NOT NULL, `value` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT, `draft_id` INTEGER, FOREIGN KEY(`draft_id`) REFERENCES `receipt_draft`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`top` INTEGER NOT NULL, `bottom` INTEGER NOT NULL, `left` INTEGER NOT NULL, `right` INTEGER NOT NULL, `value` TEXT NOT NULL, `tag` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT, `draft_id` INTEGER, FOREIGN KEY(`draft_id`) REFERENCES `receipt_draft`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "top",
@@ -59,9 +59,15 @@
             "notNull": true
           },
           {
-            "fieldPath": "value",
+            "fieldPath": "text",
             "columnName": "value",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tag",
+            "columnName": "tag",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -110,7 +116,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"10d63c9dcf64bf2c494804c515778c36\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6bb0985948702576f1bbe025fe556a4c\")"
     ]
   }
 }

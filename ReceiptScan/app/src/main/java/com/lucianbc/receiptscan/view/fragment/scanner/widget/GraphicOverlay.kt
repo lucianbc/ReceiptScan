@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import com.lucianbc.receiptscan.domain.model.ScanInfoBox
+import com.lucianbc.receiptscan.domain.service.TextElement
 import com.lucianbc.receiptscan.util.Just
 import com.lucianbc.receiptscan.util.None
 import com.lucianbc.receiptscan.util.Optional
@@ -85,8 +86,6 @@ class GraphicPresenter(
         }
     }
 }
-
-typealias TextElement = ScanInfoBox
 
 class OcrGraphic (
     presenter: GraphicPresenter,

@@ -12,8 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentScannerBinding
-import com.lucianbc.receiptscan.domain.model.ScanAnnotations
-import com.lucianbc.receiptscan.util.logd
+import com.lucianbc.receiptscan.domain.service.OcrElements
 import com.lucianbc.receiptscan.view.fragment.scanner.widget.OcrGraphic
 import com.lucianbc.receiptscan.viewmodel.scanner.LiveViewVM
 import com.lucianbc.receiptscan.viewmodel.scanner.ScannerViewModel
@@ -25,6 +24,7 @@ import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_scanner.*
+
 
 class Scanner:
     BaseFragment<LiveViewVM>(LiveViewVM::class.java) {
@@ -76,8 +76,7 @@ class Scanner:
         }
     }
 
-    private val graphicsObserver = Observer<ScanAnnotations> {
-        logd("Observing annotations")
+    private val graphicsObserver = Observer<OcrElements> {
         val graphics = it.asSequence()
             .map { element -> OcrGraphic(ocr_overlay.graphicPresenter, element) }
         ocr_overlay.setGraphics(graphics)

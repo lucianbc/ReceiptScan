@@ -19,9 +19,10 @@ data class ScanInfoBox(
     @ColumnInfo(name = "bottom")        var bottom  : Int,
     @ColumnInfo(name = "left")          var left    : Int,
     @ColumnInfo(name = "right")         var right   : Int,
-    @ColumnInfo(name = "value")         var text   : String,
+    @ColumnInfo(name = "value")         var text    : String,
+    @ColumnInfo(name = "tag")           var tag     : Tag,
     @PrimaryKey(autoGenerate = true)    var id      : ID = null,
     @ColumnInfo(name = "draft_id")      var draftId : ID = null
 ) {
-    constructor(): this(0,0,0,0,"")
+    constructor(): this(0,0,0,0,"", Tag.Noise)
 }

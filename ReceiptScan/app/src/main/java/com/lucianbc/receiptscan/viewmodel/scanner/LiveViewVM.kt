@@ -1,13 +1,11 @@
 package com.lucianbc.receiptscan.viewmodel.scanner
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.lucianbc.receiptscan.domain.service.ReceiptScanner
-import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.util.loge
 import com.otaliastudios.cameraview.Frame
 import javax.inject.Inject
@@ -15,18 +13,13 @@ import javax.inject.Inject
 class LiveViewVM @Inject constructor(
     private val receiptScanner: ReceiptScanner
 ): ViewModel() {
-    init {
-        logd("Receipt scanner in LiveView View Model: ${receiptScanner.hashCode()}")
-    }
-
     val flash = MutableLiveData<Boolean>(false)
 
     val ocrOverlays = receiptScanner
-        .scanAnnotations
+        .ocrElements
         .toLiveData()
 
     fun toggleFlash() {
-        Log.d("LiveViewVM", "Toggle flash")
         flash.value = flash.value?.not()
     }
 

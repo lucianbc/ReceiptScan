@@ -7,6 +7,7 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.domain.model.ReceiptDraft
 import com.lucianbc.receiptscan.domain.model.ScanAnnotations
 import com.lucianbc.receiptscan.domain.model.ScanInfoBox
+import com.lucianbc.receiptscan.domain.model.Tag
 import com.lucianbc.receiptscan.domain.repository.DraftWithImage
 import com.lucianbc.receiptscan.domain.repository.ReceiptDraftRepository
 import io.reactivex.BackpressureStrategy
@@ -19,6 +20,9 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
+typealias TextElement = FirebaseVisionText.Line
+typealias OcrElements = List<TextElement>
+
 @Singleton
 class ReceiptScanner @Inject constructor(
     private val recognizer: FirebaseVisionTextRecognizer,
@@ -26,11 +30,11 @@ class ReceiptScanner @Inject constructor(
 ) {
     private val frameProducer = PublishSubject.create<FirebaseVisionImage>()
 
-    val scanAnnotations: Flowable<ScanAnnotations> =
+    val ocrElements: Flowable<OcrElements> =
         frameProducer
             .throttleLast(FRAME_RATE, FRAME_UNIT)
             .flatMap(this::extractText)
-            .map { it.toScanInfo() }
+            .map { it.ocrElements }
             .toFlowable(BackpressureStrategy.LATEST)
 
 
@@ -66,23 +70,26 @@ class ReceiptScanner @Inject constructor(
     }
 
     private fun saveDraft(rawData: Pair<Bitmap, FirebaseVisionText>): DraftWithImage {
-        val draft = ReceiptDraft(annotations = rawData.second.toScanInfo())
+        val draft = ReceiptDraft(annotations = rawData.second.toScanInfo(Tag.Noise))
         val result = draftRepository.saveDraft(draft, rawData.first)
         return result to rawData.first
     }
 
     private fun Bitmap.firebaseImage() = FirebaseVisionImage.fromBitmap(this)
 
-    private fun FirebaseVisionText.toScanInfo(): ScanAnnotations =
-        this.textBlocks
-            .flatMap { it.lines }
+    private fun FirebaseVisionText.toScanInfo(tag: Tag): ScanAnnotations =
+        this.ocrElements
             .map { ScanInfoBox(
                 it.boundingBox!!.top,
                 it.boundingBox!!.bottom,
                 it.boundingBox!!.left,
                 it.boundingBox!!.right,
-                it.text
+                it.text,
+                tag
             ) }
+
+    private val FirebaseVisionText.ocrElements: OcrElements
+        get() = this.textBlocks.flatMap { it.lines }
 
     sealed class State {
         object ReadingImage: State()
