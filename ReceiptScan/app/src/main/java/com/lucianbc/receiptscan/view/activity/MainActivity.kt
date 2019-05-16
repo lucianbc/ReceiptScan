@@ -19,9 +19,8 @@ class MainActivity:
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        scan_btn.setOnClickListener(goToScanner)
         setupBinding()
+        scan_btn.setOnClickListener(goToScanner)
         observe(viewModel)
     }
 
