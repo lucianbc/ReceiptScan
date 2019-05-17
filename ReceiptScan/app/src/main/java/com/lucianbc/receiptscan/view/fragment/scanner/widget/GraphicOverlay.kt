@@ -36,7 +36,6 @@ class GraphicOverlay (
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-//        Log.d("GRAPHIC OVERLAY", "Drawing overlay")
         synchronized(this) {
             graphicPresenter.render(canvas!!)
         }
@@ -44,7 +43,7 @@ class GraphicOverlay (
 }
 
 
-class GraphicPresenter(
+open class GraphicPresenter(
     private val width: Int,
     private val height: Int,
     private val facing: Facing = Facing.BACK
@@ -68,8 +67,10 @@ class GraphicPresenter(
     }
 
     fun graphicAtLocation(x: Float, y: Float): Optional<Graphic> {
+        val xx = width * x
+        val yy = height * y
         for (g in graphics) {
-            if (g.contains(x, y))
+            if (g.contains(xx, yy))
                 return Just(g)
         }
         return None
@@ -87,10 +88,26 @@ class GraphicPresenter(
     }
 }
 
-class OcrGraphic (
-    presenter: GraphicPresenter,
-    private val element: TextElement
-): GraphicPresenter.Graphic(presenter) {
+class OcrGraphic: GraphicPresenter.Graphic {
+
+    private val bbox: Rect
+    private val text: String
+
+    constructor (
+        presenter: GraphicPresenter,
+        element: TextElement
+    ) : super(presenter) {
+        bbox = element.boundingBox!!
+        text = element.text
+    }
+
+    constructor (
+        presenter: GraphicPresenter,
+        element: ScanInfoBox
+    ) : super(presenter) {
+        bbox = element.boundingBox
+        text = element.text
+    }
 
     companion object {
         private const val TEXT_COLOR = Color.WHITE
@@ -108,19 +125,19 @@ class OcrGraphic (
     }
 
     override fun draw(canvas: Canvas) {
-        val rect = rect(element)
+        val rect = rect()
         canvas.drawRect(rect, rectPaint)
 
-        canvas.drawText(element.text, rect.left, rect.bottom, textPaint)
+        canvas.drawText(text, rect.left, rect.bottom, textPaint)
     }
 
     override fun contains(x: Float, y: Float): Boolean {
-        val rect = rect(element)
+        val rect = rect()
         return rect.left < x && rect.right > x && rect.top < y && rect.bottom > y
     }
 
-    private fun rect(element: TextElement): RectF {
-        val rect = RectF(element.boundingBox)
+    private fun rect(): RectF {
+        val rect = RectF(bbox)
         rect.left = translateX(rect.left)
         rect.top = translateY(rect.top)
         rect.right = translateX(rect.right)

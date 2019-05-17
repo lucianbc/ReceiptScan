@@ -17,17 +17,10 @@
             android:id="@+id/draft_tabs"
     />
 
-    <androidx.viewpager.widget.ViewPager
+    <com.lucianbc.receiptscan.view.fragment.scanner.widget.PhotoAwareViewPager
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:id="@+id/draft_pager"
     />
-
-    <!--<fragment-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:name="com.lucianbc.receiptscan.view.fragment.review.DraftData"-->
-            <!--android:id="@+id/draft_image_container"-->
-    <!--/>-->
 
 </LinearLayout>
