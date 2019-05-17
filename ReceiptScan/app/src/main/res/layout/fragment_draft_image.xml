@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.fragment.review.DraftImage">
-
-    <com.github.chrisbanes.photoview.PhotoView
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="viewModel" type="com.lucianbc.receiptscan.viewmodel.DraftReviewViewModel"/>
+    </data>
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/draft_photo_view"
-    />
-</FrameLayout>
+            tools:context=".view.fragment.review.DraftImage">
+
+        <com.github.chrisbanes.photoview.PhotoView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/draft_photo_view"
+                app:bitmap="@{viewModel.image}"
+        />
+    </FrameLayout>
+</layout>
