@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
 
-apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'kotlin-android'
@@ -32,6 +30,11 @@ android {
     dataBinding {
         enabled = true
     }
+}
+
+apply plugin: 'kotlin-android-extensions'
+androidExtensions {
+    experimental = true
 }
 
 dependencies {

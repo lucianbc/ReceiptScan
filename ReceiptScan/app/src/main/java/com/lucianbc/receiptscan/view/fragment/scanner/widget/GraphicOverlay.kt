@@ -44,8 +44,8 @@ class GraphicOverlay (
 
 
 open class GraphicPresenter(
-    private val width: Int,
-    private val height: Int,
+    val width: Int,
+    val height: Int,
     private val facing: Facing = Facing.BACK
 ) {
     private var widthScaleFactor = 1.0f
