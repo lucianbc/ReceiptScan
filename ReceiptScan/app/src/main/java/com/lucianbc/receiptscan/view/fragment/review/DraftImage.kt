@@ -1,17 +1,20 @@
 package com.lucianbc.receiptscan.view.fragment.review
 
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.BindingAdapter
-import androidx.databinding.DataBindingUtil
-import com.github.chrisbanes.photoview.PhotoView
+import androidx.lifecycle.Observer
+import com.github.chrisbanes.photoview.OnPhotoTapListener
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
-import com.lucianbc.receiptscan.databinding.FragmentDraftImageBinding
+import com.lucianbc.receiptscan.domain.model.ScanInfoBox
+import com.lucianbc.receiptscan.domain.repository.DraftWithImage
+import com.lucianbc.receiptscan.domain.repository.draft
+import com.lucianbc.receiptscan.domain.repository.image
+import com.lucianbc.receiptscan.util.logd
+import com.lucianbc.receiptscan.view.fragment.scanner.widget.boundingBoxF
 import com.lucianbc.receiptscan.viewmodel.DraftReviewViewModel
 import kotlinx.android.synthetic.main.fragment_draft_image.*
 
@@ -20,29 +23,36 @@ class DraftImage:
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         initParentViewModel()
-        return setupBinding(inflater, container).root
+        return inflater.inflate(R.layout.fragment_draft_image, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        draft_photo_view.setOnPhotoTapListener { _, x, y -> viewModel.imageTapped(x, y) }
+        observe(viewModel)
     }
 
-    private fun setupBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentDraftImageBinding {
-        val binding = DataBindingUtil.inflate<FragmentDraftImageBinding>(
-            inflater,
-            R.layout.fragment_draft_image,
-            container,
-            false
-        )
-
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
-        return binding
+    private fun observe(vm: DraftReviewViewModel) {
+        vm.singleImageDraft.observe(this, Observer {
+            draft_photo_view.setImageBitmap(it.image)
+            draft_photo_view.setOnPhotoTapListener(imageTapListener(it))
+        })
     }
-}
 
-@BindingAdapter("app:bitmap")
-fun bindImage(view: PhotoView, image: Bitmap?) {
-    view.setImageBitmap(image)
+    private fun onElementTapped(box: ScanInfoBox) {
+        logd("Tapped on $box")
+    }
+
+    private val imageTapListener: (DraftWithImage) -> OnPhotoTapListener = { receipt ->
+        OnPhotoTapListener { _, x, y ->
+            val xx: Float = receipt.image.width * x
+            val yy: Float = receipt.image.height * y
+
+            for (box in receipt.draft.annotations) {
+                if (box.boundingBoxF.contains(xx, yy)) {
+                    onElementTapped(box)
+                    break
+                }
+            }
+        }
+    }
 }

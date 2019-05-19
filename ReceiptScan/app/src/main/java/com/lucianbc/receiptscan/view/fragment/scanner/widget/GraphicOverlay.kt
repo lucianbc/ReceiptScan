@@ -150,3 +150,6 @@ class OcrGraphic: GraphicPresenter.Graphic {
 val ScanInfoBox.boundingBox: Rect
     get() = Rect(this.left, this.top, this.right, this.bottom)
 
+val ScanInfoBox.boundingBoxF: RectF
+    get() = RectF(this.left.toFloat(), this.top.toFloat(), this.right.toFloat(), this.bottom.toFloat())
+

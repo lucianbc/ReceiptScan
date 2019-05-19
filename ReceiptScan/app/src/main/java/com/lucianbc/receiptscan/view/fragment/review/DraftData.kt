@@ -31,7 +31,7 @@ class DraftData:
     }
 
     private fun observe(vm: DraftReviewViewModel) {
-        vm.data.observe(this, Observer {
+        vm.draft.observe(this, Observer {
             draft_data_text.text = receiptText(it)
         })
     }
