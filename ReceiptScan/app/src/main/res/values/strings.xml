@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ReceiptScan</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="settings_button_desc">Settings Button</string>
+    <string name="receipts_button_desc">Receipts Button</string>
+    <string name="drafts_button_desc">Drafts Button</string>
+    <string name="export_button_desc">Export Button</string>
 </resources>
