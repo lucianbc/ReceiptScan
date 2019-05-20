@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.model.ID
 import com.lucianbc.receiptscan.domain.model.ReceiptDraft
+import com.lucianbc.receiptscan.domain.model.ScanInfoBox
+import com.lucianbc.receiptscan.domain.model.Tag
 import com.lucianbc.receiptscan.domain.repository.DraftWithImage
 import com.lucianbc.receiptscan.domain.repository.ReceiptDraftRepository
 import com.lucianbc.receiptscan.domain.repository.draft
@@ -39,25 +41,35 @@ class DraftReviewViewModel @Inject constructor(
         draft = data.toLiveData()
     }
 
+    fun changeInfoBox(box: ScanInfoBox) {
+        receiptDraftRepository.saveAnnotation(box)
+    }
+
     private fun drawImage(receipt: DraftWithImage): DraftWithImage {
         val showImg = receipt.image.copy(receipt.image.config, true)
         val canvas = Canvas(showImg)
-        receipt.draft.annotations.map{ it.boundingBoxF }.forEach {
-            val radius = 0.3f * it.height()
-            canvas.drawRoundRect(it,
+        receipt.draft.annotations.map{ it to it.boundingBoxF }.forEach {
+            val radius = 0.3f * it.second.height()
+            canvas.drawRoundRect(it.second,
                 radius,
                 radius,
-                BOX_PAINT
+                if(it.first.tag == Tag.Noise) BOX_PAINT_NOISE else BOX_PAINT_DATA
             )
         }
         return receipt.draft to showImg
     }
 
     companion object {
-        val BOX_PAINT = Paint().apply {
-            alpha = 150
+        val BOX_PAINT_NOISE = Paint().apply {
             style = Paint.Style.FILL
             color = Color.WHITE
+            alpha = 150
+        }
+
+        val BOX_PAINT_DATA = Paint().apply {
+            style = Paint.Style.FILL
+            color = Color.YELLOW
+            alpha = 150
         }
     }
 }

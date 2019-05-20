@@ -6,10 +6,10 @@ import com.lucianbc.receiptscan.domain.dao.Response
 import com.lucianbc.receiptscan.domain.dao.ScannedImageDao
 import com.lucianbc.receiptscan.domain.model.ID
 import com.lucianbc.receiptscan.domain.model.ReceiptDraft
-import com.lucianbc.receiptscan.util.Just
-import com.lucianbc.receiptscan.util.None
-import com.lucianbc.receiptscan.util.Optional
+import com.lucianbc.receiptscan.domain.model.ScanInfoBox
+import com.lucianbc.receiptscan.util.*
 import io.reactivex.BackpressureStrategy
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -20,6 +20,12 @@ class ReceiptDraftRepositoryImpl @Inject constructor(
     private val receiptScansDao: ScannedImageDao,
     private val receiptDraftDao: ReceiptDraftDao
 ): ReceiptDraftRepository {
+    override fun saveAnnotation(annotation: ScanInfoBox) {
+        receiptDraftDao.insertAnnotation(annotation)
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
+
     private var lastReceiptCache: Optional<DraftWithImage> = None
 
     override fun saveDraft(receiptDraft: ReceiptDraft, image: Bitmap): ReceiptDraft {

@@ -39,7 +39,16 @@ class DraftImage:
     }
 
     private fun onElementTapped(box: ScanInfoBox) {
-        logd("Tapped on $box")
+        val dialog = ScanInfoBoxDialog.create(ScanInfoBoxDialog.Arguments.from(box))
+        dialog.callback = onElementChanged(box)
+        dialog.show(fragmentManager!!, "scan_info_box_dialog")
+    }
+
+    private val onElementChanged: (ScanInfoBox ) -> (ScanInfoBoxDialog.Arguments) -> Unit = { box -> { args ->
+            box.text = args.text
+            box.tag = args.tag
+            viewModel.changeInfoBox(box)
+        }
     }
 
     private val imageTapListener: (DraftWithImage) -> OnPhotoTapListener = { receipt ->
