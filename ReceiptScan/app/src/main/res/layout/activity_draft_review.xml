@@ -19,7 +19,7 @@
             android:id="@+id/draft_tabs"
     />
 
-    <com.lucianbc.receiptscan.view.fragment.scanner.widget.PhotoAwareViewPager
+    <com.lucianbc.receiptscan.view.widget.PhotoAwareViewPager
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:id="@+id/draft_pager"

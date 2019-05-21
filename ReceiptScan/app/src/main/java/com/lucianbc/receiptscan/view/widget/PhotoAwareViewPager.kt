@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.view.fragment.scanner.widget
+package com.lucianbc.receiptscan.view.widget
 
 import android.content.Context
 import android.util.AttributeSet
