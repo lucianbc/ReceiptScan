@@ -89,5 +89,7 @@ dependencies {
 
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
+    implementation 'com.github.beigirad:ZigzagView:1.0.7'
+
 //    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }

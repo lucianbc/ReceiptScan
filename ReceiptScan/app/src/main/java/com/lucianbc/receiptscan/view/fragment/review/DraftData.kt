@@ -5,16 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
+import com.lucianbc.receiptscan.domain.model.Receipt
 import com.lucianbc.receiptscan.domain.model.ReceiptDraft
 import com.lucianbc.receiptscan.domain.service.LineUnificationStrategy
 import com.lucianbc.receiptscan.domain.service.ThresholdBetweenNeighbors
 import com.lucianbc.receiptscan.viewmodel.DraftReviewViewModel
 import kotlinx.android.synthetic.main.fragment_draft_data.*
+import kotlinx.android.synthetic.main.receipt_layout.*
 
 class DraftData:
     BaseFragment<DraftReviewViewModel>(DraftReviewViewModel::class.java) {
+
+    private lateinit var itemsAdapter: ItemsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,13 +31,22 @@ class DraftData:
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupAdapter()
         observe(viewModel)
+    }
+
+    private fun setupAdapter() {
+        itemsAdapter = ItemsAdapter()
+        receiptItemsList.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = itemsAdapter
+        }
+        itemsAdapter.submitList(smallList)
     }
 
     private fun observe(vm: DraftReviewViewModel) {
         vm.draft.observe(this, Observer {
-            draft_data_text.text = receiptText(it)
+//            draft_data_text.text = receiptText(it)
         })
     }
 
@@ -43,4 +57,15 @@ class DraftData:
                 line -> line.joinToString("\t") { it.text }
         }
     }
+
+    private val smallList = listOf(
+        Receipt.Item("Ochelari 3D 3.0", 8.55),
+        Receipt.Item("Proiectie Film 3D", 44.00)
+    )
+
+    private val hugeList = generateSequence { smallList }
+        .flatten()
+        .take(55)
+        .toList()
 }
+

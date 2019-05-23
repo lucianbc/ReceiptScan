@@ -4,10 +4,10 @@
     <color name="colorPrimaryVariant">#F5FFFA</color>
     <color name="colorOnPrimary">#434a4a</color>
     <color name="colorOnPrimary2">#A9AAAB</color>
-    <color name="colorSecondary">#4fb7ed</color>
+    <color name="colorSecondary">#4FB7ED</color>
     <color name="colorSecondaryVariant">#a2def2</color>
     <color name="colorOnSecondary">#fff</color>
-    <color name="colorAccent">#f28459</color>
+    <color name="colorAccent">#F28459</color>
 
     <color name="black">#000</color>
     <color name="white">#fff</color>

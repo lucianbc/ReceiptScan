@@ -1,14 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:tools="http://schemas.android.com/tools"
-             xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".view.fragment.review.DraftData">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.fragment.review.DraftData">
 
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+    >
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Your Receipt"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:expandedTitleGravity="center|bottom"
+        >
+            <Space android:layout_width="1dp" android:layout_height="100dp"/>
+
+            <com.google.android.material.appbar.MaterialToolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+            />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/draft_data_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:overScrollMode="never"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    >
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+        >
+            <Space android:layout_width="1dp" android:layout_height="40dp"/>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:descendantFocusability="blocksDescendants"
+                    android:orientation="vertical"
+                    android:elevation="4dp"
+                    android:background="@drawable/dialog_rounded_bg"
+            >
+                <include
+                        layout="@layout/receipt_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                />
+            </LinearLayout>
+            <Space android:layout_width="1dp" android:layout_height="100dp"/>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+    
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:src="@drawable/ic_remove_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:id="@+id/discardFab"
+            android:focusable="true"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="-90dp"
+            />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:src="@drawable/ic_check_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:id="@+id/acceptFab"
+            android:focusable="true"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="-90dp"
     />
 
-</FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

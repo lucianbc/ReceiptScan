@@ -20,4 +20,12 @@
     <string name="scan_info_box_text_label">Value</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
+    <string name="receipt_merchant_name_placeholder">Merchant Name</string>
+    <string name="receipt_merchant_label">Merchant</string>
+    <string name="receipt_date_label">Date</string>
+    <string name="receipt_date_placeholder">Date</string>
+    <string name="receipt_currency_label">Currency</string>
+    <string name="receipt_currency_placeholder">Currency</string>
+    <string name="receipt_total_label">Total</string>
+    <string name="receipt_total_placeholder">Total</string>
 </resources>
