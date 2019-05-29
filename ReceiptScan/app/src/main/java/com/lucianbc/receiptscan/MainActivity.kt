@@ -28,9 +28,13 @@ class MainActivity : DaggerAppCompatActivity() {
         export_btn.setOnClickListener { setView(HomePagerAdapter.EXPORT) }
         receipts_btn.setOnClickListener { setView(HomePagerAdapter.RECEIPTS) }
         settings_btn.setOnClickListener { setView(HomePagerAdapter.SETTINGS) }
+        scanner_button.setOnClickListener { goToScanner() }
     }
 
-    private fun setView(pos: Int) {
-        pager.setCurrentItem(pos, false)
+    private fun setView(pos: Int) = pager.setCurrentItem(pos, false)
+
+    private fun goToScanner() {
+        val intent = ScannerActivity.navIntent(this)
+        startActivity(intent)
     }
 }

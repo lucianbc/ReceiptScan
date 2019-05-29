@@ -7,4 +7,25 @@
     <string name="receipts_button_desc">Receipts Button</string>
     <string name="drafts_button_desc">Drafts Button</string>
     <string name="export_button_desc">Export Button</string>
+    <string name="camera_permission_ext">Scan receipts using your camera.</string>
+    <string name="allow_camera_btn">Allow Access</string>
+    <string name="request_camera_msg">Allow camera access.</string>
+    <string name="import_image_btn">Import Image</string>
+    <string name="request_storage_msg">Allow access to the external storage.</string>
+    <string name="discard_receipt_message">Are you sure you want to discard this receipt?</string>
+    <string name="extract_receipt_title">Discard Receipt</string>
+
+    <string name="receipt_merchant_name_placeholder">Merchant Name</string>
+    <string name="receipt_merchant_label">Merchant</string>
+    <string name="receipt_date_label">Date</string>
+    <string name="receipt_date_placeholder">Date</string>
+    <string name="receipt_currency_label">Currency</string>
+    <string name="receipt_currency_placeholder">Currency</string>
+    <string name="receipt_total_label">Total</string>
+    <string name="receipt_total_placeholder">Total</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="receipt">receipt</string>
+    <string name="drafts_title">Drafts</string>
+    <string name="drafts_text">Review your scanned receipts</string>
 </resources>
