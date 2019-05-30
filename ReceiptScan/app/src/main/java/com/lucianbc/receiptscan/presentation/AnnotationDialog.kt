@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan
+package com.lucianbc.receiptscan.presentation
 
 import android.graphics.Point
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.*
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.FragmentManager
+import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.domain.model.Tag
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.annotation_dialog_layout.*

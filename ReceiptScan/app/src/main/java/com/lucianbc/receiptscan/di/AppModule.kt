@@ -1,7 +1,7 @@
 package com.lucianbc.receiptscan.di
 
 import android.content.Context
-import com.lucianbc.receiptscan.ReceiptScan
+import com.lucianbc.receiptscan.presentation.ReceiptScan
 import dagger.Module
 import dagger.Provides
 

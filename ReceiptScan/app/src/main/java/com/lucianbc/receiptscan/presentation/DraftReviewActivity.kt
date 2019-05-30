@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan
+package com.lucianbc.receiptscan.presentation
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.lucianbc.receiptscan.R
 import kotlinx.android.synthetic.main.fragment_receipt.*
 
 class DraftReviewActivity : AppCompatActivity() {

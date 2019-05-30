@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan
+package com.lucianbc.receiptscan.presentation
 
 import android.Manifest
 import android.content.Context
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.lucianbc.receiptscan.R
 import kotlinx.android.synthetic.main.activity_scanner.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog

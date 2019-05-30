@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan
+package com.lucianbc.receiptscan.presentation
 
 import android.content.Context
 import android.util.AttributeSet

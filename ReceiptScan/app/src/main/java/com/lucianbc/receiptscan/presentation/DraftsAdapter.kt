@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan
+package com.lucianbc.receiptscan.presentation
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,13 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.lucianbc.receiptscan.R
 import kotlinx.android.synthetic.main.draft_item_layout.view.*
 import java.util.*
 
 
 typealias DraftItemClick = ((DraftItem) -> Unit)
 
-class DraftsAdapter(private val itemCallback: DraftItemClick) : ListAdapter<DraftItem, DraftItemViewHolder>(Diff()) {
+class DraftsAdapter(private val itemCallback: DraftItemClick) : ListAdapter<DraftItem, DraftItemViewHolder>(
+    Diff()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DraftItemViewHolder {
         val view = LayoutInflater

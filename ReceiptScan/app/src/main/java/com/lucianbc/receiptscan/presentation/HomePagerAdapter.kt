@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan
+package com.lucianbc.receiptscan.presentation
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

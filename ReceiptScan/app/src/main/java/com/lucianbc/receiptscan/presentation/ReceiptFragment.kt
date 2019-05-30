@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan
+package com.lucianbc.receiptscan.presentation
 
 
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.domain.model.Receipt
 import kotlinx.android.synthetic.main.receipt_layout.*
 

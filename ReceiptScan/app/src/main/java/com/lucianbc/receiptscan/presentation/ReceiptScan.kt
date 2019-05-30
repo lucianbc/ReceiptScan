@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan
+package com.lucianbc.receiptscan.presentation
 
 import com.lucianbc.receiptscan.di.DaggerAppComponent
 import dagger.android.AndroidInjector
