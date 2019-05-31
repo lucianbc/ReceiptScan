@@ -1,7 +1,7 @@
 package com.lucianbc.receiptscan.domain.usecase
 
 import com.lucianbc.receiptscan.domain.model.OcrElement
-import com.lucianbc.receiptscan.domain.service.OcrElements
+import com.lucianbc.receiptscan.domain.model.OcrElements
 import com.lucianbc.receiptscan.domain.service.OcrElementsProducer
 import io.reactivex.Observable
 import org.junit.Assert.assertEquals

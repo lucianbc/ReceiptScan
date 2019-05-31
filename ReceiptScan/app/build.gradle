@@ -26,6 +26,10 @@ android {
     dataBinding {
         enabled = true
     }
+
+    kotlinOptions {
+        freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
+    }
 }
 
 androidExtensions {
@@ -74,4 +78,6 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:2.0.0"
     implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
+
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 }
