@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "762676285003",
+    "firebase_url": "https://receiptscan-52c2d.firebaseio.com",
+    "project_id": "receiptscan-52c2d",
+    "storage_bucket": "receiptscan-52c2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762676285003:android:9c31691bdd9d6ab6",
+        "android_client_info": {
+          "package_name": "com.lucianbc.receiptscan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762676285003-81t7m4avd6lo9ggn9p30f554o65k7u7c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWnOosJTB7jJ3qNdNZClQubRRLzqOZ3ro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762676285003-81t7m4avd6lo9ggn9p30f554o65k7u7c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762676285003:android:beded251bf290404",
+        "android_client_info": {
+          "package_name": "com.lucianbc.receiptscanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762676285003-81t7m4avd6lo9ggn9p30f554o65k7u7c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWnOosJTB7jJ3qNdNZClQubRRLzqOZ3ro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762676285003-81t7m4avd6lo9ggn9p30f554o65k7u7c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

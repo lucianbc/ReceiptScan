@@ -6,6 +6,7 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -79,5 +80,14 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:2.0.0"
     implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
 
+    // testing
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
+
+    // firebase ml
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-ml-vision:20.0.0'
+
+    // camera
+    api 'com.otaliastudios:cameraview:2.0.0-beta04'
+    implementation "androidx.exifinterface:exifinterface:1.0.0"
 }
