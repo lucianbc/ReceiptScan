@@ -2,13 +2,13 @@ package com.lucianbc.receiptscan.presentation
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.domain.model.Receipt
+import com.lucianbc.receiptscan.domain.model.Product
 import kotlinx.android.synthetic.main.receipt_layout.*
 
 
@@ -38,8 +38,8 @@ class ReceiptFragment : Fragment() {
     }
 
     private val smallList = listOf(
-        Receipt.Item("Ochelari 3D 3.0", 8.55),
-        Receipt.Item("Proiectie Film 3D", 44.00)
+        Product("Ochelari 3D 3.0", 8.55),
+        Product("Proiectie Film 3D", 44.00)
     )
 
     private val hugeList = generateSequence { smallList }
