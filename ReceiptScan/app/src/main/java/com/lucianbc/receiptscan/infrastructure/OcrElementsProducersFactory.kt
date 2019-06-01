@@ -12,6 +12,7 @@ import com.lucianbc.receiptscan.domain.service.OcrWithImageProducer
 import com.otaliastudios.cameraview.Frame
 import com.otaliastudios.cameraview.PictureResult
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
@@ -20,9 +21,10 @@ class OcrElementsProducersFactory @Inject constructor(
 ) {
     fun simple(frame: Frame): OcrElementsProducer {
         return object : OcrElementsProducer {
-            override fun produce(): Observable<OcrElements> {
-                return Observable.just(frame)
-                    .flatMap { it.firebaseImage().recognize() }
+            override fun produce(): Observable<OcrElements> =
+                frame
+                    .firebaseImage()
+                    .let { Observable.just(it).flatMap { fib -> fib.recognize() }
             }
         }
     }
@@ -30,10 +32,10 @@ class OcrElementsProducersFactory @Inject constructor(
     fun withImage(image: PictureResult): OcrWithImageProducer {
         return object : OcrWithImageProducer {
             override fun produce(): Observable<Pair<Bitmap, OcrElements>> =
-                Observable.just(image)
-                    .map { it.firebaseImage() }
+                image.firebaseImage()
                     .map { it.bitmap to it }
                     .flatMap { it.ocrElements() }
+                    .subscribeOn(Schedulers.computation())
         }
     }
 
@@ -79,24 +81,19 @@ class OcrElementsProducersFactory @Inject constructor(
 
     private fun Bitmap.firebaseImage() = FirebaseVisionImage.fromBitmap(this)
 
-    private fun Frame.firebaseImage(): FirebaseVisionImage {
-        val metadata = FirebaseVisionImageMetadata.Builder()
-            .setFormat(this.format)
-            .setRotation(this.rotation.rotation())
-            .setHeight(this.size.height)
-            .setWidth(this.size.width)
-            .build()
-        return FirebaseVisionImage.fromByteArray(this.data, metadata)
-    }
+    private fun PictureResult.firebaseImage(): Observable<FirebaseVisionImage> {
+        val result = PublishSubject.create<FirebaseVisionImage>()
 
-    private fun PictureResult.firebaseImage(): FirebaseVisionImage {
-        val metadata = FirebaseVisionImageMetadata.Builder()
-            .setFormat(this.format)
-            .setRotation(this.rotation.rotation())
-            .setWidth(this.size.width)
-            .setHeight(this.size.height)
-            .build()
-        return FirebaseVisionImage.fromByteArray(this.data, metadata)
+        this.toBitmap {
+            if (it != null) {
+                result.onNext(it.firebaseImage())
+                result.onComplete()
+            }
+            else
+                result.onError(IllegalArgumentException("Picture could not be converted to bitmap"))
+        }
+
+        return result
     }
 
     private fun Int.rotation(): Int {
@@ -108,4 +105,15 @@ class OcrElementsProducersFactory @Inject constructor(
             else -> FirebaseVisionImageMetadata.ROTATION_0
         }
     }
+
+    private fun Frame.firebaseImage(): FirebaseVisionImage {
+        val metadata = FirebaseVisionImageMetadata.Builder()
+            .setFormat(this.format)
+            .setRotation(this.rotation.rotation())
+            .setHeight(this.size.height)
+            .setWidth(this.size.width)
+            .build()
+        return FirebaseVisionImage.fromByteArray(this.data, metadata)
+    }
+
 }

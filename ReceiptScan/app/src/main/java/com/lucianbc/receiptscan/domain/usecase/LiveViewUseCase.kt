@@ -9,7 +9,7 @@ import io.reactivex.rxkotlin.mergeAll
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-class LiveViewUseCase(fps: Int) {
+class LiveViewUseCase(fps: Float) {
     private val frameRate = (MULTIPLE / fps).toLong()
 
     private val frameProducer = PublishSubject.create<Observable<OcrElements>>()

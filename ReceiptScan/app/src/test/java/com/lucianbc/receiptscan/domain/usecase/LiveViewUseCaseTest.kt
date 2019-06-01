@@ -12,10 +12,10 @@ class LiveViewUseCaseTest {
 
     @Test
     fun testFrameRate() {
-        val fps = 15
+        val fps = 15f
         val sec = 1
 
-        var count = 0
+        var count = 0f
         val useCase = LiveViewUseCase(fps)
         useCase.ocrElements.subscribe {
             count += 1

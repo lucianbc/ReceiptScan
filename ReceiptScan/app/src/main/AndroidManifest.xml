@@ -20,7 +20,7 @@
         <activity android:name=".presentation.DraftReviewActivity">
         </activity>
         <activity
-                android:name=".presentation.ScannerActivity"
+                android:name=".presentation.scanner.ScannerActivity"
                 android:theme="@style/Scanner">
         </activity>
         <activity android:name=".presentation.MainActivity">

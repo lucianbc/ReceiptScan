@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.presentation
+package com.lucianbc.receiptscan.presentation.scanner
 
 
 import android.Manifest
@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.presentation.scanner.ScannerActivity
 import kotlinx.android.synthetic.main.fragment_camera_permission.*
 import pub.devrel.easypermissions.EasyPermissions
 
