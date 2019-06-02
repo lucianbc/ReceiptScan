@@ -6,13 +6,13 @@ import java.util.*
 
 @Entity(tableName = "draft")
 data class Draft (
-    @PrimaryKey(autoGenerate = true)
-    val id: Long,
     val imagePath: String,
     val merchantName: String?,
     val date: Date?,
     val total: Float?,
-    val currency: Currency,
+    val currency: Currency?,
     val isLinked: Boolean,
-    val creationTimestamp: Date
+    val creationTimestamp: Date,
+    @PrimaryKey(autoGenerate = true)
+    var id: Long? = null
 )

@@ -5,13 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.lucianbc.receiptscan.domain.model.Annotation
 import com.lucianbc.receiptscan.domain.model.Draft
 
 @Database(entities = [
-    Draft::class
+    Draft::class,
+    Annotation::class
 ], version = 1, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
+
+    abstract fun draftDao(): DraftDao
 
     companion object {
         @Volatile private var instance: AppDatabase? = null

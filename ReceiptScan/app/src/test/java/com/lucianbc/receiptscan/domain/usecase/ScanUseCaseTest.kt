@@ -2,7 +2,6 @@ package com.lucianbc.receiptscan.domain.usecase
 
 import android.graphics.Bitmap
 import com.lucianbc.receiptscan.domain.model.*
-import com.lucianbc.receiptscan.domain.model.Annotation
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.service.OcrWithImageProducer
 import com.lucianbc.receiptscan.domain.service.TaggingService
@@ -57,14 +56,12 @@ class ScanUseCaseTest {
     @Before
     fun setup() {
         draftRepoMock = mock()
-        `when`(draftRepoMock.create(any())).thenReturn(1L)
+        `when`(draftRepoMock.create(any())).thenReturn(Observable.just(1L))
 
         taggingServiceMock = mock()
         `when`(taggingServiceMock.tag(any())).then {
             val arg = (it.getArgument(0) as OcrElements)
-            arg.map { e ->
-                Annotation(e.text, e.top, e.bottom, e.left, e.right, Tag.Noise)
-            }
+            arg.map { e -> e.toAnnotation(Tag.Noise) }
         }
         argBitmap = mock()
         argElements = sequenceOf(OcrElement("text", 0, 0, 1, 1))

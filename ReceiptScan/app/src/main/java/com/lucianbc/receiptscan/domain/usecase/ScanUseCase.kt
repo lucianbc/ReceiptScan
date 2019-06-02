@@ -31,7 +31,7 @@ class ScanUseCase @Inject constructor(
             .doOnNext { _state.onNext(State.Tagging) }
             .map { it.first to taggingService.tag(it.second) }
             .doOnNext { _state.onNext(State.Saving) }
-            .map { draftsRepository.create(Command(it)) }
+            .flatMap { draftsRepository.create(Command(it)) }
             .doOnComplete { _state.onNext(State.Idle) }
             .doOnError { _state.onNext(State.Error) }
 
