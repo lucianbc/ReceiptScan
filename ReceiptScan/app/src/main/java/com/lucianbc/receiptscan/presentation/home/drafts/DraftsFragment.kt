@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
+import com.lucianbc.receiptscan.databinding.FragmentDraftsBinding
 import com.lucianbc.receiptscan.domain.model.DraftItem
 import com.lucianbc.receiptscan.presentation.DraftReviewActivity
 import kotlinx.android.synthetic.main.fragment_drafts.*
@@ -23,7 +25,19 @@ class DraftsFragment : BaseFragment<DraftsViewModel>(DraftsViewModel::class.java
         savedInstanceState: Bundle?
     ): View? {
         initViewModel()
-        return inflater.inflate(R.layout.fragment_drafts, container, false)
+        return setupBinding(inflater, container)?.root
+    }
+
+    private fun setupBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentDraftsBinding? {
+        val binding = DataBindingUtil.inflate<FragmentDraftsBinding>(
+            inflater,
+            R.layout.fragment_drafts,
+            container,
+            false
+        )
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        return binding
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -15,6 +15,8 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import org.greenrobot.eventbus.EventBus
+import org.reactivestreams.Subscriber
+import org.reactivestreams.Subscription
 import javax.inject.Inject
 
 class ScannerViewModel @Inject constructor(
@@ -65,15 +67,14 @@ class ScannerViewModel @Inject constructor(
     }
 
     private fun OcrWithImageProducer.scan() {
-        scanUseCase
-            .scan(this)
+        val scanHotObservable = scanUseCase.scan(this)
+        scanHotObservable
             .subscribe(
                 { eventBus.post(Event.ImageScanned(it)) },
-                {
-                    loge("Error when processing camera picture", it)
-                }
+                { loge("Error when processing camera picture", it) }
             )
             .addTo(disposables)
+        scanHotObservable.connect()
     }
 
     override fun onCleared() {
