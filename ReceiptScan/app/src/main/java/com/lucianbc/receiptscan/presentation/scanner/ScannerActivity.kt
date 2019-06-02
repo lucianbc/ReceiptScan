@@ -13,7 +13,7 @@ import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseActivity
 import com.lucianbc.receiptscan.databinding.ActivityScannerBinding
 import com.lucianbc.receiptscan.presentation.DraftReviewActivity
-import com.lucianbc.receiptscan.presentation.events.Event
+import com.lucianbc.receiptscan.presentation.Event
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_scanner.*

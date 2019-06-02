@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.presentation.events
+package com.lucianbc.receiptscan.presentation
 
 import com.otaliastudios.cameraview.PictureResult
 

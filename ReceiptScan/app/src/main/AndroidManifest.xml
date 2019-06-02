@@ -23,7 +23,7 @@
                 android:name=".presentation.scanner.ScannerActivity"
                 android:theme="@style/Scanner">
         </activity>
-        <activity android:name=".presentation.MainActivity">
+        <activity android:name=".presentation.home.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

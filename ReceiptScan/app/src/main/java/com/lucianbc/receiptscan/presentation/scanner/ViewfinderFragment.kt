@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentViewfinderBinding
-import com.lucianbc.receiptscan.presentation.events.Event
+import com.lucianbc.receiptscan.presentation.Event
 import com.lucianbc.receiptscan.util.logd
 import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.Flash
