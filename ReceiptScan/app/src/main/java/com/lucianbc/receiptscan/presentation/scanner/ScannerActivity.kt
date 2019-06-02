@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseActivity
 import com.lucianbc.receiptscan.databinding.ActivityScannerBinding
-import com.lucianbc.receiptscan.presentation.DraftReviewActivity
+import com.lucianbc.receiptscan.presentation.draft.DraftReviewActivity
 import com.lucianbc.receiptscan.presentation.Event
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers

@@ -12,7 +12,7 @@ import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentDraftsBinding
 import com.lucianbc.receiptscan.domain.model.DraftItem
-import com.lucianbc.receiptscan.presentation.DraftReviewActivity
+import com.lucianbc.receiptscan.presentation.draft.DraftReviewActivity
 import kotlinx.android.synthetic.main.fragment_drafts.*
 
 

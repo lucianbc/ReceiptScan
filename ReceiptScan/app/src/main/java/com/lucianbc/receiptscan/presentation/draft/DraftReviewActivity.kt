@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.presentation
+package com.lucianbc.receiptscan.presentation.draft
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,7 +12,8 @@ import kotlinx.android.synthetic.main.fragment_receipt.*
 
 class DraftReviewActivity : AppCompatActivity() {
 
-    private var canDiscard = DEFAULT_CAN_DISCARD
+    private var canDiscard =
+        DEFAULT_CAN_DISCARD
 
     private val annotationsFragment by lazy { AnnotationsFragment() }
 

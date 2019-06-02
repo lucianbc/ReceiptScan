@@ -17,7 +17,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".presentation.DraftReviewActivity">
+        <activity android:name=".presentation.draft.DraftReviewActivity">
         </activity>
         <activity
                 android:name=".presentation.scanner.ScannerActivity"

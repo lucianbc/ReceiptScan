@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.presentation
+package com.lucianbc.receiptscan.presentation.draft
 
 import android.graphics.Point
 import android.os.Bundle
@@ -53,7 +53,10 @@ class AnnotationDialog : AppCompatDialogFragment() {
     private fun fromUi(): Arguments {
         @Suppress("UNCHECKED_CAST")
         val tag = (annotationType.adapter as ArrayAdapter<Tag>).getItem(annotationType.selectedItemPosition)!!
-        return Arguments(annotationText.text.toString(), tag)
+        return Arguments(
+            annotationText.text.toString(),
+            tag
+        )
     }
 
     private fun loadSpinner() {

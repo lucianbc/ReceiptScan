@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.presentation
+package com.lucianbc.receiptscan.presentation.draft
 
 import android.view.LayoutInflater
 import android.view.View
