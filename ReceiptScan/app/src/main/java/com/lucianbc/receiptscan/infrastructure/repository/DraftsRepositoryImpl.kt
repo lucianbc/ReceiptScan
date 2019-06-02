@@ -2,9 +2,11 @@ package com.lucianbc.receiptscan.infrastructure.repository
 
 import com.lucianbc.receiptscan.domain.model.CreateDraftCommand
 import com.lucianbc.receiptscan.domain.model.Draft
+import com.lucianbc.receiptscan.domain.model.DraftItem
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.util.*
@@ -21,6 +23,7 @@ class DraftsRepositoryImpl @Inject constructor(
             .flatMapSingle { saveDraft(it) }
             .map { saveAnnotations(command, it) }
 
+    override fun getAllItems(): Flowable<List<DraftItem>> = draftDao.getDraftItems()
 
     private fun saveDraft(filename: String): Single<Long> {
         val draft = defaultDraft(filename)

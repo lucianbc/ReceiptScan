@@ -3,6 +3,7 @@ package com.lucianbc.receiptscan.presentation.home
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.lucianbc.receiptscan.presentation.home.drafts.DraftsFragment
 
 class HomePagerAdapter(fm: FragmentManager)
     : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

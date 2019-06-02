@@ -1,5 +1,6 @@
 package com.lucianbc.receiptscan.di
 
+import com.lucianbc.receiptscan.presentation.home.drafts.DraftsFragment
 import com.lucianbc.receiptscan.presentation.scanner.ProcessingFragment
 import com.lucianbc.receiptscan.presentation.scanner.ViewfinderFragment
 import dagger.Module
@@ -13,4 +14,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeProcessingFragment(): ProcessingFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeDraftsFragment(): DraftsFragment
 }

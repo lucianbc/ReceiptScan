@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.presentation
+package com.lucianbc.receiptscan.presentation.home.drafts
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.domain.model.DraftItem
 import kotlinx.android.synthetic.main.draft_item_layout.view.*
-import java.util.*
 
 
 typealias DraftItemClick = ((DraftItem) -> Unit)
@@ -37,20 +37,15 @@ class DraftsAdapter(private val itemCallback: DraftItemClick) : ListAdapter<Draf
         }
 
         override fun areItemsTheSame(oldItem: DraftItem, newItem: DraftItem): Boolean {
-            return oldItem.date == newItem.date
+            return oldItem.creationTimestamp == newItem.creationTimestamp
         }
     }
 }
-
-data class DraftItem (
-    val id: Long,
-    val date: Date
-)
 
 class DraftItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     var item: DraftItem? = null
         set(value) {
             field = value
-            view.draftItemTitle.text = "${value?.date}"
+            view.draftItemTitle.text = "${value?.creationTimestamp}"
         }
 }

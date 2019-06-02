@@ -17,11 +17,11 @@ class Converters {
 
         @TypeConverter
         @JvmStatic
-        fun fromCurrency(currency: Currency) = currency.currencyCode
+        fun fromCurrency(currency: Currency?) = currency?.currencyCode
 
         @TypeConverter
         @JvmStatic
-        fun toCurrency(currencyCode: String) = Currency.getInstance(currencyCode)
+        fun toCurrency(currencyCode: String?) = currencyCode ?: Currency.getInstance(currencyCode)
 
         @TypeConverter
         @JvmStatic

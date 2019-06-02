@@ -1,22 +1,20 @@
-package com.lucianbc.receiptscan.presentation.home
+package com.lucianbc.receiptscan.presentation.home.drafts
 
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.presentation.DraftItem
-import com.lucianbc.receiptscan.presentation.DraftItemClick
+import com.lucianbc.receiptscan.base.BaseFragment
+import com.lucianbc.receiptscan.domain.model.DraftItem
 import com.lucianbc.receiptscan.presentation.DraftReviewActivity
-import com.lucianbc.receiptscan.presentation.DraftsAdapter
 import kotlinx.android.synthetic.main.fragment_drafts.*
-import java.text.SimpleDateFormat
 
 
-class DraftsFragment : Fragment() {
+class DraftsFragment : BaseFragment<DraftsViewModel>(DraftsViewModel::class.java) {
 
     private lateinit var draftsAdapter: DraftsAdapter
 
@@ -24,12 +22,14 @@ class DraftsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        initViewModel()
         return inflater.inflate(R.layout.fragment_drafts, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
+        observe(viewModel)
     }
 
     private fun setupAdapter() {
@@ -38,24 +38,15 @@ class DraftsFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = draftsAdapter
         }
-        draftsAdapter.submitList(hugeList)
     }
+
+    private fun observe(viewModel: DraftsViewModel) =
+        viewModel.drafts.observe(viewLifecycleOwner, Observer { it?.submit() })
+
+    private fun List<DraftItem>.submit() = draftsAdapter.submitList(this)
 
     private val goToDraft: DraftItemClick = {
         val intent = DraftReviewActivity.navIntent(activity!!, it.id)
         startActivity(intent)
     }
-
-    private val smallList = listOf(
-        DraftItem(
-            1,
-            SimpleDateFormat("dd-MM-yy hh:mm").parse("23-05-2019 14:23")
-        ),
-        DraftItem(2, SimpleDateFormat("dd-MM-yy hh:mm").parse("24-05-2019 17:32"))
-    )
-
-    private val hugeList = generateSequence { smallList }
-        .flatten()
-        .take(55)
-        .toList()
 }

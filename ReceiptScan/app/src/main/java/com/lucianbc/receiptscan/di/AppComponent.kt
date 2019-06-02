@@ -12,6 +12,7 @@ import javax.inject.Singleton
         AppModule::class,
         ActivityModule::class,
         DummiesModule::class,
+        InterfaceBinds::class,
         FragmentModule::class,
         ViewModelBinds::class,
         ViewModelFactoryBinds::class,
@@ -19,6 +20,7 @@ import javax.inject.Singleton
     ]
 )
 interface AppComponent: AndroidInjector<ReceiptScan> {
+    @Suppress("DEPRECATION")
     @Component.Builder
     abstract class Builder: AndroidInjector.Builder<ReceiptScan>()
 }
