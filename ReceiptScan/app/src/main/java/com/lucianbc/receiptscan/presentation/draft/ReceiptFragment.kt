@@ -8,12 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.di.DaggerAwareViewModelFactory
-import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.model.ProductDraft
-import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.receipt_layout.*
-import javax.inject.Inject
 
 
 class ReceiptFragment : Fragment() {
