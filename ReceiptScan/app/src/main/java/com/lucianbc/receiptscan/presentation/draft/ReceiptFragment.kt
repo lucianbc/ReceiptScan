@@ -8,8 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.di.DaggerAwareViewModelFactory
 import com.lucianbc.receiptscan.domain.model.Product
+import com.lucianbc.receiptscan.domain.model.ProductDraft
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.receipt_layout.*
+import javax.inject.Inject
 
 
 class ReceiptFragment : Fragment() {
@@ -38,8 +42,8 @@ class ReceiptFragment : Fragment() {
     }
 
     private val smallList = listOf(
-        Product("Ochelari 3D 3.0", 8.55),
-        Product("Proiectie Film 3D", 44.00)
+        ProductDraft("Ochelari 3D 3.0", 8.55F),
+        ProductDraft("Proiectie Film 3D", 44.00F)
     )
 
     private val hugeList = generateSequence { smallList }

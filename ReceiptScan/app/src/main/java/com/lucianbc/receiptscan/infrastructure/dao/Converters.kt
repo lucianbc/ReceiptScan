@@ -21,7 +21,8 @@ class Converters {
 
         @TypeConverter
         @JvmStatic
-        fun toCurrency(currencyCode: String?) = currencyCode ?: Currency.getInstance(currencyCode)
+        fun toCurrency(currencyCode: String?): Currency? =
+            if (currencyCode == null) null else Currency.getInstance(currencyCode)
 
         @TypeConverter
         @JvmStatic

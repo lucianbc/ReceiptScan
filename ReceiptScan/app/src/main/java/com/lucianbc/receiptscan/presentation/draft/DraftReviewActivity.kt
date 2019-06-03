@@ -8,9 +8,15 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.di.DaggerAwareViewModelFactory
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.fragment_receipt.*
+import javax.inject.Inject
 
-class DraftReviewActivity : AppCompatActivity() {
+class DraftReviewActivity : DaggerAppCompatActivity() {
+    @Inject
+    lateinit var viewModelFactory: DraftReviewViewModel.Factory
+    lateinit var viewModel: DraftReviewViewModel
 
     private var canDiscard =
         DEFAULT_CAN_DISCARD
@@ -39,6 +45,7 @@ class DraftReviewActivity : AppCompatActivity() {
     private fun safeLoadParams() {
         val bundle = intent.extras
         bundle?.getBoolean(CAN_DISCARD)?.let { canDiscard = it }
+        bundle?.getLong(DRAFT_ID)?.let { viewModelFactory.draftId = it }
     }
 
     override fun onBackPressed() {

@@ -7,11 +7,13 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.lucianbc.receiptscan.domain.model.Annotation
 import com.lucianbc.receiptscan.domain.model.Draft
+import com.lucianbc.receiptscan.domain.model.ProductDraft
 
 @Database(entities = [
     Draft::class,
-    Annotation::class
-], version = 1, exportSchema = true)
+    Annotation::class,
+    ProductDraft::class
+], version = 2, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
 
@@ -27,6 +29,7 @@ abstract class AppDatabase: RoomDatabase() {
                         AppDatabase::class.java,
                         "receiptscan.db"
                     )
+                    .addMigrations(MIGRATION_1_2)
                     .build()
                 }
             }
