@@ -8,21 +8,27 @@ import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.model.Annotation
 import com.lucianbc.receiptscan.domain.model.ReceiptDraftWithProducts
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
-import java.lang.IllegalArgumentException
+import com.lucianbc.receiptscan.presentation.service.paint
+import io.reactivex.Flowable
+import io.reactivex.rxkotlin.combineLatest
 import javax.inject.Inject
 
 class DraftReviewViewModel (
-    private val draftId: Long,
-    private val draftsRepository: DraftsRepository
+    draftId: Long,
+    draftsRepository: DraftsRepository
 ) : ViewModel() {
     private val _receipt = draftsRepository.getReceipt(draftId)
-    private val _image = draftsRepository.getImage(draftId)
-    private val _annotations = draftsRepository.getAnnotations(draftId)
+    private val _annotations: Flowable<List<Annotation>> = draftsRepository.getAnnotations(draftId)
+    private val _image: Flowable<Bitmap> = draftsRepository.getImage(draftId)
+
+    private val _drawnImage = _image
+        .combineLatest(_annotations)
+        .map { paint(it.first, it.second) }
 
     val receipt: LiveData<ReceiptDraftWithProducts>
         get() = _receipt.toLiveData()
     val image: LiveData<Bitmap>
-        get() = _image.toLiveData()
+        get() = _drawnImage.toLiveData()
     val annotations: LiveData<List<Annotation>>
         get() = _annotations.toLiveData()
 

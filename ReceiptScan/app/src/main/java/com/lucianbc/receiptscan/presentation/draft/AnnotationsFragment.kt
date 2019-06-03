@@ -5,18 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.domain.model.Tag
 import kotlinx.android.synthetic.main.fragment_annotations.*
 
 
-class AnnotationsFragment : Fragment() {
+class AnnotationsFragment :
+    BaseFragment<DraftReviewViewModel>(DraftReviewViewModel::class.java) {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        initParentViewModel()
         return inflater.inflate(R.layout.fragment_annotations, container, false)
     }
 
@@ -27,9 +30,13 @@ class AnnotationsFragment : Fragment() {
                 childFragmentManager,
                 AnnotationDialog.Arguments("Text", Tag.Noise)
             )
-//            AlertDialog.Builder(activity!!)
-//                .setMessage("Mesaj")
-//                .show()
         }
+        observe(viewModel)
+    }
+
+    private fun observe(viewModel: DraftReviewViewModel) {
+        viewModel.image.observe(viewLifecycleOwner, Observer {
+            receiptView.setImageBitmap(it)
+        })
     }
 }

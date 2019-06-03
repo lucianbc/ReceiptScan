@@ -1,5 +1,6 @@
 package com.lucianbc.receiptscan.di
 
+import com.lucianbc.receiptscan.presentation.draft.AnnotationsFragment
 import com.lucianbc.receiptscan.presentation.draft.ReceiptFragment
 import com.lucianbc.receiptscan.presentation.home.drafts.DraftsFragment
 import com.lucianbc.receiptscan.presentation.scanner.ProcessingFragment
@@ -21,4 +22,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeDraftReceiptFragment(): ReceiptFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeAnnotationsFragment(): AnnotationsFragment
 }
