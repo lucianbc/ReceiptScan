@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentReceiptBinding
-import com.lucianbc.receiptscan.domain.model.ProductDraft
 import kotlinx.android.synthetic.main.receipt_layout.*
 
 
