@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.di.DaggerAwareViewModelFactory
 import dagger.android.support.DaggerAppCompatActivity
@@ -26,8 +27,15 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         safeLoadParams()
+        loadViewModel()
         setContentView(R.layout.activity_draft_review)
         editFab.setOnClickListener(showAnnotations)
+    }
+
+    private fun loadViewModel() {
+        viewModel = ViewModelProviders
+            .of(this, viewModelFactory)
+            .get(DraftReviewViewModel::class.java)
     }
 
     @SuppressLint("PrivateResource")
