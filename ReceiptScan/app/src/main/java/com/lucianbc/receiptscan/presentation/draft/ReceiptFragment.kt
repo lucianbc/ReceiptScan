@@ -58,16 +58,5 @@ class ReceiptFragment :
             layoutManager = LinearLayoutManager(activity)
             adapter = itemsAdapter
         }
-//        itemsAdapter.submitList(hugeList)
     }
-
-    private val smallList = listOf(
-        ProductDraft("Ochelari 3D 3.0", 8.55F),
-        ProductDraft("Proiectie Film 3D", 44.00F)
-    )
-
-    private val hugeList = generateSequence { smallList }
-        .flatten()
-        .take(55)
-        .toList()
 }
