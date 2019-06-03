@@ -27,6 +27,7 @@ class DraftReviewViewModel (
         get() = _annotations.toLiveData()
 
 
+    // region Factory
     @Suppress("UNCHECKED_CAST")
     class Factory @Inject constructor(
         private val draftsRepository: DraftsRepository
@@ -41,4 +42,5 @@ class DraftReviewViewModel (
             }
         }
     }
+    // endregion
 }
