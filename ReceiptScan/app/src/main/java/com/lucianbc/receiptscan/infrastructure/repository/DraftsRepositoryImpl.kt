@@ -41,6 +41,8 @@ class DraftsRepositoryImpl @Inject constructor(
 
     override fun delete(draftId: Long) = draftDao.delete(draftId)
 
+    override fun editAnnotation(newAnnotation: Annotation) = draftDao.update(newAnnotation)
+
     private fun saveDraft(filename: String): Single<Long> {
         val draft = defaultDraft(filename)
         return draftDao.insert(draft)

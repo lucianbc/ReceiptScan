@@ -13,7 +13,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.annotation_dialog_layout.*
 
 class AnnotationDialog : AppCompatDialogFragment() {
-    var callback: ((Arguments) -> Unit)? = null
+    private var callback: ((Arguments) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.annotation_dialog_layout, container)
@@ -67,11 +67,12 @@ class AnnotationDialog : AppCompatDialogFragment() {
 
 
     companion object {
-        fun open(fragmentManager: FragmentManager, args: Arguments) {
+        fun open(fragmentManager: FragmentManager, args: Arguments, cb: ((Arguments) -> Unit)? = null) {
             val dialog = AnnotationDialog()
             val bundle = Bundle()
             bundle.putParcelable(ARGS, args)
             dialog.arguments = bundle
+            dialog.callback = cb
             dialog.show(fragmentManager, "ANNOTATION_DIALOG")
         }
         private const val ARGS = "ARGS"

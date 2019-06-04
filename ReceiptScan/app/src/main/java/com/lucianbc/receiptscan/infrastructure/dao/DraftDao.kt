@@ -31,4 +31,7 @@ interface DraftDao {
 
     @Query("delete from draft where id = :draftId")
     fun delete(draftId: Long)
+
+    @Update
+    fun update(newAnnotation: Annotation)
 }

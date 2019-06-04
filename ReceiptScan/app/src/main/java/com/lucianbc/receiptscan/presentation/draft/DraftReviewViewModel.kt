@@ -42,6 +42,13 @@ class DraftReviewViewModel (
             .subscribe()
     }
 
+    fun editAnnotation(newAnnotation: Annotation) {
+        Observable
+            .fromCallable { draftsRepository.editAnnotation(newAnnotation) }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
+
 
     // region Factory
     @Suppress("UNCHECKED_CAST")
