@@ -7,18 +7,13 @@ import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import io.reactivex.Single
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.everyItem
-import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.*
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
 
 class DraftsRepositoryImplTest {
 
