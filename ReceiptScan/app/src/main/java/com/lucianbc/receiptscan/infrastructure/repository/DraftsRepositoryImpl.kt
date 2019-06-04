@@ -47,9 +47,10 @@ class DraftsRepositoryImpl @Inject constructor(
     }
 
     private fun saveAnnotations(command: CreateDraftCommand, draftId: Long): Single<Long> {
-        command.annotations.forEach { it.draftId = draftId }
+        val annotationsWithParent = command.annotations.map { it.copy(draftId = draftId) }
+
         return draftDao
-            .insert(command.annotations.toList())
+            .insert(annotationsWithParent.toList())
             .map { draftId }
     }
 
