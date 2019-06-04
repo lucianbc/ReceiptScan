@@ -6,13 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.model.Annotation
+import com.lucianbc.receiptscan.domain.model.ReceiptDraft
 import com.lucianbc.receiptscan.domain.model.ReceiptDraftWithProducts
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
+import com.lucianbc.receiptscan.domain.service.computeReceipt
 import com.lucianbc.receiptscan.presentation.service.paint
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.combineLatest
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 import javax.inject.Inject
 
 class DraftReviewViewModel (
@@ -30,6 +33,9 @@ class DraftReviewViewModel (
 
     val receipt: LiveData<ReceiptDraftWithProducts>
         get() = _receipt.toLiveData()
+//        get() = _annotations.map {
+//            computeReceipt(draftId, it)
+//        }.toLiveData()
     val image: LiveData<Bitmap>
         get() = _drawnImage.toLiveData()
     val annotations: LiveData<List<Annotation>>

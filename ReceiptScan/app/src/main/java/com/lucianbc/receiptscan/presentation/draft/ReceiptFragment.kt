@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentReceiptBinding
+import com.lucianbc.receiptscan.domain.service.show
 import kotlinx.android.synthetic.main.receipt_layout.*
 
 
@@ -48,6 +49,10 @@ class ReceiptFragment :
     private fun observe(viewModel: DraftReviewViewModel) {
         viewModel.receipt.observe(viewLifecycleOwner, Observer {
             itemsAdapter.submitList(it.products)
+            merchantTextView.text = it.receipt.merchantName
+            dateTextView.text = it.receipt.date?.show()
+            currencyTextView.text = it.receipt.currency?.toString()
+            totalTextView.text = it.receipt.total?.toString()
         })
     }
 
