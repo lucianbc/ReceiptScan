@@ -18,26 +18,28 @@ class DraftsRepositoryImpl @Inject constructor(
     private val draftDao: DraftDao,
     private val imagesDao: ImagesDao
 ) : DraftsRepository {
-
     override fun create(command: CreateDraftCommand): Observable<Long> =
         Observable
             .fromCallable { imagesDao.saveImage(command.image) }
             .flatMapSingle { saveDraft(it) }
             .map { saveAnnotations(command, it) }
 
-    override fun getAllItems(): Flowable<List<DraftItem>> =
-        draftDao.getDraftItems()
-
     override fun getImage(id: Long) =
         draftDao
             .getImagePath(id)
             .map { imagesDao.readImage(it) }
+
+
+    override fun getAllItems(): Flowable<List<DraftItem>> =
+        draftDao.getDraftItems()
 
     override fun getReceipt(id: Long): Flowable<ReceiptDraftWithProducts> =
         draftDao.getReceipt()
 
     override fun getAnnotations(draftId: Long): Flowable<List<Annotation>> =
         draftDao.getAnnotations(draftId)
+
+    override fun delete(draftId: Long) = draftDao.delete(draftId)
 
     private fun saveDraft(filename: String): Single<Long> {
         val draft = defaultDraft(filename)

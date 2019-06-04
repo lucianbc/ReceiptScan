@@ -10,13 +10,16 @@ import com.lucianbc.receiptscan.domain.model.ReceiptDraftWithProducts
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.presentation.service.paint
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.rxkotlin.combineLatest
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class DraftReviewViewModel (
-    draftId: Long,
-    draftsRepository: DraftsRepository
+    private val draftId: Long,
+    private val draftsRepository: DraftsRepository
 ) : ViewModel() {
+
     private val _receipt = draftsRepository.getReceipt(draftId)
     private val _annotations: Flowable<List<Annotation>> = draftsRepository.getAnnotations(draftId)
     private val _image: Flowable<Bitmap> = draftsRepository.getImage(draftId)
@@ -31,6 +34,13 @@ class DraftReviewViewModel (
         get() = _drawnImage.toLiveData()
     val annotations: LiveData<List<Annotation>>
         get() = _annotations.toLiveData()
+
+    fun discardDraft() {
+        Observable
+            .fromCallable { draftsRepository.delete(draftId) }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
 
 
     // region Factory

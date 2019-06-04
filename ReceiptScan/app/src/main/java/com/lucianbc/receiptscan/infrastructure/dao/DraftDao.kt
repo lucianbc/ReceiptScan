@@ -28,4 +28,7 @@ interface DraftDao {
 
     @Query("select * from annotation where draftId = :draftId")
     fun getAnnotations(draftId: Long): Flowable<List<Annotation>>
+
+    @Query("delete from draft where id = :draftId")
+    fun delete(draftId: Long)
 }

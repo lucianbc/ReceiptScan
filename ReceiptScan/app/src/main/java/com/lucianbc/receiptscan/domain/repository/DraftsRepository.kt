@@ -14,4 +14,5 @@ interface DraftsRepository {
     fun getImage(id: Long): Flowable<Bitmap>
     fun getReceipt(id: Long): Flowable<ReceiptDraftWithProducts>
     fun getAnnotations(draftId: Long): Flowable<List<Annotation>>
+    fun delete(draftId: Long)
 }

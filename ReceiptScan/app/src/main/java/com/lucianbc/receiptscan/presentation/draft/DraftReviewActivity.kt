@@ -27,7 +27,13 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
         safeLoadParams()
         loadViewModel()
         setContentView(R.layout.activity_draft_review)
-        editFab.setOnClickListener(showAnnotations)
+        setupButtons()
+    }
+
+    private fun safeLoadParams() {
+        val bundle = intent.extras
+        bundle?.getBoolean(CAN_DISCARD)?.let { canDiscard = it }
+        bundle?.getLong(DRAFT_ID)?.let { viewModelFactory.draftId = it }
     }
 
     private fun loadViewModel() {
@@ -36,8 +42,13 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
             .get(DraftReviewViewModel::class.java)
     }
 
+    private fun setupButtons() {
+        editFab.setOnClickListener(showAnnotationsListener)
+        discardFab.setOnClickListener(discardListener)
+    }
+
     @SuppressLint("PrivateResource")
-    private val showAnnotations = View.OnClickListener {
+    private val showAnnotationsListener = View.OnClickListener {
         val inn = R.anim.mtrl_bottom_sheet_slide_in
         val out = R.anim.mtrl_bottom_sheet_slide_out
         supportFragmentManager
@@ -48,10 +59,8 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
             .commit()
     }
 
-    private fun safeLoadParams() {
-        val bundle = intent.extras
-        bundle?.getBoolean(CAN_DISCARD)?.let { canDiscard = it }
-        bundle?.getLong(DRAFT_ID)?.let { viewModelFactory.draftId = it }
+    private val discardListener = View.OnClickListener {
+        discardAndFinish()
     }
 
     override fun onBackPressed() {
@@ -65,9 +74,14 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.extract_receipt_title))
             .setMessage(getString(R.string.discard_receipt_message))
-            .setPositiveButton("Yes") { _, _ -> finish() }
+            .setPositiveButton("Yes") { _, _ -> discardAndFinish() }
             .setNegativeButton("No", null)
             .show()
+
+    private fun discardAndFinish() {
+        viewModel.discardDraft()
+        finish()
+    }
 
     companion object {
         fun navIntent(
