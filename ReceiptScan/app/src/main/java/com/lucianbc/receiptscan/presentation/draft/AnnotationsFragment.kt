@@ -12,6 +12,7 @@ import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.domain.model.Annotation
 import com.lucianbc.receiptscan.presentation.service.rect
+import com.lucianbc.receiptscan.presentation.service.swapImageBitmap
 import kotlinx.android.synthetic.main.fragment_annotations.*
 
 
@@ -36,7 +37,7 @@ class AnnotationsFragment :
 
     private fun observe(viewModel: DraftReviewViewModel) {
         viewModel.image.observe(viewLifecycleOwner, Observer {
-            receiptView.setImageBitmap(it)
+            receiptView.swapImageBitmap(it)
         })
         viewModel.annotations.observe(viewLifecycleOwner, Observer {
             receiptView.setOnPhotoTapListener(imageTapListener(it))
