@@ -37,7 +37,7 @@ class ViewfinderFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewFinder.setLifecycleOwner(viewLifecycleOwner)
-        viewFinder.addFrameProcessor(frameProcessor)
+//        viewFinder.addFrameProcessor(frameProcessor)
         viewFinder.addCameraListener(cameraListener)
         observe(viewModel)
     }
