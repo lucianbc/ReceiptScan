@@ -6,10 +6,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.di.DaggerAwareViewModelFactory
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.fragment_receipt.*
 import javax.inject.Inject
@@ -40,13 +38,13 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
 
     @SuppressLint("PrivateResource")
     private val showAnnotations = View.OnClickListener {
-        val _in = R.anim.mtrl_bottom_sheet_slide_in
-        val _out = R.anim.mtrl_bottom_sheet_slide_out
+        val inn = R.anim.mtrl_bottom_sheet_slide_in
+        val out = R.anim.mtrl_bottom_sheet_slide_out
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(_in, _out, _in, _out)
-            .replace(R.id.draftContainer, annotationsFragment, "RECEIPT_ANNOTATIONS")
-            .addToBackStack("RECEIPT_ANNOTATIONS")
+            .setCustomAnimations(inn, out, inn, out)
+            .replace(R.id.draftContainer, annotationsFragment, ANNOTATIONS_FRAG_TAG)
+            .addToBackStack(ANNOTATIONS_FRAG_TAG)
             .commit()
     }
 
@@ -84,6 +82,7 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
 
         private const val DRAFT_ID = "DRAFT_ID"
         private const val CAN_DISCARD = "CAN_DISCARD"
+        private const val ANNOTATIONS_FRAG_TAG = "RECEIPT_ANNOTATIONS"
 
         private const val DEFAULT_DRAFT_ID = -1L
         private const val DEFAULT_CAN_DISCARD = false
