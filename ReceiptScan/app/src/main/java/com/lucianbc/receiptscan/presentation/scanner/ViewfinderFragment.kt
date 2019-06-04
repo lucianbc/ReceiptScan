@@ -63,7 +63,7 @@ class ViewfinderFragment :
             }
         })
         viewModel.ocrElements.observe(this, Observer {
-            logd("Showing the elements")
+            ocrOverlay.submitOcrElements(it)
         })
     }
 

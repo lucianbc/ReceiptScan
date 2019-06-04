@@ -21,7 +21,7 @@ class AppModule {
 
     @Provides
     fun provideLiveViewUseCase(): LiveViewUseCase =
-        LiveViewUseCase(0.5f)
+        LiveViewUseCase(5f)
 
     @Provides
     fun provideFirebaseRecognizer(): FirebaseVisionTextRecognizer =
