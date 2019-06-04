@@ -22,7 +22,7 @@ class DraftsRepositoryImpl @Inject constructor(
         Observable
             .fromCallable { imagesDao.saveImage(command.image) }
             .flatMapSingle { saveDraft(it) }
-            .map { saveAnnotations(command, it) }
+            .flatMapSingle { saveAnnotations(command, it) }
 
     override fun getImage(id: Long) =
         draftDao
@@ -46,10 +46,11 @@ class DraftsRepositoryImpl @Inject constructor(
         return draftDao.insert(draft)
     }
 
-    private fun saveAnnotations(command: CreateDraftCommand, draftId: Long): Long {
+    private fun saveAnnotations(command: CreateDraftCommand, draftId: Long): Single<Long> {
         command.annotations.forEach { it.draftId = draftId }
-        draftDao.insert(command.annotations.toList())
-        return draftId
+        return draftDao
+            .insert(command.annotations.toList())
+            .map { draftId }
     }
 
     private fun defaultDraft(filename: String) =
