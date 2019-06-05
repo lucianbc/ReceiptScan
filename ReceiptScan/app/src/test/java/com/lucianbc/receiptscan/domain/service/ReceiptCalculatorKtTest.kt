@@ -49,4 +49,20 @@ class ReceiptCalculatorKtTest {
         val expected = SimpleDateFormat("dd-MM-yyyy").parse("04-05-2019")
         assertEquals(expected, result)
     }
+
+    @Test
+    fun testDateHour() {
+        val subject = "BF. 00290 DATA:23/05/2019 ORA:13-09-14"
+        val result = parseDate(subject)
+        val expected = SimpleDateFormat("dd-MM-yyyy").parse("23-05-2019")
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun testPointDate() {
+        val subject = "22 min (18.05.2019 15:29)"
+        val result = parseDate(subject)
+        val expected = SimpleDateFormat("dd-MM-yyyy").parse("18-05-2019")
+        assertEquals(expected, result)
+    }
 }
