@@ -15,7 +15,7 @@ interface DraftDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(annotations: List<Annotation>): Single<List<Long>>
 
-    @Query("select id, creationTimestamp from draft")
+    @Query("select id, creationTimestamp from draft order by creationTimestamp desc")
     fun getDraftItems(): Flowable<List<DraftItem>>
 
     @Query("select imagePath from draft where id = :id")
