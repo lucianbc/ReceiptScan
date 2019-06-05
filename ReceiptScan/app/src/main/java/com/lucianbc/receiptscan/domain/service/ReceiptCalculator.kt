@@ -52,10 +52,18 @@ private fun createProducts(data: CategorizedAnnotations, draftId: Long): List<Pr
         .toList()
 }
 
-fun parseNumber(string: String) =
+fun parseNumber(string: String): Float? =
     Regex("[+-]?([0-9]*[.,])?[0-9]+")
-        .findAll(string)
+        .findAll(string.removeSpaceInFloat())
         .map { it.value.replace(',', '.') }
         .mapNotNull { it.toFloatOrNull() }
         .sortedDescending()
         .firstOrNull()
+
+
+private val spaceBefore = "(\\d)\\s([.,])".toRegex()
+private val spaceAfter = "([.,])\\s(\\d)".toRegex()
+
+private fun String.removeSpaceInFloat(): String = this
+    .replace(spaceBefore, "$1$2")
+    .replace(spaceAfter, "$1$2")

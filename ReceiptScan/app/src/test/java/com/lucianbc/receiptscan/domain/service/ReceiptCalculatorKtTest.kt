@@ -24,6 +24,25 @@ class ReceiptCalculatorKtTest {
     }
 
     @Test
+    fun testSpaceRemoved() {
+        val subject1 = "91 . 15"
+        val subject2 = "91. 15"
+        val subject3 = "91 .15"
+        val subject4 = "91 , 15"
+        val subject5 = "91, 15"
+        val subject6 = "91 ,15"
+
+        val expected = 91.15F
+
+        assertEquals(expected, parseNumber(subject1))
+        assertEquals(expected, parseNumber(subject2))
+        assertEquals(expected, parseNumber(subject3))
+        assertEquals(expected, parseNumber(subject4))
+        assertEquals(expected, parseNumber(subject5))
+        assertEquals(expected, parseNumber(subject6))
+    }
+
+    @Test
     fun testFindDate() {
         val subject = "DATA: 04-05-2019 ORA: 20:34:04"
         val result = parseDate(subject)
