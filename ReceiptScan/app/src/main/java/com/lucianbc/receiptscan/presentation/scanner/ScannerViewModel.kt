@@ -15,8 +15,6 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import org.greenrobot.eventbus.EventBus
-import org.reactivestreams.Subscriber
-import org.reactivestreams.Subscription
 import javax.inject.Inject
 
 class ScannerViewModel @Inject constructor(
