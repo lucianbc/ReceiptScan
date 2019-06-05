@@ -7,17 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.toRectF
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.github.chrisbanes.photoview.OnPhotoTapListener
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.domain.model.Annotation
 import com.lucianbc.receiptscan.presentation.service.rect
 import com.lucianbc.receiptscan.presentation.service.swapImageBitmap
+import com.lucianbc.receiptscan.util.logd
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_annotations.*
+import javax.inject.Inject
 
 
-class AnnotationsFragment :
-    BaseFragment<DraftReviewViewModel>(DraftReviewViewModel::class.java) {
+class AnnotationsFragment : DaggerFragment() {
+    @Inject
+    lateinit var viewModelFactory: DraftReviewViewModel.Factory
+    lateinit var viewModel: DraftReviewViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,12 +33,16 @@ class AnnotationsFragment :
         return inflater.inflate(R.layout.fragment_annotations, container, false)
     }
 
+    private fun initParentViewModel() {
+        viewModel = ViewModelProviders
+            .of(activity!!, viewModelFactory)
+            .get(DraftReviewViewModel::class.java)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        receiptView.setOnClickListener {
-
-        }
         observe(viewModel)
+        logd("ViewModel in annotations fragment: ${viewModel.hashCode()}")
     }
 
     private fun observe(viewModel: DraftReviewViewModel) {

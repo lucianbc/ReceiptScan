@@ -7,18 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentReceiptBinding
 import com.lucianbc.receiptscan.domain.service.show
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.receipt_layout.*
+import javax.inject.Inject
 
 
-class ReceiptFragment :
-    BaseFragment<DraftReviewViewModel>(DraftReviewViewModel::class.java) {
+class ReceiptFragment : DaggerFragment() {
 
     private lateinit var itemsAdapter: ReceiptItemsAdapter
+
+    @Inject
+    lateinit var viewModelFactory: DraftReviewViewModel.Factory
+    lateinit var viewModel: DraftReviewViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +31,12 @@ class ReceiptFragment :
     ): View? {
         initParentViewModel()
         return setupBinding(inflater, container)?.root
+    }
+
+    private fun initParentViewModel() {
+        viewModel = ViewModelProviders
+            .of(activity!!, viewModelFactory)
+            .get(DraftReviewViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

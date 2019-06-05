@@ -54,7 +54,7 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(inn, out, inn, out)
-            .replace(R.id.draftContainer, annotationsFragment, ANNOTATIONS_FRAG_TAG)
+            .add(R.id.draftContainer, annotationsFragment, ANNOTATIONS_FRAG_TAG)
             .addToBackStack(ANNOTATIONS_FRAG_TAG)
             .commit()
     }

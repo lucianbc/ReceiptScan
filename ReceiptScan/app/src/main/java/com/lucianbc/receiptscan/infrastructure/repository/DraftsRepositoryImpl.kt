@@ -34,7 +34,7 @@ class DraftsRepositoryImpl @Inject constructor(
         draftDao.getDraftItems()
 
     override fun getReceipt(id: Long): Flowable<ReceiptDraftWithProducts> =
-        draftDao.getReceipt()
+        draftDao.getReceipt(id)
 
     override fun getAnnotations(draftId: Long): Flowable<List<Annotation>> =
         draftDao.getAnnotations(draftId)
@@ -42,6 +42,8 @@ class DraftsRepositoryImpl @Inject constructor(
     override fun delete(draftId: Long) = draftDao.delete(draftId)
 
     override fun editAnnotation(newAnnotation: Annotation) = draftDao.update(newAnnotation)
+
+    override fun saveReceipt(data: ReceiptDraftWithProducts) = draftDao.updateReceipt(data)
 
     private fun saveDraft(filename: String): Single<Long> {
         val draft = defaultDraft(filename)

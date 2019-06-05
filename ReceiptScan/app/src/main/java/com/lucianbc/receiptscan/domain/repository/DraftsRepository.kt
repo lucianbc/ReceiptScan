@@ -16,4 +16,5 @@ interface DraftsRepository {
     fun getAnnotations(draftId: Long): Flowable<List<Annotation>>
     fun delete(draftId: Long)
     fun editAnnotation(newAnnotation: Annotation)
+    fun saveReceipt(data: ReceiptDraftWithProducts)
 }
