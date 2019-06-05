@@ -45,6 +45,7 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
     private fun setupButtons() {
         editFab.setOnClickListener(showAnnotationsListener)
         discardFab.setOnClickListener(discardListener)
+        acceptFab.setOnClickListener { finish() }
     }
 
     @SuppressLint("PrivateResource")
@@ -75,7 +76,7 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
             .setTitle(getString(R.string.extract_receipt_title))
             .setMessage(getString(R.string.discard_receipt_message))
             .setPositiveButton("Yes") { _, _ -> discardAndFinish() }
-            .setNegativeButton("No", null)
+            .setNegativeButton("No") { _, _ -> finish() }
             .show()
 
     private fun discardAndFinish() {
