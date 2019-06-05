@@ -1,14 +1,11 @@
 package com.lucianbc.receiptscan.domain.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "receipt_draft")
-data class ReceiptDraft(
-    @ColumnInfo(name="image_path")  var imagePath   : String = "",
-    @Ignore                         var annotations : ScanAnnotations = Collections.emptyList(),
-    @PrimaryKey(autoGenerate=true)  var id          : ID = null
+data class ReceiptDraft (
+    val merchantName: String?,
+    val date: Date?,
+    val currency: Currency?,
+    val total: Float?,
+    val id: Long
 )

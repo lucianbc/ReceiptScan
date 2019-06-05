@@ -1,28 +1,28 @@
 package com.lucianbc.receiptscan.di
 
-import com.lucianbc.receiptscan.view.fragment.homepage.Drafts
-import com.lucianbc.receiptscan.view.fragment.review.DraftData
-import com.lucianbc.receiptscan.view.fragment.review.DraftImage
-import com.lucianbc.receiptscan.view.fragment.scanner.Processing
-import com.lucianbc.receiptscan.view.fragment.scanner.Scanner
+import com.lucianbc.receiptscan.presentation.draft.AnnotationsFragment
+import com.lucianbc.receiptscan.presentation.draft.ReceiptFragment
+import com.lucianbc.receiptscan.presentation.home.drafts.DraftsFragment
+import com.lucianbc.receiptscan.presentation.scanner.ProcessingFragment
+import com.lucianbc.receiptscan.presentation.scanner.ViewfinderFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
-
 @Module
 abstract class FragmentModule {
-    @ContributesAndroidInjector
-    abstract fun contributeScanner(): Scanner
 
     @ContributesAndroidInjector
-    abstract fun contributeDrafts(): Drafts
+    abstract fun contributeViewfinderFragment(): ViewfinderFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeProcessing(): Processing
+    abstract fun contributeProcessingFragment(): ProcessingFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeDraftImage(): DraftImage
+    abstract fun contributeDraftsFragment(): DraftsFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeDrafData(): DraftData
+    abstract fun contributeDraftReceiptFragment(): ReceiptFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeAnnotationsFragment(): AnnotationsFragment
 }

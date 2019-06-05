@@ -5,12 +5,9 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
-import java.lang.Exception
-import java.lang.RuntimeException
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlin.reflect.KClass
-
 
 @Module
 internal abstract class ViewModelFactoryBinds {

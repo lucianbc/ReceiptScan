@@ -1,6 +1,6 @@
 package com.lucianbc.receiptscan.di
 
-import com.lucianbc.receiptscan.ReceiptScan
+import com.lucianbc.receiptscan.presentation.ReceiptScan
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -11,6 +11,8 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         ActivityModule::class,
+        DummiesModule::class,
+        InterfaceBinds::class,
         FragmentModule::class,
         ViewModelBinds::class,
         ViewModelFactoryBinds::class,
@@ -18,6 +20,7 @@ import javax.inject.Singleton
     ]
 )
 interface AppComponent: AndroidInjector<ReceiptScan> {
+    @Suppress("DEPRECATION")
     @Component.Builder
-    abstract class Builder : AndroidInjector.Builder<ReceiptScan>()
+    abstract class Builder: AndroidInjector.Builder<ReceiptScan>()
 }

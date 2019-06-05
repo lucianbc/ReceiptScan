@@ -1,25 +1,20 @@
 <resources>
     <string name="app_name">ReceiptScan</string>
-    <string name="scan_link_btn">Scan</string>
-    <string name="scanner_error">There was an error with the camera</string>
-    <string name="scanner_permission_message">We need you to allow the usage of the camera. Tap on the button bellow to
-        give camera permission.
-    </string>
-    <string name="allow_camera_btn">Allow Camera</string>
-    <string name="request_camera_msg">Allow camera usage</string>
-    <string name="toggle_flash_btn">Toggle Flash</string>
-    <string name="scanner_import_btn">Import Photo</string>
 
-    <string name="request_read_external_storage_msg">Allow read access to external storage</string>
-    <string name="picture_error_message">Picture could not be converted to bitmap</string>
-
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="nav_drafts_title">Drafts</string>
-    <string name="nav_receipts_title">Receipts</string>
-    <string name="receipts_title">Your Receipts</string>
-    <string name="scan_info_box_text_label">Value</string>
-    <string name="cancel">Cancel</string>
-    <string name="ok">OK</string>
+    <string name="settings_button_desc">Settings Button</string>
+    <string name="receipts_button_desc">Receipts Button</string>
+    <string name="drafts_button_desc">Drafts Button</string>
+    <string name="export_button_desc">Export Button</string>
+    <string name="camera_permission_ext">Scan receipts using your camera.</string>
+    <string name="allow_camera_btn">Allow Access</string>
+    <string name="request_camera_msg">Allow camera access.</string>
+    <string name="import_image_btn">Import Image</string>
+    <string name="request_storage_msg">Allow access to the external storage.</string>
+    <string name="discard_receipt_message">Are you sure you want to discard this receipt?</string>
+    <string name="extract_receipt_title">Discard Receipt</string>
+
     <string name="receipt_merchant_name_placeholder">Merchant Name</string>
     <string name="receipt_merchant_label">Merchant</string>
     <string name="receipt_date_label">Date</string>
@@ -28,4 +23,11 @@
     <string name="receipt_currency_placeholder">Currency</string>
     <string name="receipt_total_label">Total</string>
     <string name="receipt_total_placeholder">Total</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="receipt">receipt</string>
+    <string name="drafts_title">Drafts</string>
+    <string name="drafts_text">Review your scanned receipts</string>
+    <string name="toggleFlashBtn">Toggle Flash</string>
+    <string name="scanner_error_msg">There was an error with the camera.</string>
 </resources>

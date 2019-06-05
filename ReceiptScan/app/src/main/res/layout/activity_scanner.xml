@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <variable name="viewModel" type="com.lucianbc.receiptscan.viewmodel.scanner.ScannerViewModel"/>
+        <variable name="viewModel" type="com.lucianbc.receiptscan.presentation.scanner.ScannerViewModel"/>
+        <import type="android.view.View"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".view.activity.ScannerActivity">
+            tools:context=".presentation.scanner.ScannerActivity">
 
         <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/scanner_container"
-        />
+                android:id="@+id/scanner_container"/>
 
-        <ImageButton
-                android:src="@drawable/ic_gallery_white_24dp"
+        <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/scanner_import_btn"
-                android:contentDescription="@string/scanner_import_btn"
-                android:background="?android:selectableItemBackground"
-                android:layout_marginTop="35dp"
-                android:layout_marginEnd="35dp"
+                android:visibility="@{safeUnbox(viewModel.isImportAllowed) ? View.VISIBLE : View.GONE}"
+                android:src="@drawable/ic_image_black_24dp"
+                android:tint="@color/white"
+                android:layout_marginTop="36dp"
                 app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="36dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:onClick="@{() -> viewModel.importImage()}"
+                android:contentDescription="@string/import_image_btn"
+                android:id="@+id/import_image"
         />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
-
