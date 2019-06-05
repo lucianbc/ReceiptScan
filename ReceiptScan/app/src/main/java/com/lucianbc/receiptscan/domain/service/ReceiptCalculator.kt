@@ -53,8 +53,9 @@ private fun createProducts(data: CategorizedAnnotations, draftId: Long): List<Pr
 }
 
 fun parseNumber(string: String) =
-    Regex("[+-]?([0-9]*[.])?[0-9]+")
+    Regex("[+-]?([0-9]*[.,])?[0-9]+")
         .findAll(string)
-        .mapNotNull { it.value.toFloatOrNull() }
+        .map { it.value.replace(',', '.') }
+        .mapNotNull { it.toFloatOrNull() }
         .sortedDescending()
         .firstOrNull()
