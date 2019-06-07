@@ -53,7 +53,7 @@ private fun createProducts(data: CategorizedAnnotations, draftId: Long): List<Pr
 }
 
 fun parseNumber(string: String): Float? =
-    Regex("[+-]?([0-9]*[.,])?[0-9]+")
+    Regex("[+-]?([0-9]*[.,])[0-9]+")
         .findAll(string.removeSpaceInFloat())
         .map { it.value.replace(',', '.') }
         .mapNotNull { it.toFloatOrNull() }
