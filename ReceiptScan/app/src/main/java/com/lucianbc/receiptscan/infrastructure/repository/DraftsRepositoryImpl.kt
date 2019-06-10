@@ -1,11 +1,9 @@
 package com.lucianbc.receiptscan.infrastructure.repository
 
+import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.model.Annotation
-import com.lucianbc.receiptscan.domain.model.CreateDraftCommand
-import com.lucianbc.receiptscan.domain.model.Draft
-import com.lucianbc.receiptscan.domain.model.DraftItem
-import com.lucianbc.receiptscan.domain.model.ReceiptDraftWithProducts
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
+import com.lucianbc.receiptscan.domain.service.extract
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import io.reactivex.Flowable
@@ -21,7 +19,7 @@ class DraftsRepositoryImpl @Inject constructor(
     override fun create(command: CreateDraftCommand): Observable<Long> =
         Observable
             .fromCallable { imagesDao.saveImage(command.image) }
-            .flatMapSingle { saveDraft(it) }
+            .flatMapSingle { saveDraft(command, it) }
             .flatMapSingle { saveAnnotations(command, it) }
 
     override fun getImage(id: Long) =
@@ -45,13 +43,25 @@ class DraftsRepositoryImpl @Inject constructor(
 
     override fun saveReceipt(data: ReceiptDraftWithProducts) = draftDao.updateReceipt(data)
 
+    private fun saveDraft(command: CreateDraftCommand, filename: String): Single<Long> {
+        val (draft, products) = extract(command, filename)
+        return draftDao
+            .insert(draft)
+            .flatMap { saveProducts(it, products) }
+    }
+
+    private fun saveProducts(draftId: Long, products: List<ProductDraft>): Single<Long> {
+        val prods = products.map { it.copy(draftId = draftId) }
+        return draftDao.insertProducts(prods).map { draftId }
+    }
+
     private fun saveDraft(filename: String): Single<Long> {
         val draft = defaultDraft(filename)
         return draftDao.insert(draft)
     }
 
     private fun saveAnnotations(command: CreateDraftCommand, draftId: Long): Single<Long> {
-        val annotationsWithParent = command.annotations.map { it.copy(draftId = draftId) }
+        val annotationsWithParent = command.elements.map { it.toAnnotation(Tag.Noise).copy(draftId = draftId) }
 
         return draftDao
             .insert(annotationsWithParent.toList())

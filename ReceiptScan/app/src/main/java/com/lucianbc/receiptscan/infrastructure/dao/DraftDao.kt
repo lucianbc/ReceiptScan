@@ -38,7 +38,7 @@ interface DraftDao {
     fun deleteProducts(draftId: Long)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertProducts(products: List<ProductDraft>)
+    fun insertProducts(products: List<ProductDraft>): Single<List<Long>>
 
     @Transaction
     fun updateReceipt(data: ReceiptDraftWithProducts) {

@@ -1,6 +1,6 @@
 package com.lucianbc.receiptscan.domain.service
 
-import com.lucianbc.receiptscan.domain.model.RawReceipt
+import com.lucianbc.receiptscan.domain.model.*
 import java.util.*
 
 private const val MERCHANT_MIN_LENGTH = 2
@@ -27,3 +27,16 @@ fun extractMerchant(rawReceipt: RawReceipt) : String? {
 
 fun extractDate(receiptText: String) : Date =
     findDatesWithPatterns(receiptText).firstOrNull() ?: Date()
+
+
+fun extract(createDraftCommand: CreateDraftCommand, filename: String): Pair<Draft, List<ProductDraft>> {
+
+    val receipt = RawReceipt.create(createDraftCommand.elements.toList())
+    val receiptText = receipt.receiptText
+    val date = extractDate(receiptText)
+    val (total, products) = ProductsAndTotalStrategy(receipt).execute()
+
+    val merchant = extractMerchant(receipt)
+
+    return Draft(filename, merchant, date, total, Currency.getInstance("RON"), true, Date()) to products
+}

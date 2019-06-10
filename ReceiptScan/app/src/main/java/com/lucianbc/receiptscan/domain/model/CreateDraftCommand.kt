@@ -4,12 +4,12 @@ import android.graphics.Bitmap
 
 interface CreateDraftCommand {
     val image: Bitmap
-    val annotations: Annotations
+    val elements: OcrElements
 }
 
-inline class Command(private val data: Pair<Bitmap, Annotations>)
+inline class Command(private val data: Pair<Bitmap, OcrElements>)
     : CreateDraftCommand {
-    override val annotations: Annotations
+    override val elements: OcrElements
         get() = data.second
     override val image: Bitmap
         get() = data.first

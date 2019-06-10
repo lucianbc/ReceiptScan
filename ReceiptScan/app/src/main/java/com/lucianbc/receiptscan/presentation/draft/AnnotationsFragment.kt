@@ -42,7 +42,7 @@ class AnnotationsFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observe(viewModel)
-        logd("ViewModel in annotations fragment: ${viewModel.hashCode()}")
+        logd("ViewModel in elements fragment: ${viewModel.hashCode()}")
     }
 
     private fun observe(viewModel: DraftReviewViewModel) {

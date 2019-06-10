@@ -25,7 +25,7 @@ class SomeTaggingService: TaggingService {
         val merchant = extractMerchant(rawReceipt)
         val date = extractDate(rawReceipt.receiptText)
 
-        val (price, products) = ProductsAndTotalStrategy(rawReceipt).execute(1L)
+        val (price, products) = ProductsAndTotalStrategy(rawReceipt).execute()
 
         return elements.map { it.toAnnotation(Tag.Noise) }
     }

@@ -21,12 +21,12 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         boundaries = boundaries(receipt)
     }
 
-    fun execute(draftId: Long): Pair<Float?, List<ProductDraft>> {
+    fun execute(): Pair<Float?, List<ProductDraft>> {
         walkAndProcess()
-        return makeResult(draftId)
+        return makeResult(null)
     }
 
-    private fun makeResult(draftId: Long): Pair<Float?, List<ProductDraft>> {
+    private fun makeResult(draftId: Long?): Pair<Float?, List<ProductDraft>> {
         val price = keyPriceResults
             .mapNotNull {
                 when(it) {

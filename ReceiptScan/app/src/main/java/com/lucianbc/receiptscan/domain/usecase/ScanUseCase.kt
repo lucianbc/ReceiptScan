@@ -29,7 +29,6 @@ class ScanUseCase @Inject constructor(
             .doOnSubscribe { _state.onNext(State.OCR) }
             .observeOn(Schedulers.computation())
             .doOnNext { _state.onNext(State.Tagging) }
-            .map { it.first to taggingService.tag(it.second) }
             .doOnNext { _state.onNext(State.Saving) }
             .flatMap { draftsRepository.create(Command(it)) }
             .doOnComplete { _state.onNext(State.Idle) }
