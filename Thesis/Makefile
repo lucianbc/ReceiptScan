@@ -49,14 +49,16 @@ tex:
 	pandoc "$(INPUTDIR)"/*.md \
 	-o "$(OUTPUTDIR)/thesis.tex" \
 	-H "$(STYLEDIR)/preamble.tex" \
+	--template="$(STYLEDIR)/template.tex" \
 	--bibliography="$(BIBFILE)" \
 	-V fontsize=12pt \
 	-V papersize=a4paper \
-	-V documentclass:report \
+	-V documentclass:book \
 	-N \
 	--csl="$(STYLEDIR)/ref_format.csl" \
 	--pdf-engine=xelatex \
 	--filter pandoc-crossref
+	--variable subparagraph
 
 docx:
 	pandoc "$(INPUTDIR)"/*.md \

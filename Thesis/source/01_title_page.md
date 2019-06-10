@@ -23,7 +23,7 @@
 
     \vspace{0.2cm}
     \Large
-    June. 2019
+    București, Iunie 2019
 
   \end{center}
 \end{titlepage}
