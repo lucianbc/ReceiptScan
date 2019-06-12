@@ -2,6 +2,7 @@ package com.lucianbc.receiptscan.infrastructure.dao
 
 import androidx.room.*
 import com.lucianbc.receiptscan.domain.model.*
+import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import io.reactivex.Flowable
 import io.reactivex.Single
 import java.util.*
@@ -15,7 +16,7 @@ interface DraftDao {
     fun insert(ocrElements: List<OcrElement>): Single<List<Long>>
 
     @Query("select id, creationTimestamp from receipt where isDraft == 1 order by creationTimestamp desc")
-    fun getDraftItems(): Flowable<List<DraftItem>>
+    fun getDraftItems(): Flowable<List<ListDraftsUseCase.DraftItem>>
 
     @Query("select imagePath from receipt where id = :id")
     fun getImagePath(id: Long): Flowable<String>

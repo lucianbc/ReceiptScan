@@ -1,10 +1,10 @@
 package com.lucianbc.receiptscan.infrastructure.repository
 
-import com.lucianbc.receiptscan.domain.model.DraftItem
 import com.lucianbc.receiptscan.domain.model.DraftValue
-import com.lucianbc.receiptscan.domain.model.OcrElement
 import com.lucianbc.receiptscan.domain.model.DraftWithProducts
+import com.lucianbc.receiptscan.domain.model.OcrElement
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
+import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import io.reactivex.Flowable
@@ -32,7 +32,7 @@ class DraftsRepositoryImpl @Inject constructor(
             .getImagePath(id)
             .map { imagesDao.readImage(it) }
 
-    override fun getAllItems(): Flowable<List<DraftItem>> =
+    override fun getAllItems(): Flowable<List<ListDraftsUseCase.DraftItem>> =
         draftDao.getDraftItems()
 
     override fun getReceipt(id: Long): Flowable<DraftWithProducts> =

@@ -3,7 +3,6 @@ package com.lucianbc.receiptscan.presentation.home.drafts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
-import com.lucianbc.receiptscan.domain.model.DraftItem
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ScanUseCase
 import javax.inject.Inject
@@ -12,7 +11,7 @@ class DraftsViewModel @Inject constructor(
     listDraftsUseCase: ListDraftsUseCase,
     scanUseCase: ScanUseCase
 ): ViewModel() {
-    val drafts: LiveData<List<DraftItem>> = listDraftsUseCase.execute().toLiveData()
+    val drafts: LiveData<List<ListDraftsUseCase.DraftItem>> = listDraftsUseCase.execute().toLiveData()
     val scanningState: LiveData<String> =
         scanUseCase.state
             .map { it.message }
