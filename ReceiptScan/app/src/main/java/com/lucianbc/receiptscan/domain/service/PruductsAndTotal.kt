@@ -1,9 +1,6 @@
 package com.lucianbc.receiptscan.domain.service
 
-import com.lucianbc.receiptscan.domain.model.OcrElement
-import com.lucianbc.receiptscan.domain.model.ProductDraft
-import com.lucianbc.receiptscan.domain.model.RawReceipt
-import com.lucianbc.receiptscan.domain.model.height
+import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.util.Just
 import com.lucianbc.receiptscan.util.None
 import com.lucianbc.receiptscan.util.Optional
@@ -21,12 +18,12 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         boundaries = boundaries(receipt)
     }
 
-    fun execute(): Pair<Float?, List<ProductDraft>> {
+    fun execute(): Pair<Float?, List<DraftValue.Product>> {
         walkAndProcess()
-        return makeResult(null)
+        return makeResult()
     }
 
-    private fun makeResult(draftId: Long?): Pair<Float?, List<ProductDraft>> {
+    private fun makeResult(): Pair<Float?, List<DraftValue.Product>> {
         val price = keyPriceResults
             .mapNotNull {
                 when(it) {
@@ -45,7 +42,7 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
                 }
             }
             .filter { if (price != null) it.top < price.top else true }
-            .map { ProductDraft(it.name, it.price, draftId = draftId) }
+            .map { DraftValue.Product(it.name, it.price) }
         return price?.price to products
     }
 

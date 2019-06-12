@@ -5,10 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.toLiveData
-import com.lucianbc.receiptscan.domain.model.Annotation
-import com.lucianbc.receiptscan.domain.model.ReceiptDraftWithProducts
+import com.lucianbc.receiptscan.domain.model.OcrElement
+import com.lucianbc.receiptscan.domain.model.DraftWithProducts
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
-import com.lucianbc.receiptscan.domain.service.computeReceipt
 import com.lucianbc.receiptscan.presentation.service.paint
 import io.reactivex.Flowable
 import io.reactivex.Observable
@@ -23,42 +22,23 @@ class DraftReviewViewModel (
 
     private val _receipt = draftsRepository
         .getReceipt(draftId)
-    private val _annotations: Flowable<List<Annotation>> = draftsRepository.getAnnotations(draftId)
+    private val _ocrElements: Flowable<List<OcrElement>> = draftsRepository.getOcrElements(draftId)
     private val _image: Flowable<Bitmap> = draftsRepository.getImage(draftId)
 
 
     private val _drawnImage = _image
-        .combineLatest(_annotations)
+        .combineLatest(_ocrElements)
         .map { paint(it.first, it.second) }
 
-    val receipt: LiveData<ReceiptDraftWithProducts>
+    val receipt: LiveData<DraftWithProducts>
         get() = _receipt.toLiveData()
     val image: LiveData<Bitmap>
         get() = _drawnImage.toLiveData()
-    val annotations: LiveData<List<Annotation>>
-        get() = _annotations.toLiveData()
 
     fun discardDraft() {
         Observable
             .fromCallable { draftsRepository.delete(draftId) }
             .subscribeOn(Schedulers.io())
-            .subscribe()
-    }
-
-    fun editAnnotation(newAnnotation: Annotation) {
-        Observable
-            .fromCallable { draftsRepository.editAnnotation(newAnnotation) }
-            .subscribeOn(Schedulers.io())
-            .subscribe()
-
-        _annotations
-            .firstOrError()
-            .subscribeOn(Schedulers.io())
-            .map {
-                val receipt = computeReceipt(draftId, it)
-                draftsRepository.saveReceipt(receipt)
-                receipt
-            }
             .subscribe()
     }
 

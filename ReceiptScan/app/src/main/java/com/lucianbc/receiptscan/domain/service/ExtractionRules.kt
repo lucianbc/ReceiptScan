@@ -28,15 +28,20 @@ fun extractMerchant(rawReceipt: RawReceipt) : String? {
 fun extractDate(receiptText: String) : Date =
     findDatesWithPatterns(receiptText).firstOrNull() ?: Date()
 
+fun extractCurrency(receiptText: String): Currency = Currency.getInstance("RON")
 
-fun extract(createDraftCommand: CreateDraftCommand, filename: String): Pair<Draft, List<ProductDraft>> {
+fun parseNumber(string: String): Float? =
+    Regex("[+-]?([0-9]*[.,])[0-9]+")
+        .findAll(string.removeSpaceInFloat())
+        .map { it.value.replace(',', '.') }
+        .mapNotNull { it.toFloatOrNull() }
+        .sortedDescending()
+        .firstOrNull()
 
-    val receipt = RawReceipt.create(createDraftCommand.elements.toList())
-    val receiptText = receipt.receiptText
-    val date = extractDate(receiptText)
-    val (total, products) = ProductsAndTotalStrategy(receipt).execute()
 
-    val merchant = extractMerchant(receipt)
+private val spaceBefore = "(\\d)\\s([.,])".toRegex()
+private val spaceAfter = "([.,])\\s(\\d)".toRegex()
 
-    return Draft(filename, merchant, date, total, Currency.getInstance("RON"), true, Date()) to products
-}
+private fun String.removeSpaceInFloat(): String = this
+    .replace(spaceBefore, "$1$2")
+    .replace(spaceAfter, "$1$2")

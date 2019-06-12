@@ -21,7 +21,6 @@ class DraftsViewModel @Inject constructor(
     private val ScanUseCase.State.message: String
         get() = when (this) {
             ScanUseCase.State.OCR -> "Ocr"
-            ScanUseCase.State.Tagging -> "Tagging"
             ScanUseCase.State.Saving -> "Saving"
             ScanUseCase.State.Idle -> "Idle"
             ScanUseCase.State.Error -> "Error"

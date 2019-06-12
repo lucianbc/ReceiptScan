@@ -1,73 +1,47 @@
 package com.lucianbc.receiptscan.infrastructure.repository
 
-import com.lucianbc.receiptscan.domain.model.*
-import com.lucianbc.receiptscan.domain.model.Annotation
+import com.lucianbc.receiptscan.domain.model.DraftItem
+import com.lucianbc.receiptscan.domain.model.DraftValue
+import com.lucianbc.receiptscan.domain.model.OcrElement
+import com.lucianbc.receiptscan.domain.model.DraftWithProducts
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
-import com.lucianbc.receiptscan.domain.service.extract
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import io.reactivex.Flowable
 import io.reactivex.Observable
-import io.reactivex.Single
-import java.util.*
 import javax.inject.Inject
 
 class DraftsRepositoryImpl @Inject constructor(
     private val draftDao: DraftDao,
     private val imagesDao: ImagesDao
 ) : DraftsRepository {
-    override fun create(command: CreateDraftCommand): Observable<Long> =
+    override fun create(value: DraftValue): Observable<Long> =
         Observable
-            .fromCallable { imagesDao.saveImage(command.image) }
-            .flatMapSingle { saveDraft(command, it) }
-            .flatMapSingle { saveAnnotations(command, it) }
+            .fromCallable { imagesDao.saveImage(value.image) }
+            .flatMapSingle { draftDao.insert(value.draft(it)) }
+            .flatMapSingle { receiptId ->
+                draftDao.insertProducts(value.products(receiptId)).map { receiptId }
+            }
+            .flatMapSingle { receiptId ->
+                val els = value.elements(receiptId)
+                draftDao.insert(els).map { receiptId }
+            }
 
     override fun getImage(id: Long) =
         draftDao
             .getImagePath(id)
             .map { imagesDao.readImage(it) }
 
-
     override fun getAllItems(): Flowable<List<DraftItem>> =
         draftDao.getDraftItems()
 
-    override fun getReceipt(id: Long): Flowable<ReceiptDraftWithProducts> =
+    override fun getReceipt(id: Long): Flowable<DraftWithProducts> =
         draftDao.getReceipt(id)
 
-    override fun getAnnotations(draftId: Long): Flowable<List<Annotation>> =
-        draftDao.getAnnotations(draftId)
+    override fun getOcrElements(draftId: Long): Flowable<List<OcrElement>> =
+        draftDao.getOcrElements(draftId)
 
     override fun delete(draftId: Long) = draftDao.delete(draftId)
 
-    override fun editAnnotation(newAnnotation: Annotation) = draftDao.update(newAnnotation)
-
-    override fun saveReceipt(data: ReceiptDraftWithProducts) = draftDao.updateReceipt(data)
-
-    private fun saveDraft(command: CreateDraftCommand, filename: String): Single<Long> {
-        val (draft, products) = extract(command, filename)
-        return draftDao
-            .insert(draft)
-            .flatMap { saveProducts(it, products) }
-    }
-
-    private fun saveProducts(draftId: Long, products: List<ProductDraft>): Single<Long> {
-        val prods = products.map { it.copy(draftId = draftId) }
-        return draftDao.insertProducts(prods).map { draftId }
-    }
-
-    private fun saveDraft(filename: String): Single<Long> {
-        val draft = defaultDraft(filename)
-        return draftDao.insert(draft)
-    }
-
-    private fun saveAnnotations(command: CreateDraftCommand, draftId: Long): Single<Long> {
-        val annotationsWithParent = command.elements.map { it.toAnnotation(Tag.Noise).copy(draftId = draftId) }
-
-        return draftDao
-            .insert(annotationsWithParent.toList())
-            .map { draftId }
-    }
-
-    private fun defaultDraft(filename: String) =
-        Draft(filename, null, null, null, null, true, Date())
+    override fun saveReceipt(data: DraftWithProducts) = draftDao.updateReceipt(data)
 }

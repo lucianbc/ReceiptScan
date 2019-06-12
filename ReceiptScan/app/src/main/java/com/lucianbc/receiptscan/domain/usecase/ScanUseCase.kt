@@ -1,9 +1,8 @@
 package com.lucianbc.receiptscan.domain.usecase
 
-import com.lucianbc.receiptscan.domain.model.Command
+import com.lucianbc.receiptscan.domain.model.DraftValue
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.service.OcrWithImageProducer
-import com.lucianbc.receiptscan.domain.service.TaggingService
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.observables.ConnectableObservable
@@ -14,7 +13,6 @@ import javax.inject.Singleton
 
 @Singleton
 class ScanUseCase @Inject constructor(
-    private val taggingService: TaggingService,
     private val draftsRepository: DraftsRepository
 ) {
 
@@ -28,9 +26,9 @@ class ScanUseCase @Inject constructor(
         frame.produce()
             .doOnSubscribe { _state.onNext(State.OCR) }
             .observeOn(Schedulers.computation())
-            .doOnNext { _state.onNext(State.Tagging) }
+            .map { DraftValue.fromOcrElementsAndImage(it) }
             .doOnNext { _state.onNext(State.Saving) }
-            .flatMap { draftsRepository.create(Command(it)) }
+            .flatMap { draftsRepository.create(it) }
             .doOnComplete { _state.onNext(State.Idle) }
             .doOnError { _state.onNext(State.Error) }
             .publish()
@@ -39,7 +37,6 @@ class ScanUseCase @Inject constructor(
 
     sealed class State {
         object OCR: State()
-        object Tagging: State()
         object Saving: State()
         object Idle: State()
         object Error: State()

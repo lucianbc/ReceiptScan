@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "18b6ffb32e164fa7fdcea8a7767e833a",
+    "identityHash": "ccb9a6fd8abe31aebd5520933bca09ae",
     "entities": [
       {
         "tableName": "draft",
@@ -67,8 +67,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "annotation",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`text` TEXT NOT NULL, `top` INTEGER NOT NULL, `bottom` INTEGER NOT NULL, `left` INTEGER NOT NULL, `right` INTEGER NOT NULL, `tag` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT, `draftId` INTEGER, FOREIGN KEY(`draftId`) REFERENCES `draft`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "tableName": "ocrElement",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`text` TEXT NOT NULL, `top` INTEGER NOT NULL, `left` INTEGER NOT NULL, `bottom` INTEGER NOT NULL, `right` INTEGER NOT NULL, `receiptId` INTEGER, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY(`receiptId`) REFERENCES `draft`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "text",
@@ -83,14 +83,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "bottom",
-            "columnName": "bottom",
+            "fieldPath": "left",
+            "columnName": "left",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "left",
-            "columnName": "left",
+            "fieldPath": "bottom",
+            "columnName": "bottom",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -101,20 +101,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "tag",
-            "columnName": "tag",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "receiptId",
+            "columnName": "receiptId",
             "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "draftId",
-            "columnName": "draftId",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": false
           }
@@ -127,12 +121,12 @@
         },
         "indices": [
           {
-            "name": "index_annotation_draftId",
+            "name": "index_ocrElement_receiptId",
             "unique": false,
             "columnNames": [
-              "draftId"
+              "receiptId"
             ],
-            "createSql": "CREATE  INDEX `index_annotation_draftId` ON `${TABLE_NAME}` (`draftId`)"
+            "createSql": "CREATE  INDEX `index_ocrElement_receiptId` ON `${TABLE_NAME}` (`receiptId`)"
           }
         ],
         "foreignKeys": [
@@ -141,7 +135,66 @@
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "draftId"
+              "receiptId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "productDraft",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `price` REAL NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT, `receiptId` INTEGER, FOREIGN KEY(`receiptId`) REFERENCES `draft`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "price",
+            "columnName": "price",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "receiptId",
+            "columnName": "receiptId",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_productDraft_receiptId",
+            "unique": false,
+            "columnNames": [
+              "receiptId"
+            ],
+            "createSql": "CREATE  INDEX `index_productDraft_receiptId` ON `${TABLE_NAME}` (`receiptId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "draft",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "receiptId"
             ],
             "referencedColumns": [
               "id"
@@ -153,7 +206,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '18b6ffb32e164fa7fdcea8a7767e833a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ccb9a6fd8abe31aebd5520933bca09ae')"
     ]
   }
 }

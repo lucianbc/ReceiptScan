@@ -17,7 +17,7 @@ class RawReceipt(private val lines: List<Line>): Iterable<RawReceipt.Line> {
     val averageLineHeight
         get() = this.lines.map { it.height }.average()
 
-    val receiptText by lazy {
+    val text by lazy {
         lines.joinToString("\n") { it.joinToString("\t") { t -> t.text } }
     }
 
