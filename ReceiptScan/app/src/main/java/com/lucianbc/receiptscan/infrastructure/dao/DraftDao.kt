@@ -3,6 +3,7 @@ package com.lucianbc.receiptscan.infrastructure.dao
 import androidx.room.*
 import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
+import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
 import io.reactivex.Flowable
 import io.reactivex.Single
 import java.util.*
@@ -46,4 +47,10 @@ interface DraftDao {
         deleteProducts(data.receipt.id)
         insertProducts(data.products)
     }
+
+    @Query("update receipt set isDraft = 0 where id = :draftId")
+    fun validate(draftId: Long)
+
+    @Query("select id, merchantName, total from receipt where isDraft == 0 order by date desc")
+    fun getReceiptItems(): Flowable<List<ListReceiptsUseCase.Item>>
 }

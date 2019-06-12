@@ -42,6 +42,12 @@ class DraftReviewViewModel (
             .subscribe()
     }
 
+    fun validateDraft() {
+        Observable
+            .fromCallable { draftsRepository.validate(draftId) }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
 
     // region Factory
     @Suppress("UNCHECKED_CAST")

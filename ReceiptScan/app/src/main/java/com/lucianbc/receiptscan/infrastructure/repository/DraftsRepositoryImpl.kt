@@ -5,6 +5,7 @@ import com.lucianbc.receiptscan.domain.model.DraftWithProducts
 import com.lucianbc.receiptscan.domain.model.OcrElement
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
+import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import io.reactivex.Flowable
@@ -15,6 +16,8 @@ class DraftsRepositoryImpl @Inject constructor(
     private val draftDao: DraftDao,
     private val imagesDao: ImagesDao
 ) : DraftsRepository {
+    override fun validate(draftId: Long) = draftDao.validate(draftId)
+
     override fun create(value: DraftValue): Observable<Long> =
         Observable
             .fromCallable { imagesDao.saveImage(value.image) }
@@ -34,6 +37,9 @@ class DraftsRepositoryImpl @Inject constructor(
 
     override fun getAllItems(): Flowable<List<ListDraftsUseCase.DraftItem>> =
         draftDao.getDraftItems()
+
+    override fun getAllReceiptItems(): Flowable<List<ListReceiptsUseCase.Item>> =
+        draftDao.getReceiptItems()
 
     override fun getReceipt(id: Long): Flowable<DraftWithProducts> =
         draftDao.getReceipt(id)

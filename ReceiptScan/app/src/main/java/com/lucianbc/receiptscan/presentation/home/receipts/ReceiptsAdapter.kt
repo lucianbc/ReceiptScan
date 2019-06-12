@@ -40,6 +40,6 @@ class ReceiptItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     var item: ListReceiptsUseCase.Item? = null
         set(value) {
             field = value
-            view.receiptMerchant.text = value?.merchant
+            view.receiptMerchant.text = value?.merchantName
         }
 }

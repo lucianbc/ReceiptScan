@@ -1,24 +1,18 @@
 package com.lucianbc.receiptscan.domain.usecase
 
-import io.reactivex.BackpressureStrategy
+import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import javax.inject.Inject
 
-class ListReceiptsUseCase @Inject constructor() {
-
+class ListReceiptsUseCase @Inject constructor(
+    private val draftsRepository: DraftsRepository
+) {
     fun execute(): Flowable<List<Item>>
-            = Observable.just(items).toFlowable(BackpressureStrategy.LATEST)
-
-    private val items = listOf(
-        Item(1, "Lidl", 12.3F),
-        Item(2, "Sc Profi SRL", 11.99F),
-        Item(3, "Auchan", 112F)
-    )
+            = draftsRepository.getAllReceiptItems()
 
     data class Item (
         val id: Long,
-        val merchant: String,
-        val price: Float
+        val merchantName: String,
+        val total: Float
     )
 }

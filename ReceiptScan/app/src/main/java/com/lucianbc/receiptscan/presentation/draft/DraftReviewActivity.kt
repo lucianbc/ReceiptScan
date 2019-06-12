@@ -45,7 +45,7 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
     private fun setupButtons() {
         editFab.setOnClickListener(showAnnotationsListener)
         discardFab.setOnClickListener(discardListener)
-        acceptFab.setOnClickListener { finish() }
+        acceptFab.setOnClickListener(validateListener)
     }
 
     @SuppressLint("PrivateResource")
@@ -62,6 +62,11 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
 
     private val discardListener = View.OnClickListener {
         discardAndFinish()
+    }
+
+    private val validateListener = View.OnClickListener {
+        viewModel.validateDraft()
+        finish()
     }
 
     override fun onBackPressed() {
