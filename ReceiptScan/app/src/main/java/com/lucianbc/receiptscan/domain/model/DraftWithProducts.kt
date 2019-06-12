@@ -3,10 +3,10 @@ package com.lucianbc.receiptscan.domain.model
 import androidx.room.Embedded
 import androidx.room.Relation
 
-class ReceiptDraftWithProducts (
+class DraftWithProducts (
     @Embedded
     val receipt: ReceiptDraft,
 
-    @Relation(parentColumn = "id", entityColumn = "draftId")
-    val products: List<ProductDraft>
+    @Relation(parentColumn = "id", entityColumn = "receiptId")
+    val products: List<Product>
 )

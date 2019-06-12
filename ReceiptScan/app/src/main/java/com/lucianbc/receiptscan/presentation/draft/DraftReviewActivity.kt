@@ -20,7 +20,7 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
     private var canDiscard =
         DEFAULT_CAN_DISCARD
 
-    private val annotationsFragment by lazy { AnnotationsFragment() }
+    private val annotationsFragment by lazy { ReceiptImageFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

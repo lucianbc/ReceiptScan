@@ -115,5 +115,4 @@ class OcrElementsProducersFactory @Inject constructor(
             .build()
         return FirebaseVisionImage.fromByteArray(this.data, metadata)
     }
-
 }

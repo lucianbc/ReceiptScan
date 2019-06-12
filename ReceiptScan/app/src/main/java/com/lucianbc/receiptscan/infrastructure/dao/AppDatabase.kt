@@ -5,15 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.lucianbc.receiptscan.domain.model.Annotation
-import com.lucianbc.receiptscan.domain.model.Draft
-import com.lucianbc.receiptscan.domain.model.ProductDraft
+import com.lucianbc.receiptscan.domain.model.OcrElement
+import com.lucianbc.receiptscan.domain.model.Product
+import com.lucianbc.receiptscan.domain.model.ReceiptEntity
 
 @Database(entities = [
-    Draft::class,
-    Annotation::class,
-    ProductDraft::class
-], version = 2, exportSchema = true)
+    ReceiptEntity::class,
+    OcrElement::class,
+    Product::class
+], version = 3, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
 
@@ -29,7 +29,7 @@ abstract class AppDatabase: RoomDatabase() {
                         AppDatabase::class.java,
                         "receiptscan.db"
                     )
-                    .addMigrations(MIGRATION_1_2)
+                        .fallbackToDestructiveMigration()
                     .build()
                 }
             }

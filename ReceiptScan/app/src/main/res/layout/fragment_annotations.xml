@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.draft.AnnotationsFragment"
+        tools:context=".presentation.draft.ReceiptImageFragment"
         android:background="@color/black">
 
     <com.github.chrisbanes.photoview.PhotoView
