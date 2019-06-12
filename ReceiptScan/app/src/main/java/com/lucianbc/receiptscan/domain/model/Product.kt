@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
     tableName = "productDraft",
     foreignKeys = [
         ForeignKey(
-            entity = Draft::class,
+            entity = ReceiptEntity::class,
             onDelete = ForeignKey.CASCADE,
             parentColumns = ["id"],
             childColumns = ["receiptId"]

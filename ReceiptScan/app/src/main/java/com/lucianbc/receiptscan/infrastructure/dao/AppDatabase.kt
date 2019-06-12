@@ -5,15 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.lucianbc.receiptscan.domain.model.Draft
 import com.lucianbc.receiptscan.domain.model.OcrElement
 import com.lucianbc.receiptscan.domain.model.Product
+import com.lucianbc.receiptscan.domain.model.ReceiptEntity
 
 @Database(entities = [
-    Draft::class,
+    ReceiptEntity::class,
     OcrElement::class,
     Product::class
-], version = 2, exportSchema = true)
+], version = 3, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
 

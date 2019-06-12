@@ -28,7 +28,7 @@ class DraftsRepositoryImplTest {
             .assertComplete()
         assertEquals(1, draftCaptor.allValues.size)
         assertNull(draftCaptor.firstValue.id)
-        assertEquals(true, draftCaptor.firstValue.isLinked)
+        assertEquals(true, draftCaptor.firstValue.isDraft)
         assertEquals(filename, draftCaptor.firstValue.imagePath)
 
         assertEquals(1, annotationsCaptor.allValues.size)
@@ -52,7 +52,7 @@ class DraftsRepositoryImplTest {
         OcrElement("12.5 B", 35, 8, 45, 12)
     )
 
-    private var draftCaptor = argumentCaptor<Draft>()
+    private var draftCaptor = argumentCaptor<ReceiptEntity>()
     private var annotationsCaptor = argumentCaptor<List<OcrElement>>()
 
     @Before

@@ -18,7 +18,7 @@ class DraftsRepositoryImpl @Inject constructor(
     override fun create(value: DraftValue): Observable<Long> =
         Observable
             .fromCallable { imagesDao.saveImage(value.image) }
-            .flatMapSingle { draftDao.insert(value.draft(it)) }
+            .flatMapSingle { draftDao.insert(value.receipt(it)) }
             .flatMapSingle { receiptId ->
                 draftDao.insertProducts(value.products(receiptId)).map { receiptId }
             }

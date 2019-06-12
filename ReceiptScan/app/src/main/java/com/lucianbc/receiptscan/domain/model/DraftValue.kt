@@ -22,7 +22,16 @@ class DraftValue private constructor(
         val price: Float
     )
 
-    fun draft(imagePath: String) = Draft(imagePath, merchant, date, total, currency, true, Date())
+    fun receipt(imagePath: String) =
+        ReceiptEntity(
+            imagePath,
+            merchant,
+            date,
+            total,
+            currency,
+            Date(),
+            true
+        )
     fun products(receiptId: Long) = products.map { Product(it.name, it.price, receiptId = receiptId) }
     fun elements(receiptId: Long) = elements.map { it.copy(receiptId = receiptId) }
 

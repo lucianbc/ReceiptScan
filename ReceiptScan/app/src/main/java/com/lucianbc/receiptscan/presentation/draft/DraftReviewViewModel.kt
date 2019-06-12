@@ -54,7 +54,7 @@ class DraftReviewViewModel (
             return if (modelClass.isAssignableFrom(DraftReviewViewModel::class.java) && draftId != -1L) {
                 DraftReviewViewModel(draftId, draftsRepository) as T
             } else {
-                throw IllegalArgumentException("ViewModel not fond or draft id not instantiated")
+                throw IllegalArgumentException("ViewModel not fond or receipt id not instantiated")
             }
         }
     }
