@@ -13,10 +13,14 @@ fun extractMerchant(rawReceipt: RawReceipt) : String? {
 
         val nextLine = if (linesIterator.hasNext()) linesIterator.next() else null
 
+        val heightThreshold = 1.2 * rawReceipt.averageLineHeight
+
         return if (
-            line.height > 1.2 * rawReceipt.averageLineHeight
+            line.height > heightThreshold
             && nextLine != null
             && nextLine.text.split(" ").size < 2
+            && nextLine.height > heightThreshold
+            && nextLine.top - line.bottom < rawReceipt.averageLineHeight
         )
             line.text + " " + nextLine.text
         else
