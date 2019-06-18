@@ -8,18 +8,15 @@ class RawReceipt(private val lines: List<Line>): Iterable<RawReceipt.Line> {
 
     class Line(private val elements: List<OcrElement>) : Iterable<OcrElement> {
         override fun iterator() = elements.iterator()
-        val text
-            get() = elements.joinToString(" ") { it.text }
-        val height
-            get() = elements.map { it.height }.average()
+        val text by lazy { elements.joinToString(" ") { it.text } }
+        val height by lazy { elements.map { it.height }.average() }
+        val top by lazy { elements.map { it.top }.min()!! }
+        val bottom by lazy { elements.map { it.bottom }.max()!! }
     }
 
-    val averageLineHeight
-        get() = this.lines.map { it.height }.average()
+    val averageLineHeight by lazy { this.lines.map { it.height }.average() }
 
-    val text by lazy {
-        lines.joinToString("\n") { it.joinToString("\t") { t -> t.text } }
-    }
+    val text by lazy { lines.joinToString("\n") { it.joinToString("\t") { t -> t.text } } }
 
     companion object {
         private const val THRESHOLD = 0.5F
