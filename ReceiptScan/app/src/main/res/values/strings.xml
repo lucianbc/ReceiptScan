@@ -30,4 +30,8 @@
     <string name="drafts_text">Review your scanned receipts</string>
     <string name="toggleFlashBtn">Toggle Flash</string>
     <string name="scanner_error_msg">There was an error with the camera.</string>
+    <string name="edit">edit</string>
+    <string name="price">Price</string>
+    <string name="product_name">Product Name</string>
+    <string name="add_product">Add Product</string>
 </resources>

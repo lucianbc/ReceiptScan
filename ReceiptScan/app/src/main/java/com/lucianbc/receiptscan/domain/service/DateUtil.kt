@@ -49,6 +49,6 @@ fun parseDate(dateString: String): Date? {
 }
 
 
-fun Date.show(): String = format.format(this)
+fun Date?.show(): String = format.format(this)
 
 private val format = SimpleDateFormat("dd-MM-yyyy", Locale.US)

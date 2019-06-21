@@ -5,7 +5,7 @@ import androidx.room.Relation
 
 class DraftWithProducts (
     @Embedded
-    val receipt: ReceiptDraft,
+    val receipt: Draft,
 
     @Relation(parentColumn = "id", entityColumn = "receiptId")
     val products: List<Product>

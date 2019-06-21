@@ -4,6 +4,7 @@ import androidx.room.*
 import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import java.util.*
@@ -22,7 +23,7 @@ interface DraftDao {
     @Query("select imagePath from receipt where id = :id")
     fun getImagePath(id: Long): Flowable<String>
 
-    @Query("select merchantName, date, currency, total, id from receipt where id = :id")
+    @Query("select merchantName, date, currency, total, id, imagePath, creationTimestamp from receipt where id = :id")
     @Transaction
     fun getReceipt(id: Long): Flowable<DraftWithProducts>
 
@@ -38,13 +39,32 @@ interface DraftDao {
     @Query("delete from productDraft where receiptId = :receiptId")
     fun deleteProducts(receiptId: Long)
 
+    @Query("delete from productDraft where receiptId = :receiptId and id not in (:toKeepIds)")
+    fun deleteProductsNotInKeep(receiptId: Long, toKeepIds: List<Long>)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProducts(products: List<Product>): Single<List<Long>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertProductsSync(products: List<Product>): List<Long>
+
+    @Transaction
+    fun updateProducts(receiptId: Long, products: List<Product>): List<Long> {
+        deleteProductsNotInKeep(receiptId, products.toList().mapNotNull { it.id })
+        return insertProductsSync(products)
+    }
 
     @Transaction
     fun updateReceipt(data: DraftWithProducts) {
         updateReceipt(data.receipt.merchantName, data.receipt.date, data.receipt.currency, data.receipt.total, data.receipt.id)
-        deleteProducts(data.receipt.id)
+
+        data.products.mapNotNull { it.id }.let {
+            if (it.isNotEmpty()) {
+                deleteProductsNotInKeep(data.receipt.id, it)
+            }
+        }
+
+        deleteProductsNotInKeep(data.receipt.id, data.products.mapNotNull { it.id })
         insertProducts(data.products)
     }
 
@@ -53,4 +73,7 @@ interface DraftDao {
 
     @Query("select id, merchantName, total from receipt where isDraft == 0 order by date desc")
     fun getReceiptItems(): Flowable<List<ListReceiptsUseCase.Item>>
+
+    @Update
+    fun update(product: Product)
 }

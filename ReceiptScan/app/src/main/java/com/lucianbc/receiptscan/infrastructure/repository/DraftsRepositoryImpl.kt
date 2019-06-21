@@ -1,21 +1,24 @@
 package com.lucianbc.receiptscan.infrastructure.repository
 
-import com.lucianbc.receiptscan.domain.model.DraftValue
-import com.lucianbc.receiptscan.domain.model.DraftWithProducts
-import com.lucianbc.receiptscan.domain.model.OcrElement
+import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Single
 import javax.inject.Inject
 
 class DraftsRepositoryImpl @Inject constructor(
     private val draftDao: DraftDao,
     private val imagesDao: ImagesDao
 ) : DraftsRepository {
+    override fun update(receiptId: Long, products: List<Product>) =
+        Single.fromCallable { draftDao.updateProducts(receiptId, products) }
+
     override fun validate(draftId: Long) = draftDao.validate(draftId)
 
     override fun create(value: DraftValue): Observable<Long> =
@@ -29,6 +32,8 @@ class DraftsRepositoryImpl @Inject constructor(
                 val els = value.elements(receiptId)
                 draftDao.insert(els).map { receiptId }
             }
+
+    override fun update(draft: Draft) = draftDao.insert(draft.receipt())
 
     override fun getImage(id: Long) =
         draftDao

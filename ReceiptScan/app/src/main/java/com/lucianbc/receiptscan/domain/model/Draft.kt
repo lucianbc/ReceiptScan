@@ -9,5 +9,17 @@ data class Draft (
     val total: Float?,
     val currency: Currency?,
     val creationTimestamp: Date,
-    var id: Long? = null
-)
+    var id: Long
+) {
+    fun receipt() =
+        ReceiptEntity(
+            imagePath,
+            merchantName,
+            date,
+            total,
+            currency,
+            creationTimestamp,
+            true,
+            id
+        )
+}

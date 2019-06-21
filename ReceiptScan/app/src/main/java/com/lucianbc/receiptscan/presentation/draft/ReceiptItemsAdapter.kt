@@ -10,13 +10,13 @@ import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.domain.model.Product
 import kotlinx.android.synthetic.main.receipt_item_layout.view.*
 
-class ReceiptItemsAdapter : ListAdapter<Product, ReceiptItemViewHolder>(Diff()) {
+class ReceiptItemsAdapter(private val onTap: (Product) -> Unit) : ListAdapter<Product, ReceiptItemViewHolder>(Diff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReceiptItemViewHolder {
         val view = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.receipt_item_layout, parent, false)
-        return ReceiptItemViewHolder(view)
+        return ReceiptItemViewHolder(view, onTap)
     }
 
     override fun onBindViewHolder(holder: ReceiptItemViewHolder, position: Int) {
@@ -36,11 +36,12 @@ class ReceiptItemsAdapter : ListAdapter<Product, ReceiptItemViewHolder>(Diff()) 
     }
 }
 
-class ReceiptItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+class ReceiptItemViewHolder(val view: View, private val onTap: (Product) -> Unit) : RecyclerView.ViewHolder(view) {
     var product: Product? = null
         set(value) {
             field = value
             view.itemName.text = value?.name
             view.itemPrice.text = value?.price.toString()
+            value?.let{ view.setOnClickListener { onTap(value) } }
         }
 }
