@@ -12,7 +12,7 @@ class DraftValue private constructor(
     private val date: Date?,
     private val currency: Currency?,
     private val total: Float?,
-    private val elements: List<OcrElement>,
+    private val elements: List<OcrElementValue>,
     val image: Bitmap
 ) {
     private val products = mutableListOf<Product>()
@@ -33,12 +33,12 @@ class DraftValue private constructor(
             true
         )
     fun products(receiptId: Long) = products.map { Product(it.name, it.price, receiptId = receiptId) }
-    fun elements(receiptId: Long) = elements.map { it.copy(receiptId = receiptId) }
+    fun elements(receiptId: Long) = elements.map { it.ocrElement(receiptId) }
 
 
     companion object {
         fun fromOcrElementsAndImage(arg: Pair<Bitmap, OcrElements>): DraftValue {
-            val elements = arg.second.toList()
+            val elements = arg.second
             val receipt = RawReceipt.create(elements)
             val text = receipt.text
             val merchant = extractMerchant(receipt)

@@ -6,6 +6,7 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.domain.model.OcrElement
+import com.lucianbc.receiptscan.domain.model.OcrElementValue
 import com.lucianbc.receiptscan.domain.model.OcrElements
 import com.lucianbc.receiptscan.domain.service.OcrElementsProducer
 import com.lucianbc.receiptscan.domain.service.OcrWithImageProducer
@@ -70,9 +71,9 @@ class OcrElementsProducersFactory @Inject constructor(
             .map { it.mapNotNull { line -> line.toOcrElement() } }
 
 
-    private fun FirebaseVisionText.Line.toOcrElement(): OcrElement? =
+    private fun FirebaseVisionText.Line.toOcrElement(): OcrElementValue? =
         if (this.boundingBox != null)
-            OcrElement(this.text,
+            OcrElementValue(this.text,
                 this.boundingBox!!.top,
                 this.boundingBox!!.left,
                 this.boundingBox!!.bottom,

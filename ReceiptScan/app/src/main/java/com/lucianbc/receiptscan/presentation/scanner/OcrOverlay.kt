@@ -5,17 +5,17 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
-import com.lucianbc.receiptscan.domain.model.OcrElement
+import com.lucianbc.receiptscan.domain.model.OcrElementValue
 import com.lucianbc.receiptscan.presentation.service.paint
 
 class OcrOverlay (
     context: Context,
     attrs: AttributeSet
 ) : View(context, attrs) {
-    private val graphics = mutableSetOf<OcrElement>()
+    private val graphics = mutableSetOf<OcrElementValue>()
     private val lock = Any()
 
-    fun submitOcrElements(elements: Sequence<OcrElement>) {
+    fun submitOcrElements(elements: Sequence<OcrElementValue>) {
         synchronized(lock) {
             graphics.clear()
             graphics.addAll(elements)
@@ -30,7 +30,7 @@ class OcrOverlay (
         }
     }
 
-    private val OcrElement.rect
+    private val OcrElementValue.rect
         get() = Rect(this.left, this.top, this.right, this.bottom)
 
     // this transformation is specific to the cropping done on my device.

@@ -6,7 +6,7 @@ import kotlin.collections.ArrayList
 class RawReceipt(private val lines: List<Line>): Iterable<RawReceipt.Line> {
     override fun iterator(): Iterator<Line> = lines.iterator()
 
-    class Line(private val elements: List<OcrElement>) : Iterable<OcrElement> {
+    class Line(private val elements: List<OcrElementValue>) : Iterable<OcrElementValue> {
         override fun iterator() = elements.iterator()
         val text by lazy { elements.joinToString(" ") { it.text } }
         val height by lazy { elements.map { it.height }.average() }
@@ -20,11 +20,11 @@ class RawReceipt(private val lines: List<Line>): Iterable<RawReceipt.Line> {
 
     companion object {
         private const val THRESHOLD = 0.5F
-        fun create(elements: List<OcrElement>): RawReceipt {
+        fun create(elements: OcrElements): RawReceipt {
             val sorted = elements.sortedBy { t -> t.mid }
             val unifiedLines = LinkedList<Line>()
 
-            var currentLine = ArrayList<OcrElement>()
+            var currentLine = ArrayList<OcrElementValue>()
             val boxesIterator = sorted.iterator()
 
             if (boxesIterator.hasNext()) {
@@ -54,9 +54,6 @@ class RawReceipt(private val lines: List<Line>): Iterable<RawReceipt.Line> {
         }
     }
 }
-
-val OcrElement.mid: Float
-    get() = (this.bottom + this.top).toFloat() / 2
 
 val OcrElement.height: Int
     get() = this.bottom - this.top + 1

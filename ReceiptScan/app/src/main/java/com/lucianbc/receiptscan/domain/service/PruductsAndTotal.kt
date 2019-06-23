@@ -1,21 +1,23 @@
 package com.lucianbc.receiptscan.domain.service
 
-import com.lucianbc.receiptscan.domain.model.*
+import com.lucianbc.receiptscan.domain.model.DraftValue
+import com.lucianbc.receiptscan.domain.model.OcrElementValue
+import com.lucianbc.receiptscan.domain.model.RawReceipt
 import com.lucianbc.receiptscan.util.Just
 import com.lucianbc.receiptscan.util.None
 import com.lucianbc.receiptscan.util.Optional
 
 class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
-    private val boundaries: Boundaries
+    private val horizontalBorders: HorizontalBorders
 
-    private var lastKey: Optional<OcrElement> = None
+    private var lastKey: Optional<OcrElementValue> = None
 
     private val totalMarkRegex = "total|ammount|summe".toRegex()
 
     private val keyPriceResults = mutableListOf<ResultObj>()
 
     init {
-        boundaries = boundaries(receipt)
+        horizontalBorders = boundaries(receipt)
     }
 
     fun execute(): Pair<Float?, List<DraftValue.Product>> {
@@ -64,7 +66,7 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         }
     }
 
-    private fun processPrice(priceElement: OcrElement) {
+    private fun processPrice(priceElement: OcrElementValue) {
         val price = parseNumber(priceElement.text)
         price?.let {
             val mLastKey = lastKey
@@ -80,14 +82,14 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         }
     }
 
-    private fun processKey(element: OcrElement) {
+    private fun processKey(element: OcrElementValue) {
         val digitCount = element.text.count { it.isDigit() }
         if (digitCount < 0.3 * element.text.length) {
             lastKey = Just(element)
         }
     }
 
-    private fun processKeyValue(element: OcrElement) {
+    private fun processKeyValue(element: OcrElementValue) {
         val price = parseNumber(element.text)
         price?.let {
             val name = element.text.split(" ").take(3).joinToString(" ")
@@ -97,7 +99,7 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         }
     }
 
-    private fun makeResult(key: String, price: Float, element: OcrElement) {
+    private fun makeResult(key: String, price: Float, element: OcrElementValue) {
         val keyLowercase = element.text.toLowerCase()
         if (keyLowercase.contains(totalMarkRegex)) {
             keyPriceResults.add(ResultObj.Total(price, element.top))
@@ -106,7 +108,7 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         }
     }
 
-    private fun makeResult(keyElement: OcrElement, price: Float) {
+    private fun makeResult(keyElement: OcrElementValue, price: Float) {
         val keyLowercase = keyElement.text.toLowerCase()
         if (keyLowercase.contains(totalMarkRegex)) {
             keyPriceResults.add(ResultObj.Total(price, keyElement.top))
@@ -115,14 +117,14 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         }
     }
 
-    private fun isAlignedToLeft(element: OcrElement): Boolean =
-        (element.left - boundaries.left).toFloat() / boundaries.width < ALIGN_THRESH
+    private fun isAlignedToLeft(element: OcrElementValue): Boolean =
+        (element.left - horizontalBorders.left).toFloat() / horizontalBorders.width < ALIGN_THRESH
 
-    private fun isAlignedToRight(element: OcrElement): Boolean =
-        (boundaries.right - element.right).toFloat() / boundaries.width < ALIGN_THRESH
+    private fun isAlignedToRight(element: OcrElementValue): Boolean =
+        (horizontalBorders.right - element.right).toFloat() / horizontalBorders.width < ALIGN_THRESH
 
 
-    private fun boundaries(receipt: RawReceipt): Boundaries {
+    private fun boundaries(receipt: RawReceipt): HorizontalBorders {
         val elements = receipt.flatten()
         var top = Int.MAX_VALUE
         var bottom = -1
@@ -134,11 +136,11 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
             if (a.bottom > bottom) bottom = a.bottom
             if (a.right > right) right = a.right
         }
-        return Boundaries(top, bottom, left, right)
+        return HorizontalBorders(left, right)
     }
 
-    private class Boundaries(val top: Int, val bottom: Int, val left: Int, val right: Int)
-    private val Boundaries.width
+    private class HorizontalBorders(val left: Int, val right: Int)
+    private val HorizontalBorders.width
         get() = this.right - this.left + 1
 
     private sealed class ResultObj {
