@@ -1,5 +1,7 @@
 package com.lucianbc.receiptscan.domain.model
 
+import com.lucianbc.receiptscan.domain.scanner.OcrElementValue
+import com.lucianbc.receiptscan.domain.scanner.OcrElements
 import java.util.*
 import kotlin.collections.ArrayList
 

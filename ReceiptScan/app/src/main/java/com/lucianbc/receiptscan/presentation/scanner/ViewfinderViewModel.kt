@@ -4,12 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
-import com.lucianbc.receiptscan.domain.usecase.LiveViewUseCase
-import com.lucianbc.receiptscan.domain.usecase.ScanUseCase
+import com.lucianbc.receiptscan.domain.scanner.LiveViewUseCase
 import com.lucianbc.receiptscan.infrastructure.OcrElementsProducersFactory
 import com.lucianbc.receiptscan.util.loge
 import com.otaliastudios.cameraview.Frame
-import io.reactivex.schedulers.Schedulers
 import java.lang.IllegalArgumentException
 import javax.inject.Inject
 

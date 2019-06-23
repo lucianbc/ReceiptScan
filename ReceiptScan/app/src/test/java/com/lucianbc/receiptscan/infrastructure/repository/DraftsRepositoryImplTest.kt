@@ -2,6 +2,7 @@ package com.lucianbc.receiptscan.infrastructure.repository
 
 import android.graphics.Bitmap
 import com.lucianbc.receiptscan.domain.model.*
+import com.lucianbc.receiptscan.domain.scanner.OcrElementValue
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.nhaarman.mockitokotlin2.any

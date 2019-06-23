@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lucianbc.receiptscan.domain.service.OcrWithImageProducer
+import com.lucianbc.receiptscan.domain.scanner.OcrWithImageProducer
 import com.lucianbc.receiptscan.domain.usecase.ScanUseCase
 import com.lucianbc.receiptscan.infrastructure.OcrElementsProducersFactory
 import com.lucianbc.receiptscan.presentation.Event

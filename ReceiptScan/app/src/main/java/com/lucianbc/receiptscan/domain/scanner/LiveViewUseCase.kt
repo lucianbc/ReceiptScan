@@ -1,31 +1,29 @@
-package com.lucianbc.receiptscan.domain.usecase
+package com.lucianbc.receiptscan.domain.scanner
 
-import com.lucianbc.receiptscan.domain.model.OcrElements
-import com.lucianbc.receiptscan.domain.service.OcrElementsProducer
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.rxkotlin.mergeAll
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-class LiveViewUseCase(fps: Float) {
-    private val frameRate = (MULTIPLE / fps).toLong()
+typealias OcrElements = Sequence<OcrElementValue>
 
-    private val frameProducer = PublishSubject.create<Observable<OcrElements>>()
+class LiveViewUseCase(fps: Float) {
+    private val frameRate = (1000 / fps).toLong()
+
+    private val frameSource = PublishSubject.create<Frame>()
 
     val ocrElements: Flowable<OcrElements> =
-            frameProducer
+            frameSource
                 .mergeAll()
                 .throttleLast(frameRate, FRAME_UNIT)
                 .toFlowable(BackpressureStrategy.LATEST)
 
-    fun scanFrame(frame: OcrElementsProducer) {
-        frameProducer.onNext(frame.produce())
+    fun scanFrame(frame: FrameProducer) {
+        frameSource.onNext(frame.produce())
     }
 
     companion object {
         private val FRAME_UNIT = TimeUnit.MILLISECONDS
-        private const val MULTIPLE = 1000
     }
 }

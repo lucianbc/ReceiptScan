@@ -1,4 +1,6 @@
-package com.lucianbc.receiptscan.domain.model
+package com.lucianbc.receiptscan.domain.scanner
+
+import com.lucianbc.receiptscan.domain.model.OcrElement
 
 data class OcrElementValue(
     val text: String,

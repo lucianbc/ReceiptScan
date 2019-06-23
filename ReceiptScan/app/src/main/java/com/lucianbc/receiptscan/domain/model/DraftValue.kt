@@ -1,6 +1,8 @@
 package com.lucianbc.receiptscan.domain.model
 
 import android.graphics.Bitmap
+import com.lucianbc.receiptscan.domain.scanner.OcrElementValue
+import com.lucianbc.receiptscan.domain.scanner.OcrElements
 import com.lucianbc.receiptscan.domain.service.ProductsAndTotalStrategy
 import com.lucianbc.receiptscan.domain.service.extractCurrency
 import com.lucianbc.receiptscan.domain.service.extractDate

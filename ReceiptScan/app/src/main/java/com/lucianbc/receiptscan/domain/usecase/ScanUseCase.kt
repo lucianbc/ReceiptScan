@@ -2,7 +2,7 @@ package com.lucianbc.receiptscan.domain.usecase
 
 import com.lucianbc.receiptscan.domain.model.DraftValue
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
-import com.lucianbc.receiptscan.domain.service.OcrWithImageProducer
+import com.lucianbc.receiptscan.domain.scanner.OcrWithImageProducer
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.observables.ConnectableObservable

@@ -5,11 +5,10 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
-import com.lucianbc.receiptscan.domain.model.OcrElement
-import com.lucianbc.receiptscan.domain.model.OcrElementValue
-import com.lucianbc.receiptscan.domain.model.OcrElements
-import com.lucianbc.receiptscan.domain.service.OcrElementsProducer
-import com.lucianbc.receiptscan.domain.service.OcrWithImageProducer
+import com.lucianbc.receiptscan.domain.scanner.OcrElementValue
+import com.lucianbc.receiptscan.domain.scanner.OcrElements
+import com.lucianbc.receiptscan.domain.scanner.FrameProducer
+import com.lucianbc.receiptscan.domain.scanner.OcrWithImageProducer
 import com.otaliastudios.cameraview.Frame
 import com.otaliastudios.cameraview.PictureResult
 import io.reactivex.Observable
@@ -20,8 +19,8 @@ import javax.inject.Inject
 class OcrElementsProducersFactory @Inject constructor(
     private val recognizer: FirebaseVisionTextRecognizer
 ) {
-    fun simple(frame: Frame): OcrElementsProducer {
-        return object : OcrElementsProducer {
+    fun simple(frame: Frame): FrameProducer {
+        return object : FrameProducer {
             override fun produce(): Observable<OcrElements> =
                 frame
                     .firebaseImage()
@@ -73,11 +72,13 @@ class OcrElementsProducersFactory @Inject constructor(
 
     private fun FirebaseVisionText.Line.toOcrElement(): OcrElementValue? =
         if (this.boundingBox != null)
-            OcrElementValue(this.text,
+            OcrElementValue(
+                this.text,
                 this.boundingBox!!.top,
                 this.boundingBox!!.left,
                 this.boundingBox!!.bottom,
-                this.boundingBox!!.right)
+                this.boundingBox!!.right
+            )
         else null
 
     private fun Bitmap.firebaseImage() = FirebaseVisionImage.fromBitmap(this)

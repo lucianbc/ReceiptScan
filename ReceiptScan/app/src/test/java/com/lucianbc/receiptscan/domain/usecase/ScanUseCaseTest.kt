@@ -1,7 +1,7 @@
 package com.lucianbc.receiptscan.domain.usecase
 
 import android.graphics.Bitmap
-import com.lucianbc.receiptscan.domain.model.OcrElementValue
+import com.lucianbc.receiptscan.domain.scanner.OcrElementValue
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.scanner.OcrElements
 import com.lucianbc.receiptscan.domain.scanner.OcrWithImageProducer
