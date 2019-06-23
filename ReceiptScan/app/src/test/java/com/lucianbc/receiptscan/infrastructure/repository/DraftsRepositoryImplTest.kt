@@ -47,9 +47,9 @@ class DraftsRepositoryImplTest {
 
     private val filename = "filename"
     private val elements = sequenceOf(
-        OcrElement("merchant", 1, 20, 30, 40),
-        OcrElement("prod1", 35, 1, 45, 4),
-        OcrElement("12.5 B", 35, 8, 45, 12)
+        OcrElementValue("merchant", 1, 20, 30, 40),
+        OcrElementValue("prod1", 35, 1, 45, 4),
+        OcrElementValue("12.5 B", 35, 8, 45, 12)
     )
 
     private var draftCaptor = argumentCaptor<ReceiptEntity>()

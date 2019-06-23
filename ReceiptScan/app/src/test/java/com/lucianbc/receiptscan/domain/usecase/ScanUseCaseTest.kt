@@ -1,16 +1,17 @@
 package com.lucianbc.receiptscan.domain.usecase
 
 import android.graphics.Bitmap
-import com.lucianbc.receiptscan.domain.model.*
+import com.lucianbc.receiptscan.domain.model.OcrElementValue
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
-import com.lucianbc.receiptscan.domain.service.OcrWithImageProducer
+import com.lucianbc.receiptscan.domain.scanner.OcrElements
+import com.lucianbc.receiptscan.domain.scanner.OcrWithImageProducer
 import com.nhaarman.mockitokotlin2.*
-import org.mockito.Mockito.`when`
 import io.reactivex.Observable
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito.`when`
 
 class ScanUseCaseTest {
 
@@ -43,7 +44,7 @@ class ScanUseCaseTest {
     }
 
     private lateinit var argBitmap: Bitmap
-    private lateinit var argElements: Sequence<OcrElement>
+    private lateinit var argElements: Sequence<OcrElementValue>
     private lateinit var parameter: OcrWithImageProducer
 
     private lateinit var draftRepoMock: DraftsRepository
@@ -54,7 +55,7 @@ class ScanUseCaseTest {
         `when`(draftRepoMock.create(any())).thenReturn(Observable.just(1L))
 
         argBitmap = mock()
-        argElements = sequenceOf(OcrElement("text", 0, 0, 1, 1))
+        argElements = sequenceOf(OcrElementValue("text", 0, 0, 1, 1))
 
         parameter = object: OcrWithImageProducer {
             override fun produce(): Observable<Pair<Bitmap, OcrElements>> =
