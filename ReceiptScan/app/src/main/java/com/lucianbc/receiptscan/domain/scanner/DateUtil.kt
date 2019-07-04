@@ -1,8 +1,9 @@
-package com.lucianbc.receiptscan.domain.service
+package com.lucianbc.receiptscan.domain.scanner
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 private const val DIGIT_MISTAKES = "[\\doO]"
 
@@ -38,7 +39,7 @@ fun findDatesWithPatterns(searchedString: String): Sequence<Date> {
                 null
             }
         }
-        .sortedBy { Math.abs(it.time - now.time) }
+        .sortedBy { abs(it.time - now.time) }
 }
 
 

@@ -2,9 +2,9 @@ package com.lucianbc.receiptscan.domain.repository
 
 import android.graphics.Bitmap
 import com.lucianbc.receiptscan.domain.model.*
+import com.lucianbc.receiptscan.domain.scanner.DraftValue
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
-import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single

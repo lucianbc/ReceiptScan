@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
-import com.lucianbc.receiptscan.domain.usecase.ScanUseCase
+import com.lucianbc.receiptscan.domain.scanner.ScanUseCase
 import javax.inject.Inject
 
 class DraftsViewModel @Inject constructor(

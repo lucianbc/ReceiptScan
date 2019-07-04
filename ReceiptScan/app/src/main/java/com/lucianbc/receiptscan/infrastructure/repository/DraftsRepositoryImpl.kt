@@ -2,11 +2,11 @@ package com.lucianbc.receiptscan.infrastructure.repository
 
 import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
+import com.lucianbc.receiptscan.domain.scanner.DraftValue
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
-import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single

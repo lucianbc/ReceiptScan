@@ -1,6 +1,5 @@
-package com.lucianbc.receiptscan.domain.service
+package com.lucianbc.receiptscan.domain.scanner
 
-import com.lucianbc.receiptscan.domain.model.DraftValue
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.domain.model.RawReceipt
 import com.lucianbc.receiptscan.util.Just
@@ -102,18 +101,40 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
     private fun makeResult(key: String, price: Float, element: OcrElementValue) {
         val keyLowercase = element.text.toLowerCase()
         if (keyLowercase.contains(totalMarkRegex)) {
-            keyPriceResults.add(ResultObj.Total(price, element.top))
+            keyPriceResults.add(
+                ResultObj.Total(
+                    price,
+                    element.top
+                )
+            )
         } else {
-            keyPriceResults.add(ResultObj.Product(price, key, element.top))
+            keyPriceResults.add(
+                ResultObj.Product(
+                    price,
+                    key,
+                    element.top
+                )
+            )
         }
     }
 
     private fun makeResult(keyElement: OcrElementValue, price: Float) {
         val keyLowercase = keyElement.text.toLowerCase()
         if (keyLowercase.contains(totalMarkRegex)) {
-            keyPriceResults.add(ResultObj.Total(price, keyElement.top))
+            keyPriceResults.add(
+                ResultObj.Total(
+                    price,
+                    keyElement.top
+                )
+            )
         } else {
-            keyPriceResults.add(ResultObj.Product(price, keyElement.text, keyElement.top))
+            keyPriceResults.add(
+                ResultObj.Product(
+                    price,
+                    keyElement.text,
+                    keyElement.top
+                )
+            )
         }
     }
 

@@ -2,7 +2,7 @@ package com.lucianbc.receiptscan.presentation.scanner
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
-import com.lucianbc.receiptscan.domain.usecase.ScanUseCase
+import com.lucianbc.receiptscan.domain.scanner.ScanUseCase
 import javax.inject.Inject
 
 class ProcessingViewModel @Inject constructor(

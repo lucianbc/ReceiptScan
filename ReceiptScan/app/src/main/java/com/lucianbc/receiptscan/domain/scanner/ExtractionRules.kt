@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.domain.service
+package com.lucianbc.receiptscan.domain.scanner
 
 import com.lucianbc.receiptscan.domain.model.*
 import java.util.*

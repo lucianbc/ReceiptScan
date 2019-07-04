@@ -19,9 +19,8 @@ import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.databinding.FragmentReceiptBinding
 import com.lucianbc.receiptscan.domain.model.Draft
 import com.lucianbc.receiptscan.domain.model.Product
-import com.lucianbc.receiptscan.domain.service.show
+import com.lucianbc.receiptscan.domain.scanner.show
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.product_item_layout.*
 import kotlinx.android.synthetic.main.product_item_layout.view.*
 import kotlinx.android.synthetic.main.receipt_layout.*
 import java.util.*

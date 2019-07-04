@@ -1,12 +1,11 @@
-package com.lucianbc.receiptscan.domain.model
+package com.lucianbc.receiptscan.domain.scanner
 
 import android.graphics.Bitmap
+import com.lucianbc.receiptscan.domain.model.Product
+import com.lucianbc.receiptscan.domain.model.RawReceipt
+import com.lucianbc.receiptscan.domain.model.ReceiptEntity
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
-import com.lucianbc.receiptscan.domain.service.ProductsAndTotalStrategy
-import com.lucianbc.receiptscan.domain.service.extractCurrency
-import com.lucianbc.receiptscan.domain.service.extractDate
-import com.lucianbc.receiptscan.domain.service.extractMerchant
 import java.util.*
 
 class DraftValue private constructor(
@@ -34,7 +33,13 @@ class DraftValue private constructor(
             Date(),
             true
         )
-    fun products(receiptId: Long) = products.map { Product(it.name, it.price, receiptId = receiptId) }
+    fun products(receiptId: Long) = products.map {
+        Product(
+            it.name,
+            it.price,
+            receiptId = receiptId
+        )
+    }
     fun elements(receiptId: Long) = elements.map { it.ocrElement(receiptId) }
 
 
@@ -48,7 +53,14 @@ class DraftValue private constructor(
             val currency = extractCurrency(text)
             val (total, products) = ProductsAndTotalStrategy(receipt).execute()
 
-            val value = DraftValue(merchant, date, currency, total, arg.second.toList(), arg.first)
+            val value = DraftValue(
+                merchant,
+                date,
+                currency,
+                total,
+                arg.second.toList(),
+                arg.first
+            )
 
             value.products.addAll(products)
 
