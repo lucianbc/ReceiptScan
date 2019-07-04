@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.domain.scanner
+package com.lucianbc.receiptscan.domain.viewfinder
 
 import com.lucianbc.receiptscan.domain.model.OcrElement
 

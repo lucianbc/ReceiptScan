@@ -1,10 +1,10 @@
 package com.lucianbc.receiptscan.domain.usecase
 
 import android.graphics.Bitmap
-import com.lucianbc.receiptscan.domain.scanner.OcrElementValue
+import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
-import com.lucianbc.receiptscan.domain.scanner.OcrElements
-import com.lucianbc.receiptscan.domain.scanner.OcrWithImageProducer
+import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
+import com.lucianbc.receiptscan.domain.viewfinder.OcrWithImageProducer
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Observable
 import org.junit.After

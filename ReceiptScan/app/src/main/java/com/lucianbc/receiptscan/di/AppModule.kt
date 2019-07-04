@@ -3,7 +3,7 @@ package com.lucianbc.receiptscan.di
 import android.content.Context
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
-import com.lucianbc.receiptscan.domain.scanner.LiveViewUseCase
+import com.lucianbc.receiptscan.domain.viewfinder.LiveViewUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.AppDatabase
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.presentation.ReceiptScan

@@ -1,7 +1,7 @@
 package com.lucianbc.receiptscan.domain.service
 
 import com.lucianbc.receiptscan.domain.model.DraftValue
-import com.lucianbc.receiptscan.domain.scanner.OcrElementValue
+import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.domain.model.RawReceipt
 import com.lucianbc.receiptscan.util.Just
 import com.lucianbc.receiptscan.util.None

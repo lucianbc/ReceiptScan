@@ -5,10 +5,10 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
-import com.lucianbc.receiptscan.domain.scanner.OcrElementValue
-import com.lucianbc.receiptscan.domain.scanner.OcrElements
-import com.lucianbc.receiptscan.domain.scanner.FrameProducer
-import com.lucianbc.receiptscan.domain.scanner.OcrWithImageProducer
+import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
+import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
+import com.lucianbc.receiptscan.domain.viewfinder.FrameProducer
+import com.lucianbc.receiptscan.domain.viewfinder.OcrWithImageProducer
 import com.otaliastudios.cameraview.Frame
 import com.otaliastudios.cameraview.PictureResult
 import io.reactivex.Observable
