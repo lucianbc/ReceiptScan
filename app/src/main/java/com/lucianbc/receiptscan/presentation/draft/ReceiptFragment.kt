@@ -1,8 +1,8 @@
 package com.lucianbc.receiptscan.presentation.draft
 
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
@@ -86,6 +86,7 @@ class ReceiptFragment : DaggerFragment() {
         }
     }
 
+    @SuppressLint("InflateParams")
     private val onProdTap: (Product) -> Unit = {
         val view = layoutInflater.inflate(R.layout.product_item_layout, null)
         AlertDialog.Builder(context!!)
@@ -112,10 +113,7 @@ class ReceiptFragment : DaggerFragment() {
         addProductBtn.setOnClickListener { addProdDialog() }
     }
 
-    val cb = DialogInterface.OnClickListener { v1, v2 ->
-
-    }
-
+    @SuppressLint("InflateParams")
     private fun addProdDialog() {
         val view = layoutInflater.inflate(R.layout.product_item_layout, null)
         AlertDialog.Builder(context!!)

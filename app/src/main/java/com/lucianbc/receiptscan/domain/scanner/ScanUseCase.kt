@@ -25,7 +25,7 @@ class ScanUseCase @Inject constructor(
         frame.produce()
             .doOnSubscribe { _state.onNext(State.OCR) }
             .observeOn(Schedulers.computation())
-            .map { DraftValue.fromOcrElementsAndImage(it) }
+            .map { DraftValue.fromOcrElementsAndImage(it.first, it.second) }
             .doOnNext { _state.onNext(State.Saving) }
             .flatMap { draftsRepository.create(it) }
             .doOnComplete { _state.onNext(State.Idle) }

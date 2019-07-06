@@ -44,8 +44,7 @@ class DraftValue private constructor(
 
 
     companion object {
-        fun fromOcrElementsAndImage(arg: Pair<Bitmap, OcrElements>): DraftValue {
-            val elements = arg.second
+        fun fromOcrElementsAndImage(image: Bitmap, elements: OcrElements): DraftValue {
             val receipt = RawReceipt.create(elements)
             val text = receipt.text
             val merchant = extractMerchant(receipt)
@@ -58,8 +57,8 @@ class DraftValue private constructor(
                 date,
                 currency,
                 total,
-                arg.second.toList(),
-                arg.first
+                elements.toList(),
+                image
             )
 
             value.products.addAll(products)
