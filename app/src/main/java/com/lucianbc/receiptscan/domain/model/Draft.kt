@@ -2,7 +2,7 @@ package com.lucianbc.receiptscan.domain.model
 
 import java.util.*
 
-data class Draft (
+data class Draft(
     val imagePath: String,
     val merchantName: String?,
     val date: Date?,

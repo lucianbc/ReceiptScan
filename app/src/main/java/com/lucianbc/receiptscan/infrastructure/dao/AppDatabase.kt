@@ -15,7 +15,7 @@ import com.lucianbc.receiptscan.domain.model.ReceiptEntity
     Product::class
 ], version = 3, exportSchema = true)
 @TypeConverters(Converters::class)
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun draftDao(): DraftDao
 

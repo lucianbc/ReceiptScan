@@ -29,7 +29,6 @@ class LiveViewUseCaseTest {
         Thread.sleep(sec * 1000L)
         subscription.dispose()
 
-
         // THEN
         assertEquals(fps, count)
     }

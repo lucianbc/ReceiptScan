@@ -1,6 +1,5 @@
 package com.lucianbc.receiptscan.presentation.draft
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,20 +8,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.presentation.service.swapImageBitmap
-import com.lucianbc.receiptscan.util.logd
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_annotations.*
 import javax.inject.Inject
-
 
 class ReceiptImageFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: DraftReviewViewModel.Factory
     lateinit var viewModel: DraftReviewViewModel
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         initParentViewModel()

@@ -18,7 +18,7 @@ class DraftValue private constructor(
 ) {
     private val products = mutableListOf<Product>()
 
-    class Product (
+    class Product(
         val name: String,
         val price: Float
     )
@@ -41,7 +41,6 @@ class DraftValue private constructor(
         )
     }
     fun elements(receiptId: Long) = elements.map { it.ocrElement(receiptId) }
-
 
     companion object {
         fun fromOcrElementsAndImage(image: Bitmap, elements: OcrElements): DraftValue {

@@ -14,7 +14,6 @@ class ProcessingViewModel @Inject constructor(
         .map { it.message }
         .toLiveData()
 
-
     private val ScanUseCase.State.message: String
         get() = when (this) {
             ScanUseCase.State.OCR -> "Ocr"

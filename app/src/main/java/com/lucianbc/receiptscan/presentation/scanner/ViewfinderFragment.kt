@@ -1,6 +1,5 @@
 package com.lucianbc.receiptscan.presentation.scanner
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +25,8 @@ class ViewfinderFragment :
     lateinit var eventBus: EventBus
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         initViewModel()

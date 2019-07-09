@@ -1,6 +1,5 @@
 package com.lucianbc.receiptscan.presentation.draft
 
-
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -26,7 +25,6 @@ import kotlinx.android.synthetic.main.receipt_layout.*
 import java.util.*
 import javax.inject.Inject
 
-
 class ReceiptFragment : DaggerFragment() {
 
     private lateinit var itemsAdapter: ReceiptItemsAdapter
@@ -36,7 +34,8 @@ class ReceiptFragment : DaggerFragment() {
     lateinit var viewModel: DraftReviewViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         initParentViewModel()
@@ -95,7 +94,7 @@ class ReceiptFragment : DaggerFragment() {
             .setPositiveButton("Save") { _, _ ->
                 view.prodPrice.text.toString().toFloatOrNull()?.let { pr ->
                     val name = view.prodName.text.toString()
-                    val prod = it.copy(name=name, price=pr)
+                    val prod = it.copy(name = name, price = pr)
                     viewModel.updateProducts(prod)
                 }
             }
@@ -155,7 +154,7 @@ class ReceiptFragment : DaggerFragment() {
         }
 
     private val totalDialog =
-        dialog(InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL,"Total") {
+        dialog(InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL, "Total") {
             it.text.toString().toFloatOrNull()?.let { t -> viewModel.updateTotal(t) }
         }
 

@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModelProviders
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-abstract class BaseActivity<VM: ViewModel> (
+abstract class BaseActivity<VM : ViewModel> (
     private val vm: Class<VM>
-): DaggerAppCompatActivity() {
+) : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory

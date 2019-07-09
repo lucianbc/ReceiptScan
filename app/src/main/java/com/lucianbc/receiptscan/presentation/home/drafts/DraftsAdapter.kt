@@ -10,7 +10,6 @@ import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import kotlinx.android.synthetic.main.draft_item_layout.view.*
 
-
 typealias DraftItemClick = ((ListDraftsUseCase.DraftItem) -> Unit)
 
 class DraftsAdapter(private val itemCallback: DraftItemClick) : ListAdapter<ListDraftsUseCase.DraftItem, DraftItemViewHolder>(

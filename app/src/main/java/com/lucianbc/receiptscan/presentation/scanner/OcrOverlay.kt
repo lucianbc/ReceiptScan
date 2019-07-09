@@ -8,7 +8,7 @@ import android.view.View
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.presentation.service.paint
 
-class OcrOverlay (
+class OcrOverlay(
     context: Context,
     attrs: AttributeSet
 ) : View(context, attrs) {

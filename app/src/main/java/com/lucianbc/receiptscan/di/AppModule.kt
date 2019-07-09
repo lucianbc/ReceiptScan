@@ -12,7 +12,6 @@ import dagger.Provides
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Singleton
 
-
 @Module
 class AppModule {
     @Provides

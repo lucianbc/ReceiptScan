@@ -42,13 +42,11 @@ fun findDatesWithPatterns(searchedString: String): Sequence<Date> {
         .sortedBy { abs(it.time - now.time) }
 }
 
-
 fun parseDate(dateString: String): Date? {
     val lowerDate = dateString.toLowerCase()
 
     return findDatesWithPatterns(lowerDate).firstOrNull()
 }
-
 
 fun Date?.show(): String = format.format(this)
 

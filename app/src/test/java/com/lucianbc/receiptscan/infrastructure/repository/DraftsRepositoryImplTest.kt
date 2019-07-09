@@ -39,7 +39,6 @@ class DraftsRepositoryImplTest {
         assertThat(annotationsCaptor.firstValue.map { it.receiptId }, everyItem(equalTo(draftId)))
     }
 
-
     private lateinit var draftDao: DraftDao
     private lateinit var imagesDao: ImagesDao
     private lateinit var image: Bitmap

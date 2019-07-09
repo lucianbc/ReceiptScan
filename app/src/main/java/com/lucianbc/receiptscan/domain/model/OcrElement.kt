@@ -5,7 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity (
+@Entity(
     tableName = "ocrElement",
     foreignKeys = [
         ForeignKey(
@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
     ],
     indices = [Index("receiptId")]
 )
-data class OcrElement (
+data class OcrElement(
     val text: String,
     val top: Int,
     val left: Int,

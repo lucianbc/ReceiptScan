@@ -27,7 +27,7 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
     private fun makeResult(): Pair<Float?, List<DraftValue.Product>> {
         val price = keyPriceResults
             .mapNotNull {
-                when(it) {
+                when (it) {
                     is ResultObj.Total -> it
                     else -> null
                 }
@@ -54,11 +54,9 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
                 val right = isAlignedToRight(element)
                 if (left && right) {
                     processKeyValue(element)
-                }
-                else if (left) {
+                } else if (left) {
                     processKey(element)
-                }
-                else if (right) {
+                } else if (right) {
                     processPrice(element)
                 }
             }
@@ -73,8 +71,7 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
                 val keyElement = mLastKey.value
                 if (priceElement.top - keyElement.bottom < 0.5 * priceElement.height) {
                     makeResult(keyElement, it)
-                }
-                else {
+                } else {
                     lastKey = None
                 }
             }
@@ -144,7 +141,6 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
     private fun isAlignedToRight(element: OcrElementValue): Boolean =
         (horizontalBorders.right - element.right).toFloat() / horizontalBorders.width < ALIGN_THRESH
 
-
     private fun boundaries(receipt: RawReceipt): HorizontalBorders {
         val elements = receipt.flatten()
         var top = Int.MAX_VALUE
@@ -166,12 +162,10 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
 
     private sealed class ResultObj {
         class Total(val price: Float, val top: Int) : ResultObj()
-        class Product(val price: Float, val name: String, val top: Int): ResultObj()
+        class Product(val price: Float, val name: String, val top: Int) : ResultObj()
     }
 
     companion object {
         private const val ALIGN_THRESH = 0.1
     }
 }
-
-

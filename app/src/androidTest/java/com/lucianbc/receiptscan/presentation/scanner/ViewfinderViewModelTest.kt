@@ -25,7 +25,6 @@ class ViewfinderViewModelTest {
     lateinit var factory: ScannableFactory
     lateinit var recognizer: FirebaseVisionTextRecognizer
 
-
     @Before
     fun setup() {
         val useCase = LiveViewUseCase(15f)
@@ -52,7 +51,7 @@ class ViewfinderViewModelTest {
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
         viewModel.ocrElements
-            .observe( { lifecycle }, {
+            .observe({ lifecycle }, {
                 print("Finished: ")
                 println(it.joinToString(" ") { t -> t.text }.subSequence(0, 10))
             })

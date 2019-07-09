@@ -23,10 +23,10 @@ class ScannerViewModel @Inject constructor(
     private val eventBus: EventBus
 ) : ViewModel() {
     sealed class State {
-        object NoPermission: State()
-        object Allowed: State()
-        object Error: State()
-        object Processing: State()
+        object NoPermission : State()
+        object Allowed : State()
+        object Error : State()
+        object Processing : State()
     }
 
     private val disposables = CompositeDisposable()

@@ -5,7 +5,7 @@ import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RawReceipt(private val lines: List<Line>): Iterable<RawReceipt.Line> {
+class RawReceipt(private val lines: List<Line>) : Iterable<RawReceipt.Line> {
     override fun iterator(): Iterator<Line> = lines.iterator()
 
     class Line(private val elements: List<OcrElementValue>) : Iterable<OcrElementValue> {

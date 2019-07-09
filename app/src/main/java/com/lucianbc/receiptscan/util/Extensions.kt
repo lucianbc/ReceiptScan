@@ -9,7 +9,7 @@ fun <X, Y> LiveData<X>.map(func: (X) -> Y): LiveData<Y> =
 
 fun Long.toDate() = Date(this)
 
-fun <T: Any?>T.guard(cond: Boolean, func: (T) -> Unit) {
+fun <T : Any?> T.guard(cond: Boolean, func: (T) -> Unit) {
     if (cond) {
         func.invoke(this)
     }

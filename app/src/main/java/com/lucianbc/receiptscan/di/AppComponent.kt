@@ -18,8 +18,8 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class
     ]
 )
-interface AppComponent: AndroidInjector<ReceiptScan> {
+interface AppComponent : AndroidInjector<ReceiptScan> {
     @Suppress("DEPRECATION")
     @Component.Builder
-    abstract class Builder: AndroidInjector.Builder<ReceiptScan>()
+    abstract class Builder : AndroidInjector.Builder<ReceiptScan>()
 }

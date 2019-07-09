@@ -7,10 +7,10 @@ import javax.inject.Inject
 class ListReceiptsUseCase @Inject constructor(
     private val draftsRepository: DraftsRepository
 ) {
-    fun execute(): Flowable<List<Item>>
-            = draftsRepository.getAllReceiptItems()
+    fun execute(): Flowable<List<Item>> =
+            draftsRepository.getAllReceiptItems()
 
-    data class Item (
+    data class Item(
         val id: Long,
         val merchantName: String,
         val total: Float

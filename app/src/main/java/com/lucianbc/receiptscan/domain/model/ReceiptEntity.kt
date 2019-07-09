@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity(tableName = "receipt")
-data class ReceiptEntity (
+data class ReceiptEntity(
     val imagePath: String,
     val merchantName: String?,
     val date: Date?,

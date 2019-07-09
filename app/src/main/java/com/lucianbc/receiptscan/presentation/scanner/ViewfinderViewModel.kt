@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ViewfinderViewModel @Inject constructor(
     private val liveViewUseCase: LiveViewUseCase,
     private val factory: ScannableFactory
-): ViewModel() {
+) : ViewModel() {
     private val _flash = MutableLiveData(false)
 
     val flash: LiveData<Boolean>

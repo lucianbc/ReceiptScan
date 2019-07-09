@@ -19,7 +19,7 @@ import io.reactivex.subjects.PublishSubject
 import java.util.*
 import javax.inject.Inject
 
-class DraftReviewViewModel (
+class DraftReviewViewModel(
     private val draftId: Long,
     private val draftsRepository: DraftsRepository
 ) : ViewModel() {

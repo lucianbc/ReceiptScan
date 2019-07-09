@@ -1,6 +1,5 @@
 package com.lucianbc.receiptscan.presentation.home.drafts
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,13 +14,13 @@ import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.presentation.draft.DraftReviewActivity
 import kotlinx.android.synthetic.main.fragment_drafts.*
 
-
 class DraftsFragment : BaseFragment<DraftsViewModel>(DraftsViewModel::class.java) {
 
     private lateinit var draftsAdapter: DraftsAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         initViewModel()

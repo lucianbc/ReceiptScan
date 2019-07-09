@@ -6,8 +6,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.lucianbc.receiptscan.presentation.home.drafts.DraftsFragment
 import com.lucianbc.receiptscan.presentation.home.receipts.ReceiptsFragment
 
-class HomePagerAdapter(fm: FragmentManager)
-    : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class HomePagerAdapter(fm: FragmentManager) :
+    FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     private val fragmentList = listOf(
         ExportFragment(),
         DraftsFragment(),

@@ -9,7 +9,7 @@ class ListDraftsUseCase @Inject constructor(
 ) {
     fun execute() = draftsRepository.getAllItems()
 
-    data class DraftItem (
+    data class DraftItem(
         val id: Long,
         val creationTimestamp: Date
     )

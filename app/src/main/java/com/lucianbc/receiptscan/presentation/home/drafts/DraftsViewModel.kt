@@ -10,7 +10,7 @@ import javax.inject.Inject
 class DraftsViewModel @Inject constructor(
     listDraftsUseCase: ListDraftsUseCase,
     scanUseCase: ScanUseCase
-): ViewModel() {
+) : ViewModel() {
     val drafts: LiveData<List<ListDraftsUseCase.DraftItem>> = listDraftsUseCase.execute().toLiveData()
     val scanningState: LiveData<String> =
         scanUseCase.state

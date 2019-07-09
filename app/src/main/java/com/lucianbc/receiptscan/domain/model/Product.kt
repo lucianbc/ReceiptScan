@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
     ],
     indices = [Index("receiptId")]
 )
-data class Product (
+data class Product(
     val name: String,
     val price: Float,
     @PrimaryKey(autoGenerate = true)

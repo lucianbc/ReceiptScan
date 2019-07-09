@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProviders
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-abstract class BaseFragment<VM: ViewModel> (
+abstract class BaseFragment<VM : ViewModel> (
     private val vm: Class<VM>
-): DaggerFragment() {
+) : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 

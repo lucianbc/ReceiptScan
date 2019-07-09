@@ -1,6 +1,5 @@
 package com.lucianbc.receiptscan.presentation.home.receipts
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +12,14 @@ import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentReceiptsBinding
 import kotlinx.android.synthetic.main.fragment_receipts.*
 
-
 class ReceiptsFragment :
     BaseFragment<ReceiptsViewModel>(ReceiptsViewModel::class.java) {
 
     private lateinit var receiptsAdapter: ReceiptsAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         initViewModel()

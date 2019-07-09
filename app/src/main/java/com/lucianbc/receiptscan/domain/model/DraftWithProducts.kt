@@ -3,7 +3,7 @@ package com.lucianbc.receiptscan.domain.model
 import androidx.room.Embedded
 import androidx.room.Relation
 
-class DraftWithProducts (
+class DraftWithProducts(
     @Embedded
     val receipt: Draft,
 

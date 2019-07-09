@@ -58,7 +58,7 @@ class ScanUseCaseTest {
         argBitmap = mock()
         argElements = sequenceOf(OcrElementValue("text", 0, 0, 1, 1))
 
-        parameter = object: Scannable {
+        parameter = object : Scannable {
             override fun ocrElements(): Observable<OcrElements> {
                 return Observable.just(argElements)
             }

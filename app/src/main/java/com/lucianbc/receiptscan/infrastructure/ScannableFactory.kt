@@ -30,7 +30,7 @@ class ScannableFactory @Inject constructor(
     }
 
     fun create(image: Bitmap): Scannable {
-        return object: Scannable {
+        return object : Scannable {
             val fib = image.firebaseImage()
             override fun ocrElements() = fib.ocrElements()
 
@@ -41,7 +41,7 @@ class ScannableFactory @Inject constructor(
 
     fun create(pictureResult: PictureResult): Scannable {
         val firebaseImage = pictureResult.firebaseImage()
-        return object: Scannable {
+        return object : Scannable {
             override fun ocrElements() = firebaseImage
                 .flatMap { it.ocrElements() }
 
@@ -51,7 +51,7 @@ class ScannableFactory @Inject constructor(
     }
 
     fun create(imageSource: Observable<Bitmap>): Scannable {
-        return object: Scannable {
+        return object : Scannable {
             override fun ocrElements() = imageSource.flatMap {
                 it.firebaseImage().ocrElements()
             }
@@ -95,8 +95,7 @@ class ScannableFactory @Inject constructor(
             if (it != null) {
                 result.onNext(it.firebaseImage())
                 result.onComplete()
-            }
-            else
+            } else
                 result.onError(IllegalArgumentException("Picture could not be converted to bitmap"))
         }
 

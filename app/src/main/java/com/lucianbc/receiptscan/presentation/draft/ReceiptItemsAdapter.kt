@@ -24,8 +24,7 @@ class ReceiptItemsAdapter(private val onTap: (Product) -> Unit) : ListAdapter<Pr
         holder.product = element
     }
 
-
-    class Diff: DiffUtil.ItemCallback<Product>() {
+    class Diff : DiffUtil.ItemCallback<Product>() {
         override fun areItemsTheSame(oldProduct: Product, newProduct: Product): Boolean {
             return oldProduct == newProduct
         }
@@ -42,6 +41,6 @@ class ReceiptItemViewHolder(val view: View, private val onTap: (Product) -> Unit
             field = value
             view.itemName.text = value?.name
             view.itemPrice.text = value?.price.toString()
-            value?.let{ view.setOnClickListener { onTap(value) } }
+            value?.let { view.setOnClickListener { onTap(value) } }
         }
 }

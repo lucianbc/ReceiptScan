@@ -36,11 +36,10 @@ class ScanUseCase @Inject constructor(
             .doOnError { _state.onNext(State.Error) }
             .publish()
 
-
     sealed class State {
-        object OCR: State()
-        object Saving: State()
-        object Idle: State()
-        object Error: State()
+        object OCR : State()
+        object Saving : State()
+        object Idle : State()
+        object Error : State()
     }
 }
