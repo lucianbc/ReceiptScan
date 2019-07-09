@@ -11,7 +11,6 @@ import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentViewfinderBinding
 import com.lucianbc.receiptscan.presentation.Event
-import com.lucianbc.receiptscan.util.logd
 import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.Flash
 import com.otaliastudios.cameraview.FrameProcessor
@@ -37,7 +36,7 @@ class ViewfinderFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewFinder.setLifecycleOwner(viewLifecycleOwner)
-//        viewFinder.addFrameProcessor(frameProcessor)
+        viewFinder.addFrameProcessor(frameProcessor)
         viewFinder.addCameraListener(cameraListener)
         observe(viewModel)
     }

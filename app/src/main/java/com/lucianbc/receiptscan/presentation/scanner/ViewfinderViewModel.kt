@@ -1,24 +1,26 @@
 package com.lucianbc.receiptscan.presentation.scanner
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.viewfinder.LiveViewUseCase
-import com.lucianbc.receiptscan.infrastructure.OcrElementsProducersFactory
+import com.lucianbc.receiptscan.infrastructure.ScannableFactory
 import com.lucianbc.receiptscan.util.loge
 import com.otaliastudios.cameraview.Frame
-import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 class ViewfinderViewModel @Inject constructor(
     private val liveViewUseCase: LiveViewUseCase,
-    private val factory: OcrElementsProducersFactory
+    private val factory: ScannableFactory
 ): ViewModel() {
-    private val _flash = MutableLiveData<Boolean>(false)
+    private val _flash = MutableLiveData(false)
 
     val flash: LiveData<Boolean>
         get() = _flash
+
+    private var shouldProcess = true
 
     val ocrElements = liveViewUseCase.ocrElements.toLiveData()
 
@@ -26,10 +28,29 @@ class ViewfinderViewModel @Inject constructor(
         _flash.value = flash.value?.not()
     }
 
+    fun toggleProcess() {
+        shouldProcess = shouldProcess.not()
+    }
+
     fun processFrame(frame: Frame) {
+        if (!shouldProcess)
+            return
+
         try {
-            val ocrProducer = factory.simple(frame)
-            liveViewUseCase.scanFrame(ocrProducer)
+            val ocrProducer = factory.create(frame)
+            liveViewUseCase.scan(ocrProducer)
+        } catch (e: IllegalArgumentException) {
+            loge("Camera passed a frame with errors", e)
+        }
+    }
+
+    fun processImage(image: Bitmap) {
+        if (!shouldProcess)
+            return
+
+        try {
+            val ocrProducer = factory.create(image)
+            liveViewUseCase.scan(ocrProducer)
         } catch (e: IllegalArgumentException) {
             loge("Camera passed a frame with errors", e)
         }

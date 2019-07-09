@@ -1,7 +1,8 @@
 package com.lucianbc.receiptscan.domain.viewfinder
 
+import android.graphics.Bitmap
 import io.reactivex.Observable
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 
@@ -23,7 +24,7 @@ class LiveViewUseCaseTest {
         val subscription = Observable
             .interval(0, 2, TimeUnit.MILLISECONDS)
             .subscribe {
-                useCase.scanFrame(dummyFrame)
+                useCase.scan(dummyFrame)
             }
         Thread.sleep(sec * 1000L)
         subscription.dispose()
@@ -33,8 +34,12 @@ class LiveViewUseCaseTest {
         assertEquals(fps, count)
     }
 
-    private val dummyFrame = object : FrameProducer {
-        override fun produce(): Observable<OcrElements> {
+    private val dummyFrame = object : Scannable {
+        override fun image(): Observable<Bitmap> {
+            return Observable.just(null)
+        }
+
+        override fun ocrElements(): Observable<OcrElements> {
             return Observable.just(sequenceOf(
                 OcrElementValue(
                     "text",

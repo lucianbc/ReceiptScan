@@ -1,74 +1,79 @@
 package com.lucianbc.receiptscan.infrastructure
 
 import android.graphics.Bitmap
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
-import com.lucianbc.receiptscan.domain.viewfinder.FrameProducer
-import com.lucianbc.receiptscan.domain.viewfinder.OcrWithImageProducer
+import com.lucianbc.receiptscan.domain.viewfinder.Scannable
 import com.otaliastudios.cameraview.Frame
 import com.otaliastudios.cameraview.PictureResult
 import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
-class OcrElementsProducersFactory @Inject constructor(
+class ScannableFactory @Inject constructor(
     private val recognizer: FirebaseVisionTextRecognizer
 ) {
-    fun simple(frame: Frame): FrameProducer {
-        return object : FrameProducer {
-            override fun produce(): Observable<OcrElements> =
-                frame
-                    .firebaseImage()
-                    .let { Observable.just(it).flatMap { fib -> fib.recognize() }
+    fun create(frame: Frame): Scannable {
+        return object : Scannable {
+            val firebaseImage = frame.firebaseImage()
+            override fun ocrElements() =
+                firebaseImage.ocrElements()
+
+            override fun image() =
+                Observable.just(firebaseImage.bitmap)
+        }
+    }
+
+    fun create(image: Bitmap): Scannable {
+        return object: Scannable {
+            val fib = image.firebaseImage()
+            override fun ocrElements() = fib.ocrElements()
+
+            override fun image() =
+                Observable.just(fib.bitmap)
+        }
+    }
+
+    fun create(pictureResult: PictureResult): Scannable {
+        val firebaseImage = pictureResult.firebaseImage()
+        return object: Scannable {
+            override fun ocrElements() = firebaseImage
+                .flatMap { it.ocrElements() }
+
+            override fun image() = firebaseImage
+                .map { it.bitmap }
+        }
+    }
+
+    fun create(imageSource: Observable<Bitmap>): Scannable {
+        return object: Scannable {
+            override fun ocrElements() = imageSource.flatMap {
+                it.firebaseImage().ocrElements()
+            }
+
+            override fun image(): Observable<Bitmap> =
+                imageSource
+        }
+    }
+
+    private fun FirebaseVisionImage.ocrElements(): Observable<OcrElements> =
+        Observable.fromCallable {
+            try {
+                val result = Tasks.await(recognizer.processImage(this))
+                result
+                    .textBlocks
+                    .flatMap { it.lines }
+                    .asSequence()
+                    .mapNotNull { it.toOcrElement() }
+            } catch (e: InterruptedException) {
+                emptySequence<OcrElementValue>()
             }
         }
-    }
-
-    fun withImage(image: PictureResult): OcrWithImageProducer {
-        return object : OcrWithImageProducer {
-            override fun produce(): Observable<Pair<Bitmap, OcrElements>> =
-                image.firebaseImage()
-                    .map { it.bitmap to it }
-                    .flatMap { it.ocrElements() }
-                    .subscribeOn(Schedulers.computation())
-        }
-    }
-
-    fun withImage(imageSrc: Observable<Bitmap>): OcrWithImageProducer {
-        return object : OcrWithImageProducer {
-            override fun produce(): Observable<Pair<Bitmap, OcrElements>> =
-                imageSrc
-                    .map { it to it.firebaseImage() }
-                    .flatMap { it.ocrElements() }
-        }
-    }
-
-    private fun Pair<Bitmap, FirebaseVisionImage>.ocrElements(): Observable<Pair<Bitmap, OcrElements>> =
-        this.second.recognize().map { this.first to it }
-
-    private fun extractText(image: FirebaseVisionImage): Observable<FirebaseVisionText> {
-        val result = PublishSubject
-            .create<FirebaseVisionText>()
-
-        recognizer
-            .processImage(image)
-            .addOnSuccessListener { result.onNext(it); result.onComplete() }
-            .addOnFailureListener { result.onError(it) }
-
-        return result
-    }
-
-    private fun FirebaseVisionImage.recognize(): Observable<OcrElements> =
-        extractText(this)
-            .map { it.textBlocks.flatMap { tb -> tb.lines } }
-            .map { it.asSequence() }
-            .map { it.mapNotNull { line -> line.toOcrElement() } }
-
 
     private fun FirebaseVisionText.Line.toOcrElement(): OcrElementValue? =
         if (this.boundingBox != null)
@@ -84,7 +89,7 @@ class OcrElementsProducersFactory @Inject constructor(
     private fun Bitmap.firebaseImage() = FirebaseVisionImage.fromBitmap(this)
 
     private fun PictureResult.firebaseImage(): Observable<FirebaseVisionImage> {
-        val result = PublishSubject.create<FirebaseVisionImage>()
+        val result = BehaviorSubject.create<FirebaseVisionImage>()
 
         this.toBitmap {
             if (it != null) {

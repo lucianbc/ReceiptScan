@@ -1,11 +1,11 @@
 package com.lucianbc.receiptscan.domain.usecase
 
 import android.graphics.Bitmap
-import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.scanner.ScanUseCase
+import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
-import com.lucianbc.receiptscan.domain.viewfinder.OcrWithImageProducer
+import com.lucianbc.receiptscan.domain.viewfinder.Scannable
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Observable
 import org.junit.After
@@ -46,7 +46,7 @@ class ScanUseCaseTest {
 
     private lateinit var argBitmap: Bitmap
     private lateinit var argElements: Sequence<OcrElementValue>
-    private lateinit var parameter: OcrWithImageProducer
+    private lateinit var parameter: Scannable
 
     private lateinit var draftRepoMock: DraftsRepository
 
@@ -58,9 +58,14 @@ class ScanUseCaseTest {
         argBitmap = mock()
         argElements = sequenceOf(OcrElementValue("text", 0, 0, 1, 1))
 
-        parameter = object: OcrWithImageProducer {
-            override fun produce(): Observable<Pair<Bitmap, OcrElements>> =
-                Observable.just(argBitmap to argElements)
+        parameter = object: Scannable {
+            override fun ocrElements(): Observable<OcrElements> {
+                return Observable.just(argElements)
+            }
+
+            override fun image(): Observable<Bitmap> {
+                return Observable.just(argBitmap)
+            }
         }
     }
 

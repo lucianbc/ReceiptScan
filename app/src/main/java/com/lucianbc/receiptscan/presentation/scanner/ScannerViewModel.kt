@@ -4,9 +4,9 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lucianbc.receiptscan.domain.viewfinder.OcrWithImageProducer
 import com.lucianbc.receiptscan.domain.scanner.ScanUseCase
-import com.lucianbc.receiptscan.infrastructure.OcrElementsProducersFactory
+import com.lucianbc.receiptscan.domain.viewfinder.Scannable
+import com.lucianbc.receiptscan.infrastructure.ScannableFactory
 import com.lucianbc.receiptscan.presentation.Event
 import com.lucianbc.receiptscan.util.loge
 import com.lucianbc.receiptscan.util.map
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 class ScannerViewModel @Inject constructor(
     private val scanUseCase: ScanUseCase,
-    private val factory: OcrElementsProducersFactory,
+    private val factory: ScannableFactory,
     private val eventBus: EventBus
 ) : ViewModel() {
     sealed class State {
@@ -46,25 +46,21 @@ class ScannerViewModel @Inject constructor(
         _state.value = State.Allowed
     }
 
-    fun error() {
-        _state.value = State.Error
-    }
-
     private fun processing() {
         _state.value = State.Processing
     }
 
     fun process(pictureResult: PictureResult) {
         processing()
-        factory.withImage(pictureResult).scan()
+        factory.create(pictureResult).scan()
     }
 
     fun process(image: Observable<Bitmap>) {
         processing()
-        factory.withImage(image).scan()
+        factory.create(image).scan()
     }
 
-    private fun OcrWithImageProducer.scan() {
+    private fun Scannable.scan() {
         val scanHotObservable = scanUseCase.scan(this)
         scanHotObservable
             .subscribe(
