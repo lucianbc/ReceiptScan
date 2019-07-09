@@ -1,7 +1,8 @@
 package com.lucianbc.receiptscan.infrastructure.repository
 
 import android.graphics.Bitmap
-import com.lucianbc.receiptscan.domain.model.*
+import com.lucianbc.receiptscan.domain.model.OcrElement
+import com.lucianbc.receiptscan.domain.model.ReceiptEntity
 import com.lucianbc.receiptscan.domain.scanner.DraftValue
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
@@ -62,7 +63,7 @@ class DraftsRepositoryImplTest {
         draftDao = mock()
         imagesDao = mock()
         image = mock()
-        draftValue = DraftValue.fromOcrElementsAndImage(image to elements)
+        draftValue = DraftValue.fromOcrElementsAndImage(image, elements)
         `when`(imagesDao.saveImage(image)).thenReturn(filename)
         `when`(draftDao.insert(draftCaptor.capture())).thenReturn(Single.just(draftId))
         `when`(draftDao.insertProducts(any())).thenReturn(Single.just(emptyList()))
