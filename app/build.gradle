@@ -105,6 +105,7 @@ dependencies {
 
     // camera
     api 'com.otaliastudios:cameraview:2.0.0-beta04'
+    implementation project(":rxcameraview")
     implementation "androidx.exifinterface:exifinterface:1.0.0"
 
     // event bus

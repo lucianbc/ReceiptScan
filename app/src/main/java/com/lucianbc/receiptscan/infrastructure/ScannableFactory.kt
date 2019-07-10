@@ -11,8 +11,9 @@ import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
 import com.lucianbc.receiptscan.domain.viewfinder.Scannable
 import com.otaliastudios.cameraview.Frame
 import com.otaliastudios.cameraview.PictureResult
+import com.otaliastudios.cameraview.RxPictureResult
 import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class ScannableFactory @Inject constructor(
@@ -40,7 +41,11 @@ class ScannableFactory @Inject constructor(
     }
 
     fun create(pictureResult: PictureResult): Scannable {
-        val firebaseImage = pictureResult.firebaseImage()
+        val firebaseImage = RxPictureResult(pictureResult)
+            .toBitmap()
+            .subscribeOn(Schedulers.computation())
+            .map { it.firebaseImage() }
+            .cache()
         return object : Scannable {
             override fun ocrElements() = firebaseImage
                 .flatMap { it.ocrElements() }
@@ -87,20 +92,6 @@ class ScannableFactory @Inject constructor(
         else null
 
     private fun Bitmap.firebaseImage() = FirebaseVisionImage.fromBitmap(this)
-
-    private fun PictureResult.firebaseImage(): Observable<FirebaseVisionImage> {
-        val result = BehaviorSubject.create<FirebaseVisionImage>()
-
-        this.toBitmap {
-            if (it != null) {
-                result.onNext(it.firebaseImage())
-                result.onComplete()
-            } else
-                result.onError(IllegalArgumentException("Picture could not be converted to bitmap"))
-        }
-
-        return result
-    }
 
     private fun Int.rotation(): Int {
         return when (this) {

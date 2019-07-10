@@ -61,14 +61,13 @@ class ScannerViewModel @Inject constructor(
     }
 
     private fun Scannable.scan() {
-        val scanHotObservable = scanUseCase.scan(this)
-        scanHotObservable
+        scanUseCase
+            .scan(this)
             .subscribe(
                 { eventBus.post(Event.ImageScanned(it)) },
                 { loge("Error when processing camera picture", it) }
             )
             .addTo(disposables)
-        scanHotObservable.connect()
     }
 
     override fun onCleared() {

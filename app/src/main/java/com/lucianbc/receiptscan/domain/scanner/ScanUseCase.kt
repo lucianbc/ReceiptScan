@@ -6,8 +6,8 @@ import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
 import com.lucianbc.receiptscan.domain.viewfinder.Scannable
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
-import io.reactivex.observables.ConnectableObservable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
@@ -24,9 +24,11 @@ class ScanUseCase @Inject constructor(
         get() = _state
             .toFlowable(BackpressureStrategy.LATEST)
 
-    fun scan(frame: Scannable): ConnectableObservable<Long> =
+    fun scan(frame: Scannable): Observable<Long> =
         frame.ocrElements()
-            .zipWith(frame.image(), BiFunction { t1: OcrElements, t2: Bitmap -> t2 to t1 })
+            .zipWith(
+                frame.image(),
+                BiFunction { t1: OcrElements, t2: Bitmap -> t2 to t1 })
             .doOnSubscribe { _state.onNext(State.OCR) }
             .observeOn(Schedulers.computation())
             .map { DraftValue.fromOcrElementsAndImage(it.first, it.second) }
@@ -34,7 +36,6 @@ class ScanUseCase @Inject constructor(
             .flatMap { draftsRepository.create(it) }
             .doOnComplete { _state.onNext(State.Idle) }
             .doOnError { _state.onNext(State.Error) }
-            .publish()
 
     sealed class State {
         object OCR : State()
