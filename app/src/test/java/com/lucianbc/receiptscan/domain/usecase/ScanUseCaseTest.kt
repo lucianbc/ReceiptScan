@@ -29,7 +29,9 @@ class ScanUseCaseTest {
         val states = mutableListOf<ScanUseCase.State>()
 
         subject.state.subscribe { states.add(it) }
-        subject.scan(parameter).subscribe()
+        val result = subject.scan(parameter)
+
+        result.connect()
 
         val expectedStates = listOf(
             ScanUseCase.State.Idle,
