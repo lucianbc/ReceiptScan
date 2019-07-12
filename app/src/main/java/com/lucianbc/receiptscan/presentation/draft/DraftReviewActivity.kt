@@ -27,7 +27,7 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
         safeLoadParams()
         loadViewModel()
         setContentView(R.layout.activity_draft_review)
-        setupButtons()
+//        setupButtons()
     }
 
     private fun safeLoadParams() {
