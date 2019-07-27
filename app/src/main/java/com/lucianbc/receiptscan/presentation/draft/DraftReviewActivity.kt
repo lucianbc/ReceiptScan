@@ -6,17 +6,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModelProviders
 import com.lucianbc.receiptscan.R
-import dagger.android.support.DaggerAppCompatActivity
+import com.lucianbc.receiptscan.base.BaseActivity
 import kotlinx.android.synthetic.main.fragment_receipt.*
-import javax.inject.Inject
 
-class DraftReviewActivity : DaggerAppCompatActivity() {
-    @Inject
-    lateinit var viewModelFactory: DraftReviewViewModel.Factory
-    lateinit var viewModel: DraftReviewViewModel
-
+class DraftReviewActivity
+    : BaseActivity<DraftViewModel>(DraftViewModel::class.java) {
     private var canDiscard =
         DEFAULT_CAN_DISCARD
 
@@ -25,7 +20,6 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         safeLoadParams()
-        loadViewModel()
         setContentView(R.layout.activity_draft_review)
 //        setupButtons()
     }
@@ -33,14 +27,9 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
     private fun safeLoadParams() {
         val bundle = intent.extras
         bundle?.getBoolean(CAN_DISCARD)?.let { canDiscard = it }
-        bundle?.getLong(DRAFT_ID)?.let { viewModelFactory.draftId = it }
+        bundle?.getLong(DRAFT_ID)?.let { viewModel.init(it) }
     }
 
-    private fun loadViewModel() {
-        viewModel = ViewModelProviders
-            .of(this, viewModelFactory)
-            .get(DraftReviewViewModel::class.java)
-    }
 
     private fun setupButtons() {
         editFab.setOnClickListener(showAnnotationsListener)
@@ -65,7 +54,7 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
     }
 
     private val validateListener = View.OnClickListener {
-        viewModel.validateDraft()
+//        viewModel.validateDraft()
         finish()
     }
 
@@ -85,7 +74,7 @@ class DraftReviewActivity : DaggerAppCompatActivity() {
             .show()
 
     private fun discardAndFinish() {
-        viewModel.discardDraft()
+//        viewModel.discardDraft()
         finish()
     }
 
