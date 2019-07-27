@@ -48,6 +48,6 @@ fun parseDate(dateString: String): Date? {
     return findDatesWithPatterns(lowerDate).firstOrNull()
 }
 
-fun Date?.show(): String = format.format(this)
+fun Date?.show(): String = if (this != null ) format.format(this) else ""
 
 private val format = SimpleDateFormat("dd-MM-yyyy", Locale.US)
