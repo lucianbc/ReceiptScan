@@ -27,7 +27,7 @@ class DraftViewModel @Inject constructor(
     val products = mld<List<Product>>()
 
 
-    lateinit var useCase: ManageDraftUseCase
+    private lateinit var useCase: ManageDraftUseCase
     private val disposables = CompositeDisposable()
 
     fun init(draftId: Long) {
@@ -41,20 +41,17 @@ class DraftViewModel @Inject constructor(
 
     val updateMerchant =
         debounced<String>(disposables, TIMEOUT, TIME_UNIT) {
-            println("Updating with $it")
-//            useCase.update(it) { v, dwp -> dwp.receipt.copy(merchantName = v) }
+            useCase.update(it) { v, dwp -> dwp.receipt.copy(merchantName = v) }
         }
 
     val updateTotal =
         debounced<Float>(disposables, TIMEOUT, TIME_UNIT) {
-            println("Updating with $it")
-//            useCase.update(it) { v, dwp -> dwp.receipt.copy(total = v) }
+            useCase.update(it) { v, dwp -> dwp.receipt.copy(total = v) }
         }
 
     val updateDate =
         debounced<Date>(disposables, TIMEOUT, TIME_UNIT) {
-            println("Updating with $it")
-//            useCase.update(it) { v, dwp -> dwp.receipt.copy(date = v) }
+            useCase.update(it) { v, dwp -> dwp.receipt.copy(date = v) }
         }
 
     private fun <T> ManageDraftUseCase.extract(
