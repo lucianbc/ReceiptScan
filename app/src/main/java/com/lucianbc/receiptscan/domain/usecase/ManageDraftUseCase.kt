@@ -17,7 +17,16 @@ class ManageDraftUseCase(
     fun <T> update(newVal: T, mapper: ((T, DraftWithProducts) -> Draft)) {
         Observable.just(newVal)
             .withLatestFrom(value.toObservable())
-            .map { mapper.invoke(newVal, it.second) }
+            .flatMap {
+                mapper
+                    .invoke(newVal, it.second)
+                    .run {
+                        if (this == it.second.receipt)
+                            Observable.empty<Draft>()
+                        else
+                            Observable.just(this)
+                    }
+            }
             .flatMapSingle { repository.update(it) }
             .subscribeOn(Schedulers.io())
             .subscribe()
