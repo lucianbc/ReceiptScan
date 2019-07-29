@@ -31,7 +31,7 @@ class ScanUseCaseTest {
         subject.state.subscribe { states.add(it) }
         val result = subject.scan(parameter)
 
-        result.connect()
+        result.subscribe()
 
         val expectedStates = listOf(
             ScanUseCase.State.Idle,
