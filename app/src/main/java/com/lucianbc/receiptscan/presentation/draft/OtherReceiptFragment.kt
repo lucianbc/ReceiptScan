@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,9 +52,6 @@ class OtherReceiptFragment
 
     private fun setupActions() {
         editDateBtn.setOnClickListener { openDateDialog(viewModel.date.value) }
-        textView5.addTextChangedListener {
-            it?.toString()
-        }
     }
 
     private fun setupAdapter() {
@@ -67,9 +63,20 @@ class OtherReceiptFragment
     }
 
     private fun observe(viewModel: DraftViewModel) {
-        viewModel.products.observe(viewLifecycleOwner, Observer {
-             it?.let { itemsAdapter.submitList(it) }
-        })
+        viewModel.apply {
+            products.observe(viewLifecycleOwner, Observer {
+                it?.let { itemsAdapter.submitList(it) }
+            })
+            merchant.observe(viewLifecycleOwner, Observer {
+                it?.let { updateMerchant(it) }
+            })
+            total.observe(viewLifecycleOwner, Observer {
+                it?.toFloatOrNull()?.let { t -> updateTotal(t) }
+            })
+            date.observe(viewLifecycleOwner, Observer {
+                it?.let { updateDate(it) }
+            })
+        }
     }
 
     private fun openDateDialog(date: Date?) {
