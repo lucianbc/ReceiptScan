@@ -2,9 +2,11 @@ package com.lucianbc.receiptscan.domain.usecase
 
 import com.lucianbc.receiptscan.domain.model.Draft
 import com.lucianbc.receiptscan.domain.model.DraftWithProducts
+import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.rxkotlin.withLatestFrom
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -28,6 +30,21 @@ class ManageDraftUseCase(
                     }
             }
             .flatMapSingle { repository.update(it) }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
+
+    fun createProduct(): Single<Product> {
+        val newProd = Product("", 0f, receiptId = draftId)
+        return repository
+            .insert(newProd)
+            .map { newProd.apply { this.id = it } }
+            .subscribeOn(Schedulers.io())
+    }
+
+    fun updateProduct(product: Product) {
+        repository
+            .insert(product)
             .subscribeOn(Schedulers.io())
             .subscribe()
     }

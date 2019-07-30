@@ -152,14 +152,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/draftItems"
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
                     android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="@+id/guideline2"
-                    android:layout_marginStart="8dp" tools:ignore="ContentDescription" android:id="@+id/imageButton"/>
+                    android:layout_marginStart="8dp" tools:ignore="ContentDescription" android:id="@+id/addProductBtn"/>
             <TextView
                     style="@style/Receipt.Secondary"
                     android:text="@string/receipt_total_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView13" android:layout_marginTop="16dp"
-                    app:layout_constraintTop_toBottomOf="@+id/imageButton"
+                    app:layout_constraintTop_toBottomOf="@+id/addProductBtn"
                     app:layout_constraintStart_toStartOf="@+id/guideline2"/>
             <EditText
                     style="@style/Receipt.Secondary"

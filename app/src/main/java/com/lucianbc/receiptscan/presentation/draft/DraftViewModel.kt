@@ -11,7 +11,9 @@ import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.scanner.show
 import com.lucianbc.receiptscan.domain.usecase.ManageDraftUseCase
 import com.lucianbc.receiptscan.util.debounced
+import com.lucianbc.receiptscan.util.loge
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -53,6 +55,24 @@ class DraftViewModel @Inject constructor(
         debounced<Date>(disposables, TIMEOUT, TIME_UNIT) {
             useCase.update(it) { v, dwp -> dwp.receipt.copy(date = v) }
         }
+
+    val updateProduct =
+        debounced<Product>(disposables, TIMEOUT, TIME_UNIT) {
+            useCase.updateProduct(it)
+        }
+
+    fun createProduct() {
+        useCase
+            .createProduct()
+            .subscribe({ newProd ->
+                products.value?.let {
+                    products.postValue(it + newProd)
+                }
+            }, {
+                loge("Product failed to be inserted", it)
+            })
+            .addTo(disposables)
+    }
 
     private fun <T> ManageDraftUseCase.extract(
         extractor: ((DraftWithProducts) -> T)

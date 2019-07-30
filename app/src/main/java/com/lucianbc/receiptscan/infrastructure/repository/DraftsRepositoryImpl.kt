@@ -1,6 +1,9 @@
 package com.lucianbc.receiptscan.infrastructure.repository
 
-import com.lucianbc.receiptscan.domain.model.*
+import com.lucianbc.receiptscan.domain.model.Draft
+import com.lucianbc.receiptscan.domain.model.DraftWithProducts
+import com.lucianbc.receiptscan.domain.model.OcrElement
+import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.scanner.DraftValue
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
@@ -35,6 +38,8 @@ class DraftsRepositoryImpl @Inject constructor(
 
     override fun update(draft: Draft) = draftDao.insert(draft.receipt())
 
+    override fun update(product: Product) = draftDao.insert(product)
+
     override fun getImage(id: Long) =
         draftDao
             .getImagePath(id)
@@ -48,6 +53,9 @@ class DraftsRepositoryImpl @Inject constructor(
 
     override fun getReceipt(id: Long): Flowable<DraftWithProducts> =
         draftDao.getReceipt(id)
+
+    override fun insert(product: Product): Single<Long> =
+        draftDao.insert(product)
 
     override fun getOcrElements(draftId: Long): Flowable<List<OcrElement>> =
         draftDao.getOcrElements(draftId)

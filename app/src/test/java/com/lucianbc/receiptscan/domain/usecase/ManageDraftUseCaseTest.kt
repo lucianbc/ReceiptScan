@@ -50,7 +50,7 @@ class ManageDraftUseCaseTest {
         subject.update(merchant) { v, dwp -> dwp.receipt.copy(merchantName = v) }
 
         Thread.sleep(500)
-        verify(repo, times(1)).update(any())
+        verify(repo, times(1)).insert(any())
         assertEquals(merchant, savedValueCaptor.firstValue.merchantName)
         verifyNoMoreInteractions(repo)
     }

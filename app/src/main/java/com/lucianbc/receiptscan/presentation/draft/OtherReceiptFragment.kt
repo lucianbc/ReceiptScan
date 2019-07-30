@@ -51,10 +51,15 @@ class OtherReceiptFragment
 
     private fun setupActions() {
         editDateBtn.setOnClickListener { openDateDialog(viewModel.date.value) }
+        addProductBtn.setOnClickListener { viewModel.createProduct() }
     }
 
     private fun setupAdapter() {
-        itemsAdapter = OtherReceiptItemsAdapter()
+        itemsAdapter = OtherReceiptItemsAdapter().apply {
+            onItemEdit = {
+                viewModel.updateProduct(it)
+            }
+        }
         draftItems.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = itemsAdapter
