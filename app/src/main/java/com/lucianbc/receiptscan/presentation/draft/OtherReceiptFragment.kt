@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentReceipt2Binding
-import com.lucianbc.receiptscan.util.logd
 import kotlinx.android.synthetic.main.fragment_receipt_2.*
 import java.util.*
 
@@ -83,7 +82,7 @@ class OtherReceiptFragment
         val calendar = Calendar.getInstance().apply { time = date?: Date() }
         val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             val newDate = Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time
-            logd(newDate.toString())
+            viewModel.date.value = newDate
         }
         DatePickerDialog(
             context!!,
