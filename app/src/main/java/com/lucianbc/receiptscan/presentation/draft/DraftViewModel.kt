@@ -74,6 +74,18 @@ class DraftViewModel @Inject constructor(
             .addTo(disposables)
     }
 
+
+    fun deleteProduct(prod: Product) {
+        useCase
+            .deleteProduct(prod)
+            .subscribe {
+                products.value?.let {
+                    products.postValue(it.filter { x -> x != prod })
+                }
+            }
+            .addTo(disposables)
+    }
+
     private fun <T> ManageDraftUseCase.extract(
         extractor: ((DraftWithProducts) -> T)
     ): LiveData<T> =

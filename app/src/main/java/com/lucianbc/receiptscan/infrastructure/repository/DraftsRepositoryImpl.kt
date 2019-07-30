@@ -62,5 +62,7 @@ class DraftsRepositoryImpl @Inject constructor(
 
     override fun delete(draftId: Long) = draftDao.delete(draftId)
 
+    override fun deleteProduct(id: Long) = draftDao.deleteProduct(id)
+
     override fun saveReceipt(data: DraftWithProducts) = draftDao.updateReceipt(data)
 }

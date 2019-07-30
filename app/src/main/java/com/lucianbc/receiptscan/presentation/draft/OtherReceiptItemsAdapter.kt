@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lucianbc.receiptscan.R
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.editable_item_layout.view.*
 
 class OtherReceiptItemsAdapter : ListAdapter<Product, OtherReceiptItemsAdapter.Holder>(Diff()) {
     var onItemEdit: Callback<Product>? = null
+    var onItemSwipe: Callback<Product>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater
@@ -28,6 +30,23 @@ class OtherReceiptItemsAdapter : ListAdapter<Product, OtherReceiptItemsAdapter.H
         holder.product = element
     }
 
+    fun bindSwipe(recyclerView: RecyclerView) {
+        ItemTouchHelper(
+            object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ) = false
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val position = viewHolder.adapterPosition
+                    val product = getItem(position)
+                    onItemSwipe?.invoke(product)
+                }
+            }
+        ).attachToRecyclerView(recyclerView)
+    }
 
     class Holder(
         val view: View,

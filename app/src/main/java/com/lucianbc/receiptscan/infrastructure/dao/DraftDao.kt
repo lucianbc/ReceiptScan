@@ -7,6 +7,7 @@ import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.model.ReceiptEntity
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import java.util.*
@@ -34,6 +35,9 @@ interface DraftDao {
 
     @Query("delete from receipt where id = :receiptId")
     fun delete(receiptId: Long)
+
+    @Query("delete from productDraft where id = :productId")
+    fun deleteProduct(productId: Long): Completable
 
     @Query("update receipt set merchantName = :merchantName, date = :date, currency = :currency, total = :total where id = :receiptId")
     fun updateReceipt(merchantName: String?, date: Date?, currency: Currency?, total: Float?, receiptId: Long)

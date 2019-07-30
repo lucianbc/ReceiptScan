@@ -59,11 +59,15 @@ class OtherReceiptFragment
             onItemEdit = {
                 viewModel.updateProduct(it)
             }
+            onItemSwipe = {
+                viewModel.deleteProduct(it)
+            }
         }
         draftItems.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = itemsAdapter
         }
+        itemsAdapter.bindSwipe(draftItems)
     }
 
     private fun observe(viewModel: DraftViewModel) {
