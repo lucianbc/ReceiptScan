@@ -37,4 +37,5 @@
     <string name="category_icon">Category Icon</string>
     <string name="item_label">Item</string>
     <string name="price_label">Price</string>
+    <string name="delete">Delete</string>
 </resources>

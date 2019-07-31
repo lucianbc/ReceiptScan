@@ -8,7 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseActivity
-import kotlinx.android.synthetic.main.fragment_receipt.*
+import kotlinx.android.synthetic.main.fragment_draft.*
 
 class DraftReviewActivity
     : BaseActivity<DraftViewModel>(DraftViewModel::class.java) {
@@ -21,7 +21,7 @@ class DraftReviewActivity
         super.onCreate(savedInstanceState)
         safeLoadParams()
         setContentView(R.layout.activity_draft_review)
-//        setupButtons()
+        setupButtons()
     }
 
     private fun safeLoadParams() {
@@ -30,11 +30,10 @@ class DraftReviewActivity
         bundle?.getLong(DRAFT_ID)?.let { viewModel.init(it) }
     }
 
-
     private fun setupButtons() {
-        editFab.setOnClickListener(showAnnotationsListener)
-        discardFab.setOnClickListener(discardListener)
-        acceptFab.setOnClickListener(validateListener)
+        imageBtn.setOnClickListener(showAnnotationsListener)
+        deleteBtn.setOnClickListener(discardListener)
+        saveBtn.setOnClickListener(validateListener)
     }
 
     @SuppressLint("PrivateResource")

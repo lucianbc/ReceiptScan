@@ -12,7 +12,7 @@
             android:id="@+id/draftContainer"
     >
         <fragment
-                class="com.lucianbc.receiptscan.presentation.draft.OtherReceiptFragment"
+                class="com.lucianbc.receiptscan.presentation.draft.DraftFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/receiptFragment"/>

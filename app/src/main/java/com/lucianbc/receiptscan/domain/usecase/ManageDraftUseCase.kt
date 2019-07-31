@@ -12,10 +12,12 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class ManageDraftUseCase(
-    val draftId: Long,
+    private val draftId: Long,
     val value: Flowable<DraftWithProducts>,
-    val repository: DraftsRepository
+    private val repository: DraftsRepository
 ) {
+    val image = repository.getImage(draftId)
+
     fun <T> update(newVal: T, mapper: ((T, DraftWithProducts) -> Draft)) {
         Observable.just(newVal)
             .withLatestFrom(value.toObservable())

@@ -10,11 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
-import com.lucianbc.receiptscan.databinding.FragmentReceipt2Binding
-import kotlinx.android.synthetic.main.fragment_receipt_2.*
+import com.lucianbc.receiptscan.databinding.FragmentDraftBinding
+import kotlinx.android.synthetic.main.fragment_draft.*
 import java.util.*
 
-class OtherReceiptFragment
+class DraftFragment
     : BaseFragment<DraftViewModel>(DraftViewModel::class.java) {
 
     private lateinit var itemsAdapter: OtherReceiptItemsAdapter
@@ -37,10 +37,10 @@ class OtherReceiptFragment
 
     private fun setupBinding(
         inflater: LayoutInflater, container: ViewGroup?
-    ): FragmentReceipt2Binding? {
-        val binding = DataBindingUtil.inflate<FragmentReceipt2Binding>(
+    ): FragmentDraftBinding? {
+        val binding = DataBindingUtil.inflate<FragmentDraftBinding>(
             inflater,
-            R.layout.fragment_receipt_2,
+            R.layout.fragment_draft,
             container,
             false
         )

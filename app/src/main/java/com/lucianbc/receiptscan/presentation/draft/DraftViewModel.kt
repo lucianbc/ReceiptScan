@@ -1,5 +1,6 @@
 package com.lucianbc.receiptscan.presentation.draft
 
+import android.graphics.Bitmap
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
@@ -28,6 +29,8 @@ class DraftViewModel @Inject constructor(
     val category = mld<String?>("Grocery")
     val products = mld<List<Product>>()
 
+    val image = mld<Bitmap>()
+
 
     private lateinit var useCase: ManageDraftUseCase
     private val disposables = CompositeDisposable()
@@ -39,6 +42,7 @@ class DraftViewModel @Inject constructor(
         total.sourceFirst(useCase.extract { it.receipt.total?.toString() })
         currency.sourceFirst(useCase.extract { it.receipt.currency })
         products.sourceFirst(useCase.extract { it.products })
+        image.source(useCase.image.toLiveData())
     }
 
     val updateMerchant =
@@ -99,6 +103,10 @@ class DraftViewModel @Inject constructor(
             this.value = t
             this.removeSource(source)
         }
+    }
+
+    private fun <T> MediatorLiveData<T>.source(source: LiveData<T>) {
+        this.addSource(source) { value = it }
     }
 
     override fun onCleared() {
