@@ -1,6 +1,6 @@
 package com.lucianbc.receiptscan.domain.scanner
 
-import com.lucianbc.receiptscan.domain.model.*
+import com.lucianbc.receiptscan.domain.model.RawReceipt
 import java.util.*
 
 private const val MERCHANT_MIN_LENGTH = 2
@@ -32,6 +32,7 @@ fun extractMerchant(rawReceipt: RawReceipt): String? {
 fun extractDate(receiptText: String): Date =
     findDatesWithPatterns(receiptText).firstOrNull() ?: Date()
 
+@Suppress("UNUSED_PARAMETER")
 fun extractCurrency(receiptText: String): Currency = Currency.getInstance("RON")
 
 fun parseNumber(string: String): Float? =
