@@ -23,11 +23,11 @@ import javax.inject.Inject
 class DraftViewModel @Inject constructor(
     private val useCaseFactory: ManageDraftUseCase.Factory
 ) : ViewModel() {
-    val merchant = mld<String?>()
-    val date = mld<Date?>()
-    val total = mld<String?>()
-    val currency = mld<Currency?>()
-    val category = mld<String?>("Grocery")
+    val merchant = mld<String>()
+    val date = mld<Date>()
+    val total = mld<String>()
+    val currency = mld<String>()
+    val category = mld("Grocery")
     val products = mld<List<Product>>()
 
     val image = mld<Bitmap>()
@@ -38,10 +38,10 @@ class DraftViewModel @Inject constructor(
 
     fun init(draftId: Long) {
         useCase = useCaseFactory.fetch(draftId)
-        merchant.sourceFirst(useCase.extract { it.receipt.merchantName })
-        date.sourceFirst(useCase.extract { it.receipt.date })
-        total.sourceFirst(useCase.extract { it.receipt.total?.toString() })
-        currency.sourceFirst(useCase.extract { it.receipt.currency })
+        merchant.sourceFirst(useCase.extract { it.receipt.merchantName ?: "" })
+        date.sourceFirst(useCase.extract { it.receipt.date ?: Date() })
+        total.sourceFirst(useCase.extract { (it.receipt.total?: 0f).toString() })
+        currency.sourceFirst(useCase.extract { it.receipt.currency?.currencyCode ?: "" })
         products.sourceFirst(useCase.extract { it.products })
         image.source(useCase.image.toLiveData())
     }
@@ -140,9 +140,4 @@ class DraftViewModel @Inject constructor(
 @BindingAdapter("android:text")
 fun setText(view: TextView, date: Date?) {
     view.text = date.show()
-}
-
-@BindingAdapter("android:text")
-fun setText(view: TextView, currency: Currency?) {
-    view.text = currency?.currencyCode ?: ""
 }
