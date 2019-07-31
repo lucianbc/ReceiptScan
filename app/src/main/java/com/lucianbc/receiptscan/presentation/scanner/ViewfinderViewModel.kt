@@ -20,22 +20,13 @@ class ViewfinderViewModel @Inject constructor(
     val flash: LiveData<Boolean>
         get() = _flash
 
-    private var shouldProcess = true
-
     val ocrElements = liveViewUseCase.ocrElements.toLiveData()
 
     fun toggleFlash() {
         _flash.value = flash.value?.not()
     }
 
-    fun toggleProcess() {
-        shouldProcess = shouldProcess.not()
-    }
-
     fun processFrame(frame: Frame) {
-        if (!shouldProcess)
-            return
-
         try {
             val ocrProducer = factory.create(frame)
             liveViewUseCase.scan(ocrProducer)
@@ -45,9 +36,6 @@ class ViewfinderViewModel @Inject constructor(
     }
 
     fun processImage(image: Bitmap) {
-        if (!shouldProcess)
-            return
-
         try {
             val ocrProducer = factory.create(image)
             liveViewUseCase.scan(ocrProducer)
