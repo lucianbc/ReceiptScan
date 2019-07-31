@@ -53,7 +53,7 @@ class DraftReviewActivity
     }
 
     private val validateListener = View.OnClickListener {
-//        viewModel.validateDraft()
+        viewModel.validateDraft()
         finish()
     }
 
@@ -73,7 +73,7 @@ class DraftReviewActivity
             .show()
 
     private fun discardAndFinish() {
-//        viewModel.discardDraft()
+        viewModel.discardDraft()
         finish()
     }
 

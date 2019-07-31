@@ -15,6 +15,7 @@ import com.lucianbc.receiptscan.util.debounced
 import com.lucianbc.receiptscan.util.loge
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -64,6 +65,22 @@ class DraftViewModel @Inject constructor(
         debounced<Product>(disposables, TIMEOUT, TIME_UNIT) {
             useCase.updateProduct(it)
         }
+
+    fun discardDraft() {
+        useCase
+            .deleteDraft()
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+            .addTo(disposables)
+    }
+
+    fun validateDraft() {
+        useCase
+            .validateDraft()
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+            .addTo(disposables)
+    }
 
     fun createProduct() {
         useCase

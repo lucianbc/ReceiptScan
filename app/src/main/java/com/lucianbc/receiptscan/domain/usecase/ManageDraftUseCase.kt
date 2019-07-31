@@ -56,6 +56,14 @@ class ManageDraftUseCase(
             .deleteProduct(it.id!!)
             .subscribeOn(Schedulers.io())
 
+    fun deleteDraft() =
+        Observable
+            .fromCallable { repository.delete(draftId) }
+
+    fun validateDraft() =
+        Observable
+            .fromCallable { repository.validate(draftId) }
+
 
     class Factory @Inject constructor (
         private val draftsRepository: DraftsRepository
