@@ -69,8 +69,11 @@ class ManageDraftUseCase(
         private val draftsRepository: DraftsRepository
     ) {
         fun fetch(draftId: Long): ManageDraftUseCase {
-            val value = draftsRepository.getReceipt(draftId)
-            return ManageDraftUseCase(draftId, value.cache(), draftsRepository)
+            val value = draftsRepository
+                .getReceipt(draftId)
+                .publish()
+                .autoConnect()
+            return ManageDraftUseCase(draftId, value, draftsRepository)
         }
     }
 }
