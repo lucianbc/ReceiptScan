@@ -17,7 +17,7 @@
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_receipt_white_24dp"
+            android:src="@drawable/ic_receipt_black_24dp"
             android:tint="@color/black"
             android:contentDescription="@string/receipt"
     />

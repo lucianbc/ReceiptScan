@@ -62,7 +62,7 @@
                     android:layout_weight="1"
                     android:background="?android:selectableItemBackground"
                     android:contentDescription="@string/receipts_button_desc"
-                    android:src="@drawable/ic_receipt_white_24dp"
+                    android:src="@drawable/ic_receipt_black_24dp"
                     android:tint="@color/black"
                     android:id="@+id/receipts_btn"
             />
