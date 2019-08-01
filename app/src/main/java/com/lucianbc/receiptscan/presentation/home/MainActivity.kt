@@ -20,7 +20,7 @@ class MainActivity : DaggerAppCompatActivity() {
         supportFragmentManager.apply {
             HomePagerAdapter(this).also {
                 pager.adapter = it
-                pager.currentItem = HomePagerAdapter.DRAFTS
+                pager.currentItem = HomePagerAdapter.RECEIPTS
             }
         }
     }
