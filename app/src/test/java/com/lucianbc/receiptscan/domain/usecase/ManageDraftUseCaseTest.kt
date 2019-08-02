@@ -34,7 +34,7 @@ class ManageDraftUseCaseTest {
 
     private val repo: DraftsRepository = mock()
 
-    private val subject = ManageDraftUseCase(id, Flowable.just(data), repo)
+    private val subject = ManageDraftUseCase(id, Flowable.just(data).publish().autoConnect(), repo)
 
     private val savedValueCaptor = argumentCaptor<Draft>()
 
@@ -50,7 +50,7 @@ class ManageDraftUseCaseTest {
         subject.update(merchant) { v, dwp -> dwp.receipt.copy(merchantName = v) }
 
         Thread.sleep(500)
-        verify(repo, times(1)).insert(any())
+        verify(repo, times(1)).update(any<Draft>())
         assertEquals(merchant, savedValueCaptor.firstValue.merchantName)
         verifyNoMoreInteractions(repo)
     }
