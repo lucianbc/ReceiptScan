@@ -1,7 +1,7 @@
 package com.lucianbc.receiptscan.domain.scanner
 
-import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.domain.model.RawReceipt
+import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.util.Just
 import com.lucianbc.receiptscan.util.None
 import com.lucianbc.receiptscan.util.Optional
@@ -162,7 +162,7 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
 
     private sealed class ResultObj {
         class Total(val price: Float, val top: Int) : ResultObj()
-        class Product(val price: Float, val name: String, val top: Int) : ResultObj()
+        class Product(val price: Float, name: String, val top: Int) : ResultObj() { val name = name.toUpperCase() }
     }
 
     companion object {
