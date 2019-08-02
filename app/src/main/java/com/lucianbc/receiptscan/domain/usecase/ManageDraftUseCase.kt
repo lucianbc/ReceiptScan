@@ -16,7 +16,7 @@ class ManageDraftUseCase(
     val value: Flowable<DraftWithProducts>,
     private val repository: DraftsRepository
 ) {
-    val image = repository.getImage(draftId)
+    val image by lazy { repository.getImage(draftId) }
 
     fun <T> update(newVal: T, mapper: ((T, DraftWithProducts) -> Draft)) {
         Observable.just(newVal)
