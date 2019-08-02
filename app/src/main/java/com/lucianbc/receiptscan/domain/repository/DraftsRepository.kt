@@ -15,7 +15,7 @@ import io.reactivex.Single
 
 interface DraftsRepository {
     fun create(value: DraftValue): Observable<Long>
-    fun update(draft: Draft): Single<Long>
+    fun insert(draft: Draft): Single<Long>
     fun update(product: Product): Single<Long>
     fun insert(product: Product): Single<Long>
     fun update(receiptId: Long, products: List<Product>): Single<List<Long>>
@@ -28,4 +28,5 @@ interface DraftsRepository {
     fun saveReceipt(data: DraftWithProducts)
     fun validate(draftId: Long)
     fun deleteProduct(id: Long): Completable
+    fun update(draft: Draft): Completable
 }

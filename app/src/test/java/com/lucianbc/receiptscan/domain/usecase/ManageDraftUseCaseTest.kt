@@ -5,8 +5,8 @@ import com.lucianbc.receiptscan.domain.model.DraftWithProducts
 import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.nhaarman.mockitokotlin2.*
+import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Single
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -40,7 +40,7 @@ class ManageDraftUseCaseTest {
 
     @Before
     fun setup() {
-        `when`(repo.update(savedValueCaptor.capture())).thenReturn(Single.just(id))
+        `when`(repo.update(savedValueCaptor.capture())).thenReturn(Completable.complete())
     }
     // endregion
 

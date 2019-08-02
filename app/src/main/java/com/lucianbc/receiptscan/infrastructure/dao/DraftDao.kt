@@ -17,6 +17,9 @@ interface DraftDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(draft: ReceiptEntity): Single<Long>
 
+    @Update
+    fun update(draft: ReceiptEntity): Completable
+
     @Insert
     fun insert(ocrElements: List<OcrElement>): Single<List<Long>>
 

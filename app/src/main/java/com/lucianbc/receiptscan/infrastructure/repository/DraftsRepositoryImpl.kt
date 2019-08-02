@@ -36,7 +36,9 @@ class DraftsRepositoryImpl @Inject constructor(
                 draftDao.insert(els).map { receiptId }
             }
 
-    override fun update(draft: Draft) = draftDao.insert(draft.receipt())
+    override fun insert(draft: Draft) = draftDao.insert(draft.receipt())
+
+    override fun update(draft: Draft) = draftDao.update(draft.receipt())
 
     override fun update(product: Product) = draftDao.insert(product)
 

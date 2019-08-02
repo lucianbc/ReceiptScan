@@ -31,7 +31,7 @@ class ManageDraftUseCase(
                             Observable.just(this)
                     }
             }
-            .flatMapSingle { repository.update(it) }
+            .flatMapCompletable { repository.update(it) }
             .subscribeOn(Schedulers.io())
             .subscribe()
     }
@@ -71,7 +71,7 @@ class ManageDraftUseCase(
         fun fetch(draftId: Long): ManageDraftUseCase {
             val value = draftsRepository
                 .getReceipt(draftId)
-                .publish()
+                .replay(1)
                 .autoConnect()
             return ManageDraftUseCase(draftId, value, draftsRepository)
         }
