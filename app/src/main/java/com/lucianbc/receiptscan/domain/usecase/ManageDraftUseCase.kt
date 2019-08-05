@@ -19,6 +19,10 @@ class ManageDraftUseCase(
     val image by lazy { repository.getImage(draftId) }
 
     fun <T> update(newVal: T, mapper: ((T, DraftWithProducts) -> Draft)) {
+        updateSubs(newVal, mapper).subscribe()
+    }
+
+    fun <T> updateSubs(newVal: T, mapper: ((T, DraftWithProducts) -> Draft)) =
         Observable.just(newVal)
             .withLatestFrom(value.toObservable())
             .flatMap {
@@ -33,8 +37,7 @@ class ManageDraftUseCase(
             }
             .flatMapCompletable { repository.update(it) }
             .subscribeOn(Schedulers.io())
-            .subscribe()
-    }
+
 
     fun createProduct(): Single<Product> {
         val newProd = Product("", 0f, receiptId = draftId)

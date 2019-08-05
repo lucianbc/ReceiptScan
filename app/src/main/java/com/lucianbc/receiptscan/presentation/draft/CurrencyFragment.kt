@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.base.BaseFragment
 import kotlinx.android.synthetic.main.currency_item_layout.view.*
 import kotlinx.android.synthetic.main.fragment_currency.*
 import java.util.*
 
-class CurrencyFragment : Fragment() {
+class CurrencyFragment
+    : BaseFragment<DraftViewModel>(DraftViewModel::class.java) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,14 +26,18 @@ class CurrencyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initParentViewModel()
         currenciesList.apply {
-            adapter = CurrencyAdapter()
+            adapter = CurrencyAdapter {
+                viewModel.updateCurrency(it)
+                fragmentManager?.popBackStack()
+            }
             layoutManager = LinearLayoutManager(activity)
         }
     }
 }
 
-private class CurrencyAdapter
+private class CurrencyAdapter(private val callback: ((Currency) -> Unit))
     : ListAdapter<Currency, CurrencyAdapter.Holder>(Diff()) {
 
     init {
@@ -51,12 +56,13 @@ private class CurrencyAdapter
         holder.item = element
     }
 
-    class Holder(val view: View) : RecyclerView.ViewHolder(view) {
+    inner class Holder(val view: View) : RecyclerView.ViewHolder(view) {
         var item : Currency? = null
             set(value) {
                 field = value
                 view.currencyCode.text = value?.currencyCode
                 view.currencyName.text = value?.displayName
+                view.setOnClickListener { value?.let { callback.invoke(value) } }
             }
     }
 

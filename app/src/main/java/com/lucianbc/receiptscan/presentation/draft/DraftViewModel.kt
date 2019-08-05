@@ -41,7 +41,7 @@ class DraftViewModel @Inject constructor(
         merchant.sourceFirst(useCase.extract { it.receipt.merchantName ?: "" })
         date.sourceFirst(useCase.extract { it.receipt.date ?: Date() })
         total.sourceFirst(useCase.extract { (it.receipt.total?: 0f).toString() })
-        currency.sourceFirst(useCase.extract { it.receipt.currency?.currencyCode ?: "" })
+        currency.sourceFirst(useCase.extract { it.receipt.currency.show() })
         products.sourceFirst(useCase.extract { it.products })
         image.source(useCase.image.toLiveData())
     }
@@ -64,6 +64,14 @@ class DraftViewModel @Inject constructor(
     val updateProduct =
         debounced<Product>(disposables, TIMEOUT, TIME_UNIT) {
             useCase.updateProduct(it)
+        }
+
+    val updateCurrency =
+        debounced<Currency>(disposables, TIMEOUT, TIME_UNIT) { c ->
+            useCase
+                .updateSubs(c) { v, dwp -> dwp.receipt.copy(currency = v) }
+                .andThen { currency.postValue(c.show()) }
+                .subscribe()
         }
 
     fun discardDraft() {
@@ -121,6 +129,8 @@ class DraftViewModel @Inject constructor(
             this.removeSource(source)
         }
     }
+
+    private fun Currency?.show() = this?.currencyCode ?: ""
 
     private fun <T> MediatorLiveData<T>.source(source: LiveData<T>) {
         this.addSource(source) { value = it }
