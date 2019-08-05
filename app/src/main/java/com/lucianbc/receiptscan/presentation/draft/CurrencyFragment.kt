@@ -7,18 +7,19 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.base.BaseFragment
 import kotlinx.android.synthetic.main.currency_item_layout.view.*
 import kotlinx.android.synthetic.main.fragment_currency.*
 import java.util.*
 
-class CurrencyFragment
-    : BaseFragment<DraftViewModel>(DraftViewModel::class.java) {
+class CurrencyFragment(
+    private val callback: (Currency) -> Unit
+) : Fragment() {
 
     private lateinit var currenciesAdapter: CurrencyAdapter
 
@@ -32,9 +33,8 @@ class CurrencyFragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initParentViewModel()
         currenciesAdapter = CurrencyAdapter {
-            viewModel.updateCurrency(it)
+            callback.invoke(it)
             fragmentManager?.popBackStack()
         }
         currenciesList.apply {

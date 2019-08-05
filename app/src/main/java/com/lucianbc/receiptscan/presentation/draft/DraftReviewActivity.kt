@@ -16,7 +16,7 @@ class DraftReviewActivity
         DEFAULT_CAN_DISCARD
 
     private val annotationsFragment by lazy { ReceiptImageFragment() }
-    private val currenciesFragment by lazy { CurrencyFragment() }
+    private val currenciesFragment by lazy { CurrencyFragment { viewModel.updateCurrency(it) } }
 
     @SuppressLint("PrivateResource")
     private val inn = R.anim.mtrl_bottom_sheet_slide_in
