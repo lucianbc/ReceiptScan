@@ -52,7 +52,6 @@ class DraftFragment
     private fun setupActions() {
         editDateBtn.setOnClickListener { openDateDialog(viewModel.date.value) }
         addProductBtn.setOnClickListener { viewModel.createProduct() }
-        editCurrencyBtn.setOnClickListener { activity?.let { it.startActivity(CurrencyActivity.navIntent(it)) } }
     }
 
     private fun setupAdapter() {

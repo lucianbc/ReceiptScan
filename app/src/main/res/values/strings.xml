@@ -38,4 +38,5 @@
     <string name="item_label">Item</string>
     <string name="price_label">Price</string>
     <string name="delete">Delete</string>
+    <string name="search_currency">Search Currency</string>
 </resources>

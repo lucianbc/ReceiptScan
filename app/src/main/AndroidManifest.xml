@@ -17,8 +17,6 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".presentation.draft.CurrencyActivity">
-        </activity>
         <activity android:name=".presentation.draft.DraftReviewActivity">
         </activity>
         <activity

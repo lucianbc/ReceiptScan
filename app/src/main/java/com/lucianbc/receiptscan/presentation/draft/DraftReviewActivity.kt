@@ -16,6 +16,12 @@ class DraftReviewActivity
         DEFAULT_CAN_DISCARD
 
     private val annotationsFragment by lazy { ReceiptImageFragment() }
+    private val currenciesFragment by lazy { CurrencyFragment() }
+
+    @SuppressLint("PrivateResource")
+    private val inn = R.anim.mtrl_bottom_sheet_slide_in
+    @SuppressLint("PrivateResource")
+    private val out = R.anim.mtrl_bottom_sheet_slide_out
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,17 +40,25 @@ class DraftReviewActivity
         imageBtn.setOnClickListener(showAnnotationsListener)
         deleteBtn.setOnClickListener(discardListener)
         saveBtn.setOnClickListener(validateListener)
+
+        editCurrencyBtn.setOnClickListener(showCurrencies)
     }
 
-    @SuppressLint("PrivateResource")
     private val showAnnotationsListener = View.OnClickListener {
-        val inn = R.anim.mtrl_bottom_sheet_slide_in
-        val out = R.anim.mtrl_bottom_sheet_slide_out
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(inn, out, inn, out)
-            .add(R.id.draftContainer, annotationsFragment, ANNOTATIONS_FRAG_TAG)
+            .replace(R.id.draftContainer, annotationsFragment, ANNOTATIONS_FRAG_TAG)
             .addToBackStack(ANNOTATIONS_FRAG_TAG)
+            .commit()
+    }
+
+    private val showCurrencies = View.OnClickListener {
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(inn, out, inn, out)
+            .add(R.id.draftContainer, currenciesFragment, CURRENCIES_FRAG_TAG)
+            .addToBackStack(CURRENCIES_FRAG_TAG)
             .commit()
     }
 
@@ -91,6 +105,8 @@ class DraftReviewActivity
         private const val DRAFT_ID = "DRAFT_ID"
         private const val CAN_DISCARD = "CAN_DISCARD"
         private const val ANNOTATIONS_FRAG_TAG = "RECEIPT_ANNOTATIONS"
+
+        private const val CURRENCIES_FRAG_TAG = "CURRENCIES"
 
         private const val DEFAULT_DRAFT_ID = -1L
         private const val DEFAULT_CAN_DISCARD = false
