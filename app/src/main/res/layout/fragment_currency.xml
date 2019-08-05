@@ -20,6 +20,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/toolbar"
                 app:title="@string/search_currency"
+                app:menu="@menu/currency_search"
         />
     </com.google.android.material.appbar.AppBarLayout>
 

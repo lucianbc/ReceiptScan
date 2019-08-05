@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -16,6 +19,9 @@ import java.util.*
 
 class CurrencyFragment
     : BaseFragment<DraftViewModel>(DraftViewModel::class.java) {
+
+    private lateinit var currenciesAdapter: CurrencyAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,21 +33,43 @@ class CurrencyFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initParentViewModel()
+        currenciesAdapter = CurrencyAdapter {
+            viewModel.updateCurrency(it)
+            fragmentManager?.popBackStack()
+        }
         currenciesList.apply {
-            adapter = CurrencyAdapter {
-                viewModel.updateCurrency(it)
-                fragmentManager?.popBackStack()
-            }
+            adapter = currenciesAdapter
             layoutManager = LinearLayoutManager(activity)
         }
+        (toolbar.menu.getItem(0).actionView as SearchView).apply(::initSearch)
+    }
+
+    private fun initSearch(view: SearchView) {
+        view.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                currenciesAdapter.filter.filter(newText)
+                return false
+            }
+        })
     }
 }
 
 private class CurrencyAdapter(private val callback: ((Currency) -> Unit))
-    : ListAdapter<Currency, CurrencyAdapter.Holder>(Diff()) {
+    : ListAdapter<Currency, CurrencyAdapter.Holder>(Diff()), Filterable {
+
+    private var allItems = emptyList<Currency>()
 
     init {
         submitList(Currency.getAvailableCurrencies().toList())
+    }
+
+    override fun submitList(list: List<Currency>?) {
+        list?.let { allItems = list }
+        super.submitList(list)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -74,5 +102,27 @@ private class CurrencyAdapter(private val callback: ((Currency) -> Unit))
         override fun areContentsTheSame(oldItem: Currency, newItem: Currency): Boolean {
             return oldItem.currencyCode == newItem.currencyCode
         }
+    }
+
+    private fun submitWithoutSave(list: List<Currency>?) = super.submitList(list)
+
+    override fun getFilter() = object : Filter() {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
+            return FilterResults().apply { values = filterCurrencies(constraint, allItems) }
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+            submitWithoutSave(results?.values as List<Currency>?)
+        }
+    }
+}
+
+private fun filterCurrencies(constraint: CharSequence?, items: List<Currency>): List<Currency> {
+    return if (constraint == null || constraint.isEmpty())
+        items
+    else {
+        val const = constraint.toString().toLowerCase().trim()
+        items.filter { currency -> currency.currencyCode.toLowerCase().contains(const) }
     }
 }
