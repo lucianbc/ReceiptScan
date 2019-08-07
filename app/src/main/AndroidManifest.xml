@@ -17,6 +17,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".presentation.receipt.ReceiptActivity">
+        </activity>
         <activity
                 android:name=".presentation.draft.DraftReviewActivity"
                 android:windowSoftInputMode="adjustPan">
