@@ -2,7 +2,7 @@ package com.lucianbc.receiptscan.domain.model
 
 enum class Category {
     Grocery,
-    Coffe,
+    Coffee,
     Transportation,
-    Snak
+    Snack
 }
