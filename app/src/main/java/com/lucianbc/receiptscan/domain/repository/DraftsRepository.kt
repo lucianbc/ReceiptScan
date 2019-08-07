@@ -18,14 +18,12 @@ interface DraftsRepository {
     fun insert(draft: Draft): Single<Long>
     fun update(product: Product): Single<Long>
     fun insert(product: Product): Single<Long>
-    fun update(receiptId: Long, products: List<Product>): Single<List<Long>>
     fun getAllItems(): Flowable<List<ListDraftsUseCase.DraftItem>>
     fun getAllReceiptItems(): Flowable<List<ListReceiptsUseCase.Item>>
     fun getImage(id: Long): Flowable<Bitmap>
     fun getReceipt(id: Long): Flowable<DraftWithProducts>
     fun getOcrElements(draftId: Long): Flowable<List<OcrElement>>
     fun delete(draftId: Long)
-    fun saveReceipt(data: DraftWithProducts)
     fun validate(draftId: Long)
     fun deleteProduct(id: Long): Completable
     fun update(draft: Draft): Completable

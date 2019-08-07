@@ -10,7 +10,6 @@ import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import java.util.*
 
 @Dao
 interface DraftDao {
@@ -42,40 +41,8 @@ interface DraftDao {
     @Query("delete from productDraft where id = :productId")
     fun deleteProduct(productId: Long): Completable
 
-    @Query("update receipt set merchantName = :merchantName, date = :date, currency = :currency, total = :total where id = :receiptId")
-    fun updateReceipt(merchantName: String?, date: Date?, currency: Currency?, total: Float?, receiptId: Long)
-
-    @Query("delete from productDraft where receiptId = :receiptId")
-    fun deleteProducts(receiptId: Long)
-
-    @Query("delete from productDraft where receiptId = :receiptId and id not in (:toKeepIds)")
-    fun deleteProductsNotInKeep(receiptId: Long, toKeepIds: List<Long>)
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProducts(products: List<Product>): Single<List<Long>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertProductsSync(products: List<Product>): List<Long>
-
-    @Transaction
-    fun updateProducts(receiptId: Long, products: List<Product>): List<Long> {
-        deleteProductsNotInKeep(receiptId, products.toList().mapNotNull { it.id })
-        return insertProductsSync(products)
-    }
-
-    @Transaction
-    fun updateReceipt(data: DraftWithProducts) {
-        updateReceipt(data.receipt.merchantName, data.receipt.date, data.receipt.currency, data.receipt.total, data.receipt.id)
-
-        data.products.mapNotNull { it.id }.let {
-            if (it.isNotEmpty()) {
-                deleteProductsNotInKeep(data.receipt.id, it)
-            }
-        }
-
-        deleteProductsNotInKeep(data.receipt.id, data.products.mapNotNull { it.id })
-        insertProducts(data.products)
-    }
 
     @Query("update receipt set isDraft = 0 where id = :draftId")
     fun validate(draftId: Long)

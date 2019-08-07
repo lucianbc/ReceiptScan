@@ -19,8 +19,6 @@ class DraftsRepositoryImpl @Inject constructor(
     private val draftDao: DraftDao,
     private val imagesDao: ImagesDao
 ) : DraftsRepository {
-    override fun update(receiptId: Long, products: List<Product>) =
-        Single.fromCallable { draftDao.updateProducts(receiptId, products) }
 
     override fun validate(draftId: Long) = draftDao.validate(draftId)
 
@@ -65,6 +63,4 @@ class DraftsRepositoryImpl @Inject constructor(
     override fun delete(draftId: Long) = draftDao.delete(draftId)
 
     override fun deleteProduct(id: Long) = draftDao.deleteProduct(id)
-
-    override fun saveReceipt(data: DraftWithProducts) = draftDao.updateReceipt(data)
 }
