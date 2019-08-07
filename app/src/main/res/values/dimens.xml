@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="receiptBottomSpace">150dp</dimen>
+    <dimen name="categoryIconSize">80dp</dimen>
 </resources>

@@ -11,8 +11,8 @@
         tools:layout_height="250dp"
 >
     <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/categoryIconSize"
+            android:layout_height="@dimen/categoryIconSize"
             tools:src="@drawable/ic_grocery"
             android:background="@drawable/circle"
             android:padding="15dp"

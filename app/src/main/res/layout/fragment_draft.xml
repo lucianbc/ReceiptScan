@@ -19,8 +19,8 @@
                     app:layout_constraintHorizontal_chainStyle="packed">
 
                 <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="@dimen/categoryIconSize"
+                        android:layout_height="@dimen/categoryIconSize"
                         tools:src="@drawable/ic_grocery"
                         android:src="@{viewModel.category}"
                         app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="60dp"
