@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseActivity
+import com.lucianbc.receiptscan.util.logd
 import kotlinx.android.synthetic.main.fragment_draft.*
 
 class DraftReviewActivity
@@ -17,6 +18,7 @@ class DraftReviewActivity
 
     private val annotationsFragment by lazy { ReceiptImageFragment() }
     private val currenciesFragment by lazy { CurrencyFragment { viewModel.updateCurrency(it) } }
+    private val categoriesFragment by lazy { CategoryFragment { logd(it.toString()) } }
 
     @SuppressLint("PrivateResource")
     private val inn = R.anim.mtrl_bottom_sheet_slide_in
@@ -42,6 +44,8 @@ class DraftReviewActivity
         saveBtn.setOnClickListener(validateListener)
 
         editCurrencyBtn.setOnClickListener(showCurrencies)
+
+        categoryImage.setOnClickListener(showCategories)
     }
 
     private val showAnnotationsListener = View.OnClickListener {
@@ -59,6 +63,15 @@ class DraftReviewActivity
             .setCustomAnimations(inn, out, inn, out)
             .add(R.id.draftContainer, currenciesFragment, CURRENCIES_FRAG_TAG)
             .addToBackStack(CURRENCIES_FRAG_TAG)
+            .commit()
+    }
+
+    private val showCategories = View.OnClickListener {
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(inn, out, inn, out)
+            .replace(R.id.draftContainer, categoriesFragment, CATEGORIES_FRAG_TAG)
+            .addToBackStack(CATEGORIES_FRAG_TAG)
             .commit()
     }
 
@@ -107,6 +120,8 @@ class DraftReviewActivity
         private const val ANNOTATIONS_FRAG_TAG = "RECEIPT_ANNOTATIONS"
 
         private const val CURRENCIES_FRAG_TAG = "CURRENCIES"
+
+        private const val CATEGORIES_FRAG_TAG = "CATEGORIES"
 
         private const val DEFAULT_DRAFT_ID = -1L
         private const val DEFAULT_CAN_DISCARD = false

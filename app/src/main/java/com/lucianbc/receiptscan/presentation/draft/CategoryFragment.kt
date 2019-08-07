@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.domain.model.Category
+import com.lucianbc.receiptscan.presentation.icon
+import kotlinx.android.synthetic.main.category_item_layout.view.*
 import kotlinx.android.synthetic.main.fragment_category.*
 
 
@@ -39,7 +41,7 @@ class CategoryFragment(
         }
         categoriesList.apply {
             adapter = _adapter
-            layoutManager = GridLayoutManager(activity, 3)
+            layoutManager = GridLayoutManager(activity, 2)
         }
         (currencyToolbar.menu.getItem(0).actionView as SearchView)
             .apply(::initSearch)
@@ -84,6 +86,7 @@ private class CategoryAdapter(
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val element = getItem(position)
         holder.item = element
+
     }
 
     override fun getFilter() = object: Filter() {
@@ -101,8 +104,13 @@ private class CategoryAdapter(
         var item : Category? = null
             set(value) {
                 field = value
-                view.setOnClickListener {
-                    value?.let { callback.invoke(value) } }
+                value?.let {
+                    view.setOnClickListener {
+                        value.let(callback)
+                    }
+                    view.categoryName.text = value.name
+                    view.categoryIc.setImageResource(value.icon)
+                }
             }
     }
 
