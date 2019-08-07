@@ -8,6 +8,7 @@ data class Draft(
     val date: Date?,
     val total: Float?,
     val currency: Currency?,
+    val category: Category,
     val creationTimestamp: Date,
     var id: Long
 ) {
@@ -18,6 +19,7 @@ data class Draft(
             date,
             total,
             currency,
+            category,
             creationTimestamp,
             true,
             id

@@ -1,6 +1,7 @@
 package com.lucianbc.receiptscan.domain.scanner
 
 import android.graphics.Bitmap
+import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.model.RawReceipt
 import com.lucianbc.receiptscan.domain.model.ReceiptEntity
@@ -30,6 +31,7 @@ class DraftValue private constructor(
             date,
             total,
             currency,
+            Category.Grocery,
             Date(),
             true
         )

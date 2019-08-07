@@ -11,6 +11,7 @@ data class ReceiptEntity(
     val date: Date?,
     val total: Float?,
     val currency: Currency?,
+    val category: Category,
     val creationTimestamp: Date,
     val isDraft: Boolean,
     @PrimaryKey
