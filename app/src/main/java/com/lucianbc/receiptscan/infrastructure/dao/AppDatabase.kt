@@ -13,7 +13,7 @@ import com.lucianbc.receiptscan.domain.model.ReceiptEntity
     ReceiptEntity::class,
     OcrElement::class,
     Product::class
-], version = 3, exportSchema = true)
+], version = 4, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 

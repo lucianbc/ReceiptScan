@@ -29,7 +29,7 @@ interface DraftDao {
     @Query("select imagePath from receipt where id = :id")
     fun getImagePath(id: Long): Flowable<String>
 
-    @Query("select merchantName, date, currency, total, id, imagePath, creationTimestamp from receipt where id = :id")
+    @Query("select merchantName, date, currency, category, total, id, imagePath, creationTimestamp from receipt where id = :id")
     @Transaction
     fun getReceipt(id: Long): Flowable<DraftWithProducts>
 

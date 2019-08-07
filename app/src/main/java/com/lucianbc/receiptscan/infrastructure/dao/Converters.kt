@@ -1,6 +1,7 @@
 package com.lucianbc.receiptscan.infrastructure.dao
 
 import androidx.room.TypeConverter
+import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.util.toDate
 import java.util.*
 
@@ -22,5 +23,14 @@ class Converters {
         @TypeConverter
         @JvmStatic
         fun toTimestamp(value: Date?) = value?.time
+
+        @TypeConverter
+        @JvmStatic
+        fun fromCategory(value: String?) =
+            Category.values().firstOrNull { c -> c.name == value } ?: Category.Grocery
+
+        @TypeConverter
+        @JvmStatic
+        fun toCategory(category: Category) = category.name
     }
 }
