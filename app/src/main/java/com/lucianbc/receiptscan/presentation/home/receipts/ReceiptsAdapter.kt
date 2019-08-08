@@ -10,18 +10,18 @@ import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
 import kotlinx.android.synthetic.main.receipt_list_item_layout.view.*
 
-class ReceiptsAdapter :
-    ListAdapter<ListReceiptsUseCase.Item, ReceiptItemViewHolder>(Diff()) {
+class ReceiptsAdapter(private val callback: (ListReceiptsUseCase.Item) -> Unit) :
+    ListAdapter<ListReceiptsUseCase.Item, ReceiptsAdapter.Holder>(Diff()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReceiptItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.receipt_list_item_layout, parent, false)
 
-        return ReceiptItemViewHolder(view)
+        return Holder(view)
     }
 
-    override fun onBindViewHolder(holder: ReceiptItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: Holder, position: Int) {
         val element = getItem(position)
         holder.item = element
     }
@@ -34,12 +34,16 @@ class ReceiptsAdapter :
             return oldItem == newItem
         }
     }
-}
 
-class ReceiptItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-    var item: ListReceiptsUseCase.Item? = null
-        set(value) {
-            field = value
-            view.receiptMerchant.text = value?.merchantName
-        }
+
+    inner class Holder(val view: View) : RecyclerView.ViewHolder(view) {
+        var item: ListReceiptsUseCase.Item? = null
+            set(value) {
+                field = value
+                value?.let {
+                    view.receiptMerchant.text = value.merchantName
+                    view.setOnClickListener { callback.invoke(value) }
+                }
+            }
+    }
 }
