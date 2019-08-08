@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.lucianbc.receiptscan.presentation.draft.DraftViewModel
 import com.lucianbc.receiptscan.presentation.home.drafts.DraftsViewModel
 import com.lucianbc.receiptscan.presentation.home.receipts.ReceiptsViewModel
+import com.lucianbc.receiptscan.presentation.receipt.ReceiptViewModel
 import com.lucianbc.receiptscan.presentation.scanner.ProcessingViewModel
 import com.lucianbc.receiptscan.presentation.scanner.ScannerViewModel
 import com.lucianbc.receiptscan.presentation.scanner.ViewfinderViewModel
@@ -42,4 +43,9 @@ abstract class ViewModelBinds {
     @IntoMap
     @ViewModelKey(DraftViewModel::class)
     abstract fun bindDraftVM(vm: DraftViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ReceiptViewModel::class)
+    abstract fun bindReceiptVM(vm: ReceiptViewModel): ViewModel
 }

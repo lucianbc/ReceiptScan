@@ -2,6 +2,7 @@ package com.lucianbc.receiptscan.di
 
 import com.lucianbc.receiptscan.presentation.draft.DraftReviewActivity
 import com.lucianbc.receiptscan.presentation.home.MainActivity
+import com.lucianbc.receiptscan.presentation.receipt.ReceiptActivity
 import com.lucianbc.receiptscan.presentation.scanner.ScannerActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -16,4 +17,7 @@ abstract class ActivityModule {
 
     @ContributesAndroidInjector
     abstract fun contributeDraftReviewActivity(): DraftReviewActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeReceiptActivity(): ReceiptActivity
 }
