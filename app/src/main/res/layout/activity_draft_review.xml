@@ -15,7 +15,7 @@
                 class="com.lucianbc.receiptscan.presentation.draft.DraftFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/receiptFragment"/>
+                android:id="@+id/draftFragment"/>
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
