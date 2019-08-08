@@ -16,6 +16,8 @@ import com.lucianbc.receiptscan.domain.usecase.ManageDraftUseCase
 import com.lucianbc.receiptscan.presentation.icon
 import com.lucianbc.receiptscan.util.debounced
 import com.lucianbc.receiptscan.util.loge
+import com.lucianbc.receiptscan.util.mld
+import com.lucianbc.receiptscan.util.sourceFirst
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
@@ -135,14 +137,7 @@ class DraftViewModel @Inject constructor(
     ): LiveData<T> =
         this.value.map(extractor).toLiveData()
 
-    private fun<T> mld() = MediatorLiveData<T>()
 
-    private fun <T> MediatorLiveData<T>.sourceFirst(source: LiveData<T>) {
-        this.addSource(source) { t ->
-            this.value = t
-            this.removeSource(source)
-        }
-    }
 
     private fun Currency?.show() = this?.currencyCode ?: ""
 
