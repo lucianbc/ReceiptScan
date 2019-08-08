@@ -18,9 +18,13 @@ fun <T : Any?> T.guard(cond: Boolean, func: (T) -> Unit) {
 
 fun<T> mld() = MediatorLiveData<T>()
 
+fun<T> mld(default: T) = MediatorLiveData<T>().apply { value = default }
+
 fun <T> MediatorLiveData<T>.sourceFirst(source: LiveData<T>) {
     this.addSource(source) { t ->
         this.value = t
         this.removeSource(source)
     }
 }
+
+fun Currency?.show() = this?.currencyCode ?: ""

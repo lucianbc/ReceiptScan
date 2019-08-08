@@ -1,9 +1,6 @@
 package com.lucianbc.receiptscan.presentation.draft
 
 import android.graphics.Bitmap
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
@@ -11,13 +8,8 @@ import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.DraftWithProducts
 import com.lucianbc.receiptscan.domain.model.Product
-import com.lucianbc.receiptscan.domain.scanner.show
 import com.lucianbc.receiptscan.domain.usecase.ManageDraftUseCase
-import com.lucianbc.receiptscan.presentation.icon
-import com.lucianbc.receiptscan.util.debounced
-import com.lucianbc.receiptscan.util.loge
-import com.lucianbc.receiptscan.util.mld
-import com.lucianbc.receiptscan.util.sourceFirst
+import com.lucianbc.receiptscan.util.*
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
@@ -137,10 +129,6 @@ class DraftViewModel @Inject constructor(
     ): LiveData<T> =
         this.value.map(extractor).toLiveData()
 
-
-
-    private fun Currency?.show() = this?.currencyCode ?: ""
-
     private fun <T> MediatorLiveData<T>.source(source: LiveData<T>) {
         this.addSource(source) { value = it }
     }
@@ -156,12 +144,3 @@ class DraftViewModel @Inject constructor(
     }
 }
 
-@BindingAdapter("android:text")
-fun setText(view: TextView, date: Date?) {
-    view.text = date.show()
-}
-
-@BindingAdapter("android:src")
-fun setIcon(view: ImageView, value: Category?) {
-    value?.let { view.setImageResource(value.icon) }
-}

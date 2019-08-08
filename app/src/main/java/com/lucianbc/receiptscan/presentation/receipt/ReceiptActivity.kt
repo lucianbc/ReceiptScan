@@ -3,10 +3,12 @@ package com.lucianbc.receiptscan.presentation.receipt
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.base.BaseActivity
+import com.lucianbc.receiptscan.presentation.draft.DraftViewModel
 
-class ReceiptActivity : AppCompatActivity() {
+class ReceiptActivity
+    : BaseActivity<DraftViewModel>(DraftViewModel::class.java) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
