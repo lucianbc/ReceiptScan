@@ -10,12 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentReceiptsBinding
+import com.lucianbc.receiptscan.presentation.receipt.ReceiptActivity
 import kotlinx.android.synthetic.main.fragment_receipts.*
 
 class ReceiptsFragment :
     BaseFragment<ReceiptsViewModel>(ReceiptsViewModel::class.java) {
 
-    private lateinit var receiptsAdapter: ReceiptsAdapter
+    private val receiptsAdapter = ReceiptsAdapter {
+        ReceiptActivity.navIntent(activity!!).apply(::startActivity)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +49,6 @@ class ReceiptsFragment :
     }
 
     private fun setupAdapter() {
-        receiptsAdapter = ReceiptsAdapter()
         receiptsList.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = receiptsAdapter
