@@ -14,7 +14,7 @@ import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.util.Callback
 import kotlinx.android.synthetic.main.editable_item_layout.view.*
 
-class OtherReceiptItemsAdapter : ListAdapter<Product, OtherReceiptItemsAdapter.Holder>(Diff()) {
+class ItemsAdapter : ListAdapter<Product, ItemsAdapter.Holder>(Diff()) {
     var onItemEdit: Callback<Product>? = null
     var onItemSwipe: Callback<Product>? = null
 

@@ -17,7 +17,7 @@ import java.util.*
 class DraftFragment
     : BaseFragment<DraftViewModel>(DraftViewModel::class.java) {
 
-    private lateinit var itemsAdapter: OtherReceiptItemsAdapter
+    private lateinit var itemsAdapter: ItemsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +55,7 @@ class DraftFragment
     }
 
     private fun setupAdapter() {
-        itemsAdapter = OtherReceiptItemsAdapter().apply {
+        itemsAdapter = ItemsAdapter().apply {
             onItemEdit = {
                 viewModel.updateProduct(it)
             }
