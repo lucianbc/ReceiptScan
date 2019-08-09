@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseActivity
 import kotlinx.android.synthetic.main.fragment_draft.*
@@ -47,31 +48,27 @@ class DraftReviewActivity
         categoryImage.setOnClickListener(showCategories)
     }
 
-    private val showAnnotationsListener = View.OnClickListener {
-        supportFragmentManager
-            .beginTransaction()
-            .setCustomAnimations(inn, out, inn, out)
-            .add(R.id.draftContainer, annotationsFragment, ANNOTATIONS_FRAG_TAG)
-            .addToBackStack(ANNOTATIONS_FRAG_TAG)
-            .commit()
-    }
+    private val showAnnotationsListener = View.OnClickListener(
+        addFragment(ANNOTATIONS_FRAG_TAG, annotationsFragment)
+    )
 
-    private val showCurrencies = View.OnClickListener {
-        supportFragmentManager
-            .beginTransaction()
-            .setCustomAnimations(inn, out, inn, out)
-            .add(R.id.draftContainer, currenciesFragment, CURRENCIES_FRAG_TAG)
-            .addToBackStack(CURRENCIES_FRAG_TAG)
-            .commit()
-    }
+    private val showCurrencies = View.OnClickListener(
+        addFragment(CURRENCIES_FRAG_TAG, currenciesFragment)
+    )
 
-    private val showCategories = View.OnClickListener {
-        supportFragmentManager
-            .beginTransaction()
-            .setCustomAnimations(inn, out, inn, out)
-            .add(R.id.draftContainer, categoriesFragment, CATEGORIES_FRAG_TAG)
-            .addToBackStack(CATEGORIES_FRAG_TAG)
-            .commit()
+    private val showCategories = View.OnClickListener(
+        addFragment(CATEGORIES_FRAG_TAG, categoriesFragment)
+    )
+
+    private fun addFragment(tag: String, frag: Fragment): (View) -> Unit {
+        return {
+            supportFragmentManager
+                .beginTransaction()
+                .setCustomAnimations(inn, out, inn, out)
+                .add(R.id.draftContainer, frag, tag)
+                .addToBackStack(tag)
+                .commit()
+        }
     }
 
     private val discardListener = View.OnClickListener {
