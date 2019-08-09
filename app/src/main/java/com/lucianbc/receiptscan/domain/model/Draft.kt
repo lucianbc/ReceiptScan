@@ -12,7 +12,7 @@ data class Draft(
     val creationTimestamp: Date,
     var id: Long
 ) {
-    fun receipt() =
+    fun entity() =
         ReceiptEntity(
             imagePath,
             merchantName,
