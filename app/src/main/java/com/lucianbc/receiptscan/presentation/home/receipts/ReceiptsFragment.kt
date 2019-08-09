@@ -17,7 +17,7 @@ class ReceiptsFragment :
     BaseFragment<ReceiptsViewModel>(ReceiptsViewModel::class.java) {
 
     private val receiptsAdapter = ReceiptsAdapter {
-        ReceiptActivity.navIntent(activity!!).apply(::startActivity)
+        ReceiptActivity.navIntent(activity!!, it.id).apply(::startActivity)
     }
 
     override fun onCreateView(
