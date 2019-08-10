@@ -37,7 +37,7 @@ class DraftViewModel @Inject constructor(
         useCase = useCaseFactory.fetch(draftId)
         merchant.sourceFirst(useCase.extract { it.receipt.merchantName ?: "" })
         date.sourceFirst(useCase.extract { it.receipt.date ?: Date() })
-        total.sourceFirst(useCase.extract { (it.receipt.total?: 0f).toString() })
+        total.sourceFirst(useCase.extract { it.receipt.total.show() })
         currency.sourceFirst(useCase.extract { it.receipt.currency.show() })
         products.sourceFirst(useCase.extract { it.products })
         category.sourceFirst(useCase.extract { it.receipt.category })
