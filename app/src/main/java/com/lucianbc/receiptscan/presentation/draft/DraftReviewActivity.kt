@@ -48,17 +48,17 @@ class DraftReviewActivity
         categoryImage.setOnClickListener(showCategories)
     }
 
-    private val showAnnotationsListener = View.OnClickListener(
+    private val showAnnotationsListener by lazy { View.OnClickListener(
         addFragment(ANNOTATIONS_FRAG_TAG, annotationsFragment)
-    )
+    ) }
 
-    private val showCurrencies = View.OnClickListener(
+    private val showCurrencies by lazy { View.OnClickListener(
         addFragment(CURRENCIES_FRAG_TAG, currenciesFragment)
-    )
+    ) }
 
-    private val showCategories = View.OnClickListener(
+    private val showCategories by lazy { View.OnClickListener(
         addFragment(CATEGORIES_FRAG_TAG, categoriesFragment)
-    )
+    ) }
 
     private fun addFragment(tag: String, frag: Fragment): (View) -> Unit {
         return {
