@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        style="@style/Widget.Design.BottomSheet.Modal"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+            style="@style/BottomSheetText"
+            android:layout_width="match_parent"
+            android:text="@string/share_title"
+    />
+
+    <TextView
+            style="@style/BottomSheetText.Item"
+            android:layout_width="match_parent"
+            android:text="@string/share_text"
+    />
+
+    <TextView
+            style="@style/BottomSheetText.Item"
+            android:layout_width="match_parent"
+            android:text="@string/share_image"
+    />
+
+    <TextView
+            style="@style/BottomSheetText.Item"
+            android:layout_width="match_parent"
+            android:text="@string/share_both"
+    />
+
+</LinearLayout>

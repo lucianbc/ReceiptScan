@@ -41,4 +41,8 @@
     <string name="search_currency">Search Currency</string>
     <string name="search">Search</string>
     <string name="category_search_title">Search Category</string>
+    <string name="share_text">Text Only</string>
+    <string name="share_image">Image Only</string>
+    <string name="share_both">Image and Text</string>
+    <string name="share_title">Chose what to share</string>
 </resources>

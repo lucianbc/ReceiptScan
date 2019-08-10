@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseActivity
+import com.lucianbc.receiptscan.presentation.ShareOptionsSheet
+import kotlinx.android.synthetic.main.fragment_receipt.*
 
 class ReceiptActivity
     : BaseActivity<ReceiptViewModel>(ReceiptViewModel::class.java) {
@@ -13,12 +15,17 @@ class ReceiptActivity
         super.onCreate(savedInstanceState)
         safeInit()
         setContentView(R.layout.activity_receipt)
+        setupButtons()
     }
 
     private fun safeInit() {
         intent.extras?.apply {
             getLong(RECEIPT_ID).let { viewModel.init(it) }
         }
+    }
+
+    private fun setupButtons() {
+        shareReceiptBtn.setOnClickListener { ShareOptionsSheet.show(supportFragmentManager) }
     }
 
     companion object {
