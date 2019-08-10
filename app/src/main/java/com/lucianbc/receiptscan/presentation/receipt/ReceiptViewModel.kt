@@ -15,7 +15,16 @@ class ReceiptViewModel @Inject constructor() : ViewModel() {
     val total = mld("9.99")
     val currency = mld(Currency.getInstance("RON").show())
     val category = mld(Category.Grocery)
-    val products = mld(emptyList<Product>())
+    val products = mld(
+        listOf(
+            Product("Prod1", 8f),
+            Product("Prod2", 1.99f),
+            Product("Prod1", 8f),
+            Product("Prod2", 1.99f),
+            Product("Prod1", 8f),
+            Product("Prod2", 1.99f)
+        )
+    )
 
     fun init(receiptId: Long) {
         logd("Initializing viewmodel for $receiptId")
