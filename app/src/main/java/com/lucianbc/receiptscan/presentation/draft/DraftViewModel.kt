@@ -126,8 +126,7 @@ class DraftViewModel @Inject constructor(
 
     private fun <T> ManageDraftUseCase.extract(
         extractor: ((DraftWithProducts) -> T)
-    ): LiveData<T> =
-        this.value.map(extractor).toLiveData()
+    ) = this.value.map(extractor).toLiveData()
 
     private fun <T> MediatorLiveData<T>.source(source: LiveData<T>) {
         this.addSource(source) { value = it }
