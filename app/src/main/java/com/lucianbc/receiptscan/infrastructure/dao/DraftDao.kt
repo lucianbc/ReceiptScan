@@ -7,6 +7,7 @@ import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.model.ReceiptEntity
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
+import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -31,6 +32,10 @@ interface DraftDao {
     @Query("select merchantName, date, currency, category, total, id, imagePath, creationTimestamp from receipt where id = :id")
     @Transaction
     fun getDraft(id: Long): Flowable<DraftWithProducts>
+
+    @Query("select id, merchantName, date, total, currency, category from receipt where id = :id")
+    @Transaction
+    fun getReceipt(id: Long): Flowable<ManageReceiptUseCase.Value>
 
     @Query("select * from ocrElement where receiptId = :receiptId")
     fun getOcrElements(receiptId: Long): Flowable<List<OcrElement>>

@@ -8,6 +8,7 @@ import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.scanner.DraftValue
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
+import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
@@ -27,4 +28,5 @@ interface DraftsRepository {
     fun validate(draftId: Long)
     fun deleteProduct(id: Long): Completable
     fun update(draft: Draft): Completable
+    fun getReceipt(id: Long): Flowable<ManageReceiptUseCase.Value>
 }

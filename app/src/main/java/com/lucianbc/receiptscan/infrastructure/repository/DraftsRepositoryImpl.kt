@@ -19,7 +19,6 @@ class DraftsRepositoryImpl @Inject constructor(
     private val draftDao: DraftDao,
     private val imagesDao: ImagesDao
 ) : DraftsRepository {
-
     override fun validate(draftId: Long) = draftDao.validate(draftId)
 
     override fun create(value: DraftValue): Observable<Long> =
@@ -63,4 +62,6 @@ class DraftsRepositoryImpl @Inject constructor(
     override fun delete(draftId: Long) = draftDao.delete(draftId)
 
     override fun deleteProduct(id: Long) = draftDao.deleteProduct(id)
+
+    override fun getReceipt(id: Long) = draftDao.getReceipt(id)
 }
