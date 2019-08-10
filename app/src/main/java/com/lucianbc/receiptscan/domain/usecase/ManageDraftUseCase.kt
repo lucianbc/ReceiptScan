@@ -73,7 +73,7 @@ class ManageDraftUseCase(
     ) {
         fun fetch(draftId: Long): ManageDraftUseCase {
             val value = draftsRepository
-                .getReceipt(draftId)
+                .getDraft(draftId)
                 .replay(1)
                 .autoConnect()
             return ManageDraftUseCase(draftId, value, draftsRepository)

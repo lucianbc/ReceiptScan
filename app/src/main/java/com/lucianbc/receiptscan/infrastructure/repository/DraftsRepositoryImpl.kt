@@ -51,8 +51,8 @@ class DraftsRepositoryImpl @Inject constructor(
     override fun getAllReceiptItems(): Flowable<List<ListReceiptsUseCase.Item>> =
         draftDao.getReceiptItems()
 
-    override fun getReceipt(id: Long): Flowable<DraftWithProducts> =
-        draftDao.getReceipt(id)
+    override fun getDraft(id: Long): Flowable<DraftWithProducts> =
+        draftDao.getDraft(id)
 
     override fun insert(product: Product): Single<Long> =
         draftDao.insert(product)

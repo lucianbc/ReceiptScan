@@ -30,7 +30,7 @@ interface DraftDao {
 
     @Query("select merchantName, date, currency, category, total, id, imagePath, creationTimestamp from receipt where id = :id")
     @Transaction
-    fun getReceipt(id: Long): Flowable<DraftWithProducts>
+    fun getDraft(id: Long): Flowable<DraftWithProducts>
 
     @Query("select * from ocrElement where receiptId = :receiptId")
     fun getOcrElements(receiptId: Long): Flowable<List<OcrElement>>

@@ -21,7 +21,7 @@ interface DraftsRepository {
     fun getAllItems(): Flowable<List<ListDraftsUseCase.DraftItem>>
     fun getAllReceiptItems(): Flowable<List<ListReceiptsUseCase.Item>>
     fun getImage(id: Long): Flowable<Bitmap>
-    fun getReceipt(id: Long): Flowable<DraftWithProducts>
+    fun getDraft(id: Long): Flowable<DraftWithProducts>
     fun getOcrElements(draftId: Long): Flowable<List<OcrElement>>
     fun delete(draftId: Long)
     fun validate(draftId: Long)
