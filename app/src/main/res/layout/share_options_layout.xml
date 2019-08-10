@@ -14,18 +14,21 @@
 
     <TextView
             style="@style/BottomSheetText.Item"
+            android:id="@+id/textOnlyOption"
             android:layout_width="match_parent"
             android:text="@string/share_text"
     />
 
     <TextView
             style="@style/BottomSheetText.Item"
+            android:id="@+id/imageOnlyOption"
             android:layout_width="match_parent"
             android:text="@string/share_image"
     />
 
     <TextView
             style="@style/BottomSheetText.Item"
+            android:id="@+id/bothOption"
             android:layout_width="match_parent"
             android:text="@string/share_both"
     />
