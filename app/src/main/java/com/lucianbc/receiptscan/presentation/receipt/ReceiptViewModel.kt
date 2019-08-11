@@ -14,6 +14,8 @@ import javax.inject.Inject
 class ReceiptViewModel @Inject constructor(
     private val useCaseFactory: ManageReceiptUseCase.Factory
 ) : ViewModel() {
+    private lateinit var useCase: ManageReceiptUseCase
+
     val merchant = mld<String>()
     val date = mld<Date>()
     val total = mld<String>()
@@ -22,14 +24,14 @@ class ReceiptViewModel @Inject constructor(
     val products = mld<List<Product>>()
 
     fun init(receiptId: Long) {
-        val useCase = useCaseFactory.fetch(receiptId)
-
-        merchant.sourceFirst(useCase.extract { it.merchantName })
-        date.sourceFirst(useCase.extract { it.date })
-        total.sourceFirst(useCase.extract { it.total.show() })
-        currency.sourceFirst(useCase.extract { it.currency.show() })
-        category.sourceFirst(useCase.extract { it.category })
-        products.sourceFirst(useCase.extract { it.products })
+        useCase = useCaseFactory.fetch(receiptId).apply {
+            extract { it.merchantName }.also(merchant::sourceFirst)
+            extract { it.date }.also(date::sourceFirst)
+            extract { it.total.show() }.also(total::sourceFirst)
+            extract { it.currency.show() }.also(currency::sourceFirst)
+            extract { it.category }.also(category::sourceFirst)
+            extract { it.products }.also(products::sourceFirst)
+        }
     }
 
     private fun <T> ManageReceiptUseCase.extract(
