@@ -44,6 +44,12 @@ class ReceiptViewModel @Inject constructor(
             .subscribe(exporter).addTo(disposables)
     }
 
+    fun exportImage(exporter: (String) -> Unit) {
+        useCase
+            .exportPath()
+            .subscribe(exporter).addTo(disposables)
+    }
+
     override fun onCleared() {
         disposables.clear()
     }

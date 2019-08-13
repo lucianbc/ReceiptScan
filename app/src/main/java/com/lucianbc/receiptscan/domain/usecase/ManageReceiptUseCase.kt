@@ -23,12 +23,16 @@ class ManageReceiptUseCase(
         val total: Float,
         val currency: Currency,
         val category: Category,
+        val imagePath: String,
         @Relation(parentColumn = "id", entityColumn = "receiptId")
         val products: List<Product>
     )
 
     fun exportReceipt(): Single<String> =
         receipt.map { it.exported() }.take(1).singleOrError()
+
+    fun exportPath(): Single<String> =
+        receipt.map { it.imagePath }.take(1).singleOrError()
 
     private fun Value.exported(): String {
         val lines = mutableListOf(
