@@ -1,5 +1,6 @@
 package com.lucianbc.receiptscan.domain.usecase
 
+import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.Draft
 import com.lucianbc.receiptscan.domain.model.DraftWithProducts
 import com.lucianbc.receiptscan.domain.model.Product
@@ -23,6 +24,7 @@ class ManageDraftUseCaseTest {
             Date(),
             13F,
             Currency.getInstance("RON"),
+            Category.Grocery,
             Date(),
             id
         ),
