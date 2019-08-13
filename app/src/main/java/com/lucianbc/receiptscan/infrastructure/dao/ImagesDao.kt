@@ -5,19 +5,20 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.content.FileProvider
+import com.lucianbc.receiptscan.domain.model.ImagePath
+import com.lucianbc.receiptscan.domain.model.file
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
-import java.util.*
 import javax.inject.Inject
 
 class ImagesDao @Inject constructor(
     private val context: Context
 ) {
     fun saveImage(image: Bitmap): String {
-        val filename = randomName()
+        val filename = ImagePath.random().value
         context.openFileOutput(filename, Context.MODE_PRIVATE).use {
-            image.compress(FORMAT, QUALITY, it)
+            image.compress(ImagePath.FORMAT, QUALITY, it)
         }
         return filename
     }
@@ -29,9 +30,9 @@ class ImagesDao @Inject constructor(
         return BitmapFactory.decodeStream(inputStream)
     }
 
-    fun accessFile(path: String): Uri {
+    fun accessFile(path: ImagePath): Uri {
         val directory = context.filesDir
-        val file = File(directory, path)
+        val file = path.file(directory)
         if (!file.exists()) {
             throw FileNotFoundException("File at path $path does not exists in the internal storage")
         }
@@ -42,10 +43,7 @@ class ImagesDao @Inject constructor(
         context.deleteFile(path)
     }
 
-    private fun randomName() = "scan_${UUID.randomUUID()}.${FORMAT.name}"
-
     companion object {
-        private val FORMAT = Bitmap.CompressFormat.JPEG
         const val QUALITY = 100
     }
 }
