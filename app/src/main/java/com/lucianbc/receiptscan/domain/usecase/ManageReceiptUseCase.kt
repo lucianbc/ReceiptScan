@@ -29,10 +29,10 @@ class ManageReceiptUseCase(
     )
 
     fun exportReceipt(): Single<String> =
-        receipt.map { it.exported() }.take(1).singleOrError()
+        receipt.map { it.exported() }.takeSingle()
 
     fun exportPath(): Single<String> =
-        receipt.map { it.imagePath }.take(1).singleOrError()
+        receipt.map { it.imagePath }.takeSingle()
 
     private fun Value.exported(): String {
         val lines = mutableListOf(
@@ -42,6 +42,8 @@ class ManageReceiptUseCase(
         ) + this.products.map { "${it.name}    ${it.price}" }
         return lines.joinToString("\n")
     }
+
+    private fun<T> Flowable<T>.takeSingle() = this.take(1).singleOrError()
 
     class Factory @Inject constructor(
         private val draftsRepository: DraftsRepository

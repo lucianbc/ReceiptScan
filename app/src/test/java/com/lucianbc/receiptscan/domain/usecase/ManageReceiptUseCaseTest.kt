@@ -22,16 +22,25 @@ class ManageReceiptUseCaseTest {
             2F,
             Currency.getInstance("RON"),
             Category.Grocery,
+            "path",
             emptyList()
         )
         subject = ManageReceiptUseCase(source.toFlowable(BackpressureStrategy.LATEST))
     }
 
     @Test
-    fun `given useCase with connected receipt when exportReceipt then subscriber is called`() {
-        subject.receipt.subscribe { println("Connected receipt") }
+    fun `given useCase with connected receipt when exportReceipt then subscriber completes`() {
+        subject.receipt.subscribe()
         source.onNext(value)
 
         subject.exportReceipt().test().assertComplete()
+    }
+
+    @Test
+    fun `given useCase with connected receipt when exportPath then subscriber completes`() {
+        subject.receipt.subscribe()
+        source.onNext(value)
+
+        subject.exportPath().test().assertComplete()
     }
 }
