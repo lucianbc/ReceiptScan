@@ -8,6 +8,8 @@ import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
 import com.lucianbc.receiptscan.util.mld
 import com.lucianbc.receiptscan.util.show
 import com.lucianbc.receiptscan.util.sourceFirst
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import java.util.*
 import javax.inject.Inject
 
@@ -15,6 +17,8 @@ class ReceiptViewModel @Inject constructor(
     private val useCaseFactory: ManageReceiptUseCase.Factory
 ) : ViewModel() {
     private lateinit var useCase: ManageReceiptUseCase
+
+    private val disposables = CompositeDisposable()
 
     val merchant = mld<String>()
     val date = mld<Date>()
@@ -32,6 +36,16 @@ class ReceiptViewModel @Inject constructor(
             extract { it.category }.also(category::sourceFirst)
             extract { it.products }.also(products::sourceFirst)
         }
+    }
+
+    fun exportText(exporter: (String) -> Unit) {
+        useCase
+            .exportReceipt()
+            .subscribe(exporter).addTo(disposables)
+    }
+
+    override fun onCleared() {
+        disposables.clear()
     }
 
     private fun <T> ManageReceiptUseCase.extract(

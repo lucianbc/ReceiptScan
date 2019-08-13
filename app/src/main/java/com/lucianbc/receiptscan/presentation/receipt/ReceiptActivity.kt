@@ -15,7 +15,7 @@ class ReceiptActivity
         super.onCreate(savedInstanceState)
         safeInit()
         setContentView(R.layout.activity_receipt)
-        setupButtons()
+        setupShare()
     }
 
     private fun safeInit() {
@@ -24,8 +24,22 @@ class ReceiptActivity
         }
     }
 
-    private fun setupButtons() {
-        shareReceiptBtn.setOnClickListener { ShareOptionsSheet.show(supportFragmentManager) }
+    private fun setupShare() {
+        shareReceiptBtn.setOnClickListener {
+            ShareOptionsSheet().apply {
+                show(supportFragmentManager, ShareOptionsSheet.TAG)
+                onTextOnly = { viewModel.exportText(textExporter) }
+            }
+        }
+    }
+
+    private val textExporter = { text: String ->
+        Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, text)
+            putExtra(Intent.EXTRA_SUBJECT, "Receipt from ${viewModel.merchant.value}")
+            type = "text/plain"
+        }.let(::startActivity)
     }
 
     companion object {
