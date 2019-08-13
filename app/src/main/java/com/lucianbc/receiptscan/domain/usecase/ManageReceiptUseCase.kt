@@ -2,6 +2,7 @@ package com.lucianbc.receiptscan.domain.usecase
 
 import androidx.room.Relation
 import com.lucianbc.receiptscan.domain.model.Category
+import com.lucianbc.receiptscan.domain.model.ImagePath
 import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.scanner.show
@@ -31,8 +32,12 @@ class ManageReceiptUseCase(
     fun exportReceipt(): Single<String> =
         receipt.map { it.exported() }.takeSingle()
 
-    fun exportPath(): Single<String> =
-        receipt.map { it.imagePath }.takeSingle()
+    fun exportPath(): Single<ImagePath> =
+        receipt.map { ImagePath(it.imagePath) }.takeSingle()
+
+    fun exportBoth(): Single<Pair<String, ImagePath>> =
+        receipt.map { it.exported() to ImagePath(it.imagePath) }.takeSingle()
+
 
     private fun Value.exported(): String {
         val lines = mutableListOf(

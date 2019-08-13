@@ -55,6 +55,14 @@ class ReceiptViewModel @Inject constructor(
             .addTo(disposables)
     }
 
+    fun exportBoth(exporter: (String, Uri) -> Unit, onError: (Throwable) -> Unit) {
+        useCase
+            .exportBoth()
+            .map { it.first to imagesDao.accessFile(it.second) }
+            .subscribe({ exporter(it.first, it.second) }, onError)
+            .addTo(disposables)
+    }
+
     override fun onCleared() {
         disposables.clear()
     }
