@@ -1,10 +1,12 @@
 package com.lucianbc.receiptscan.presentation.receipt
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
+import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.lucianbc.receiptscan.util.mld
 import com.lucianbc.receiptscan.util.show
 import com.lucianbc.receiptscan.util.sourceFirst
@@ -14,7 +16,8 @@ import java.util.*
 import javax.inject.Inject
 
 class ReceiptViewModel @Inject constructor(
-    private val useCaseFactory: ManageReceiptUseCase.Factory
+    private val useCaseFactory: ManageReceiptUseCase.Factory,
+    private val imagesDao: ImagesDao
 ) : ViewModel() {
     private lateinit var useCase: ManageReceiptUseCase
 
@@ -44,10 +47,12 @@ class ReceiptViewModel @Inject constructor(
             .subscribe(exporter).addTo(disposables)
     }
 
-    fun exportImage(exporter: (String) -> Unit) {
+    fun exportImage(exporter: (Uri) -> Unit, onError: (Throwable) -> Unit) {
         useCase
             .exportPath()
-            .subscribe(exporter).addTo(disposables)
+            .map(imagesDao::accessFile)
+            .subscribe(exporter, onError)
+            .addTo(disposables)
     }
 
     override fun onCleared() {

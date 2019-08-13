@@ -2,13 +2,14 @@ package com.lucianbc.receiptscan.presentation.receipt
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.core.content.FileProvider
+import androidx.appcompat.app.AlertDialog
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseActivity
 import com.lucianbc.receiptscan.presentation.ShareOptionsSheet
+import com.lucianbc.receiptscan.util.loge
 import kotlinx.android.synthetic.main.fragment_receipt.*
-import java.io.File
 
 class ReceiptActivity
     : BaseActivity<ReceiptViewModel>(ReceiptViewModel::class.java) {
@@ -31,7 +32,7 @@ class ReceiptActivity
             ShareOptionsSheet().apply {
                 show(supportFragmentManager, ShareOptionsSheet.TAG)
                 onTextOnly = { viewModel.exportText(textExporter) }
-                onImageOnly = { viewModel.exportImage(imageExporter) }
+                onImageOnly = { viewModel.exportImage(imageExporter, shareFileErrorHandler) }
             }
         }
     }
@@ -45,17 +46,31 @@ class ReceiptActivity
         }.let(::startActivity)
     }
 
-    private val imageExporter = { path: String ->
-        val dir = this.filesDir
-        val file = File(dir, path)
-        val uri = FileProvider.getUriForFile(this, "com.lucianbc.receiptscan", file)
-
+    private val imageExporter = { imageUri: Uri ->
         Intent().apply {
             action = Intent.ACTION_SEND_MULTIPLE
             type = "image/jpeg"
-            putParcelableArrayListExtra(Intent.EXTRA_STREAM, arrayListOf(uri))
+            putParcelableArrayListExtra(Intent.EXTRA_STREAM, arrayListOf(imageUri))
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }.let(::startActivity)
+    }
+
+    private val shareFileErrorHandler = { t: Throwable ->
+        loge("Error exporting image", t)
+        AlertDialog.Builder(this)
+            .setTitle("Error!")
+            .setMessage("Error when sharing the image")
+            .setNegativeButton("Dismiss") { _, _ ->
+                supportFragmentManager.apply {
+                    findFragmentByTag(ShareOptionsSheet.TAG)?.let {
+                        beginTransaction()
+                            .remove(it)
+                            .commit()
+                    }
+                }
+            }
+            .show()
+        Unit
     }
 
     companion object {
