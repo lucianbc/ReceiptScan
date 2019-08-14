@@ -1,13 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".presentation.home.SettingsFragment">
-
-    <TextView
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="viewModel" type="com.lucianbc.receiptscan.presentation.home.settings.SettingsViewModel"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Settings screen"/>
+            tools:context=".presentation.home.settings.SettingsFragment">
 
-</FrameLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_title"
+                android:textSize="36sp"
+                android:textColor="@color/black"
+                android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="64dp" app:layout_constraintTop_toTopOf="parent" android:id="@+id/textView20"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+                style="@style/Selectable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="76dp"
+                app:layout_constraintTop_toBottomOf="@+id/textView20" android:id="@+id/currencyForm"
+                app:layout_constraintHorizontal_bias="1.0" app:layout_constraintBottom_toTopOf="@+id/categoryForm"
+                app:layout_constraintVertical_chainStyle="packed">
+
+            <TextView
+                    style="@style/Receipt.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_currency"
+                    android:id="@+id/textView21" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="24dp" android:layout_marginTop="24dp"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                    style="@style/Receipt.Secondary.Low"
+                    android:text="@{viewModel.currency}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="RON"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="24dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+                style="@style/Selectable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:id="@+id/categoryForm" app:layout_constraintTop_toBottomOf="@+id/currencyForm"
+                app:layout_constraintBottom_toTopOf="@+id/sendReceiptForm"
+                app:layout_constraintVertical_chainStyle="packed">
+
+            <TextView
+                    style="@style/Receipt.Secondary"
+                    android:text="@string/default_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView22" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="24dp" android:layout_marginTop="24dp"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            <TextView
+                    style="@style/Receipt.Secondary.Low"
+                    android:text="@{viewModel.category}"
+                    tools:text="Grocery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView23" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+                style="@style/Selectable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.5" android:id="@+id/sendReceiptForm"
+                app:layout_constraintTop_toBottomOf="@+id/categoryForm"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:onClick="@{() -> viewModel.toggleSend()}"
+        >
+
+            <TextView
+                    style="@style/Receipt.Secondary"
+                    android:text="@string/send_receipt_opt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView24" android:layout_marginTop="24dp"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="24dp"/>
+            <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:background="@null"
+                    android:checked="@{viewModel.sendEnabled}"
+                    android:id="@+id/switch1" android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="24dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

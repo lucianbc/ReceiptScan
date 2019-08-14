@@ -45,4 +45,8 @@
     <string name="share_image">Image Only</string>
     <string name="share_both">Image and Text</string>
     <string name="share_title">Chose what to share</string>
+    <string name="default_currency">Default Currency</string>
+    <string name="default_category">Default Category</string>
+    <string name="send_receipt_opt">Send Receipt Anonymously</string>
+    <string name="settings_title">Settings</string>
 </resources>

@@ -5,4 +5,6 @@ import com.otaliastudios.cameraview.PictureResult
 sealed class Event {
     data class PictureTaken(val pictureResult: PictureResult) : Event()
     data class ImageScanned(val draftId: Long) : Event()
+    object CurrencyTapped: Event()
+    object CategoryTapped: Event()
 }

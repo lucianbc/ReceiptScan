@@ -16,3 +16,13 @@ fun setText(view: TextView, date: Date?) {
 fun setIcon(view: ImageView, value: Category?) {
     value?.let { view.setImageResource(value.icon) }
 }
+
+@BindingAdapter("android:text")
+fun setCategory(view: TextView, value: Category?) {
+    value?.let { view.text = value.name }
+}
+
+@BindingAdapter("android:text")
+fun setCurrency(view: TextView, value: Currency?) {
+    value?.let { view.text = value.currencyCode }
+}
