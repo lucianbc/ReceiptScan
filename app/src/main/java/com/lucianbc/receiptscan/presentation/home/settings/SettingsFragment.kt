@@ -30,9 +30,7 @@ class SettingsFragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sendReceiptForm.setOnClickListener {
-            switch1.toggle()
-        }
+        setupActions()
     }
 
     private fun setupBinding(
@@ -49,8 +47,11 @@ class SettingsFragment
         }
 
     private fun setupActions() {
-        currencyForm.setOnClickListener { eventBus.post(Event.CurrencyTapped) }
-        categoryForm.setOnClickListener { eventBus.post(Event.CategoryTapped) }
+        currencyForm.setOnClickListener { eventBus.post(Event.CurrencyTapped(viewModel::update)) }
+        categoryForm.setOnClickListener { eventBus.post(Event.CategoryTapped(viewModel::update)) }
+        sendReceiptForm.setOnClickListener {
+            switch1.toggle()
+        }
     }
 }
 

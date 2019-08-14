@@ -56,6 +56,10 @@ class CurrencyFragment(
             }
         })
     }
+
+    companion object {
+        const val TAG = "CURRENCIES"
+    }
 }
 
 private class CurrencyAdapter(private val callback: ((Currency) -> Unit))

@@ -53,11 +53,11 @@ class DraftReviewActivity
     ) }
 
     private val showCurrencies by lazy { View.OnClickListener(
-        addFragment(CURRENCIES_FRAG_TAG, currenciesFragment)
+        addFragment(CurrencyFragment.TAG, currenciesFragment)
     ) }
 
     private val showCategories by lazy { View.OnClickListener(
-        addFragment(CATEGORIES_FRAG_TAG, categoriesFragment)
+        addFragment(CategoryFragment.TAG, categoriesFragment)
     ) }
 
     private fun addFragment(tag: String, frag: Fragment): (View) -> Unit {
@@ -114,10 +114,6 @@ class DraftReviewActivity
         private const val DRAFT_ID = "DRAFT_ID"
         private const val CAN_DISCARD = "CAN_DISCARD"
         private const val ANNOTATIONS_FRAG_TAG = "RECEIPT_ANNOTATIONS"
-
-        private const val CURRENCIES_FRAG_TAG = "CURRENCIES"
-
-        private const val CATEGORIES_FRAG_TAG = "CATEGORIES"
 
         private const val DEFAULT_DRAFT_ID = -1L
         private const val DEFAULT_CAN_DISCARD = false

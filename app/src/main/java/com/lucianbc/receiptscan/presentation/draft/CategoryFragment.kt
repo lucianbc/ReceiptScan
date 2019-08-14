@@ -57,6 +57,10 @@ class CategoryFragment(
             }
         })
     }
+
+    companion object {
+        const val TAG = "CATEGORIES"
+    }
 }
 
 private class CategoryAdapter(
