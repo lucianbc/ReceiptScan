@@ -8,7 +8,6 @@ import com.lucianbc.receiptscan.presentation.Event
 import com.lucianbc.receiptscan.presentation.draft.CategoryFragment
 import com.lucianbc.receiptscan.presentation.draft.CurrencyFragment
 import com.lucianbc.receiptscan.presentation.scanner.ScannerActivity
-import com.lucianbc.receiptscan.util.logd
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
@@ -70,14 +69,12 @@ class MainActivity : DaggerAppCompatActivity() {
     fun onCurrencyTapped(event: Event.CurrencyTapped) {
         val frag = CurrencyFragment(event.callback)
         addFragment(CurrencyFragment.TAG, frag)
-        logd("Currency tapped")
     }
 
     @Subscribe
     fun onCategoryTapped(event: Event.CategoryTapped) {
         val frag = CategoryFragment(event.callback)
         addFragment(CategoryFragment.TAG, frag)
-        logd("Category tapped")
     }
 
     private fun addFragment(tag: String, frag: Fragment) {

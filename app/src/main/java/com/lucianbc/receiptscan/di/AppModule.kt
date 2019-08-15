@@ -3,9 +3,11 @@ package com.lucianbc.receiptscan.di
 import android.content.Context
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
+import com.lucianbc.receiptscan.domain.model.ReceiptDefaults
 import com.lucianbc.receiptscan.domain.viewfinder.LiveViewUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.AppDatabase
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
+import com.lucianbc.receiptscan.infrastructure.dao.PreferencesDao
 import com.lucianbc.receiptscan.presentation.ReceiptScan
 import dagger.Module
 import dagger.Provides
@@ -38,4 +40,14 @@ class AppModule {
     @Provides
     fun provideDraftDao(database: AppDatabase): DraftDao =
         database.draftDao()
+
+    @Provides
+    @Singleton
+    fun provideReceiptDefaults(dao: PreferencesDao) : ReceiptDefaults =
+        dao
+
+    @Provides
+    @Singleton
+    fun providePreferencesDao(context: Context) : PreferencesDao =
+        PreferencesDao(context.getSharedPreferences("Preferences", Context.MODE_PRIVATE))
 }
