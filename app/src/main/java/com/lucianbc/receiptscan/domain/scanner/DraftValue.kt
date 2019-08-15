@@ -1,13 +1,11 @@
 package com.lucianbc.receiptscan.domain.scanner
 
 import android.graphics.Bitmap
-import com.lucianbc.receiptscan.domain.model.Category
-import com.lucianbc.receiptscan.domain.model.Product
-import com.lucianbc.receiptscan.domain.model.RawReceipt
-import com.lucianbc.receiptscan.domain.model.ReceiptEntity
+import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
 import java.util.*
+import javax.inject.Inject
 
 class DraftValue private constructor(
     private val merchant: String?,
@@ -15,6 +13,7 @@ class DraftValue private constructor(
     private val currency: Currency?,
     private val total: Float?,
     private val elements: List<OcrElementValue>,
+    private val category: Category,
     val image: Bitmap
 ) {
     private val products = mutableListOf<Product>()
@@ -31,7 +30,7 @@ class DraftValue private constructor(
             date,
             total,
             currency,
-            Category.Grocery,
+            category,
             Date(),
             true
         )
@@ -44,26 +43,28 @@ class DraftValue private constructor(
     }
     fun elements(receiptId: Long) = elements.map { it.ocrElement(receiptId) }
 
-    companion object {
+    class Factory @Inject constructor(
+        private val defaults: ReceiptDefaults
+    ) {
         fun fromOcrElementsAndImage(image: Bitmap, elements: OcrElements): DraftValue {
             val receipt = RawReceipt.create(elements)
             val text = receipt.text
             val merchant = extractMerchant(receipt)
             val date = extractDate(text)
-            val currency = extractCurrency(text)
+            val currency = defaults.currency
+            val category = defaults.category
             val (total, products) = ProductsAndTotalStrategy(receipt).execute()
-
             val value = DraftValue(
                 merchant,
                 date,
                 currency,
                 total,
                 elements.toList(),
+                category,
                 image
             )
 
             value.products.addAll(products)
-
             return value
         }
     }

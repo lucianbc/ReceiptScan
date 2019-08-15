@@ -15,7 +15,8 @@ import javax.inject.Singleton
 
 @Singleton
 class ScanUseCase @Inject constructor(
-    private val draftsRepository: DraftsRepository
+    private val draftsRepository: DraftsRepository,
+    private val draftFactory: DraftValue.Factory
 ) {
 
     private val _state = BehaviorSubject.createDefault<State>(State.Idle)
@@ -31,7 +32,7 @@ class ScanUseCase @Inject constructor(
                 BiFunction { t1: OcrElements, t2: Bitmap -> t2 to t1 })
             .doOnSubscribe { _state.onNext(State.OCR) }
             .observeOn(Schedulers.computation())
-            .map { DraftValue.fromOcrElementsAndImage(it.first, it.second) }
+            .map { draftFactory.fromOcrElementsAndImage(it.first, it.second) }
             .doOnNext { _state.onNext(State.Saving) }
             .flatMap { draftsRepository.create(it) }
             .doOnComplete { _state.onNext(State.Idle) }
