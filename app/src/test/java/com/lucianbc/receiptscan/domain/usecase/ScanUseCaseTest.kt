@@ -1,7 +1,9 @@
 package com.lucianbc.receiptscan.domain.usecase
 
 import android.graphics.Bitmap
+import com.lucianbc.receiptscan.TestDefaults
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
+import com.lucianbc.receiptscan.domain.scanner.DraftValue
 import com.lucianbc.receiptscan.domain.scanner.ScanUseCase
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
@@ -18,14 +20,14 @@ class ScanUseCaseTest {
 
     @Test
     fun testIdleAtFirst() {
-        val subject = ScanUseCase(draftRepoMock)
+        val subject = ScanUseCase(draftRepoMock, DraftValue.Factory(TestDefaults))
         val crtState = subject.state.blockingFirst()
         assertEquals(ScanUseCase.State.Idle, crtState)
     }
 
     @Test
     fun testGoingThroughAllStates() {
-        val subject = ScanUseCase(draftRepoMock)
+        val subject = ScanUseCase(draftRepoMock, DraftValue.Factory(TestDefaults))
         val states = mutableListOf<ScanUseCase.State>()
 
         subject.state.subscribe { states.add(it) }
