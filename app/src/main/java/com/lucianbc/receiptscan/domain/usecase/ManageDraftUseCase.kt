@@ -3,7 +3,10 @@ package com.lucianbc.receiptscan.domain.usecase
 import com.lucianbc.receiptscan.domain.model.Draft
 import com.lucianbc.receiptscan.domain.model.DraftWithProducts
 import com.lucianbc.receiptscan.domain.model.Product
+import com.lucianbc.receiptscan.domain.model.SharingOption
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
+import com.lucianbc.receiptscan.domain.service.ReceiptSender
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -14,7 +17,9 @@ import javax.inject.Inject
 class ManageDraftUseCase(
     private val draftId: Long,
     val value: Flowable<DraftWithProducts>,
-    private val repository: DraftsRepository
+    private val repository: DraftsRepository,
+    private val sharingOption: SharingOption,
+    private val sender: ReceiptSender
 ) {
     val image by lazy { repository.getImage(draftId) }
 
@@ -63,20 +68,29 @@ class ManageDraftUseCase(
         Observable
             .fromCallable { repository.delete(draftId) }
 
-    fun validateDraft() =
-        Observable
+    fun validateDraft(): Completable =
+        Completable
             .fromCallable { repository.validate(draftId) }
+            .andThen(sendReceiptComputation)
 
+    private val sendReceiptComputation = Completable.defer {
+        if (!sharingOption.enabled)
+            Completable.complete()
+        else
+            Completable.fromCallable { sender.send(draftId) }
+    }
 
     class Factory @Inject constructor (
-        private val draftsRepository: DraftsRepository
+        private val draftsRepository: DraftsRepository,
+        private val sharingOption: SharingOption,
+        private val sender: ReceiptSender
     ) {
         fun fetch(draftId: Long): ManageDraftUseCase {
             val value = draftsRepository
                 .getDraft(draftId)
                 .replay(1)
                 .autoConnect()
-            return ManageDraftUseCase(draftId, value, draftsRepository)
+            return ManageDraftUseCase(draftId, value, draftsRepository, sharingOption, sender)
         }
     }
 }

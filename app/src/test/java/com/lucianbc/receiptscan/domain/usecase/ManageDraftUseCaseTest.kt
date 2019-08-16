@@ -1,10 +1,8 @@
 package com.lucianbc.receiptscan.domain.usecase
 
-import com.lucianbc.receiptscan.domain.model.Category
-import com.lucianbc.receiptscan.domain.model.Draft
-import com.lucianbc.receiptscan.domain.model.DraftWithProducts
-import com.lucianbc.receiptscan.domain.model.Product
+import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
+import com.lucianbc.receiptscan.domain.service.ReceiptSender
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -34,9 +32,21 @@ class ManageDraftUseCaseTest {
         )
     )
 
+    private val sharingOption = object: SharingOption {
+        var isEnabled = false
+        override val enabled
+            get() = isEnabled
+    }
+
+    private val sender: ReceiptSender = mock()
+
     private val repo: DraftsRepository = mock()
 
-    private val subject = ManageDraftUseCase(id, Flowable.just(data).publish().autoConnect(), repo)
+    private val subject = ManageDraftUseCase(id,
+        Flowable.just(data).replay(1).autoConnect(),
+        repo,
+        sharingOption,
+        sender)
 
     private val savedValueCaptor = argumentCaptor<Draft>()
 
@@ -64,5 +74,35 @@ class ManageDraftUseCaseTest {
 
         Thread.sleep(500)
         verifyZeroInteractions(repo)
+    }
+
+    @Test
+    fun `send receipt being called when enabled`() {
+        sharingOption.isEnabled = true
+        subject.validateDraft().test().assertComplete()
+        verify(sender, times(1)).send(id)
+        verifyNoMoreInteractions(sender)
+    }
+
+    @Test
+    fun `send receipt is not called when not enabled`() {
+        sharingOption.isEnabled = false
+        subject.validateDraft().test().assertComplete()
+        verifyZeroInteractions(sender)
+    }
+
+    @Test
+    fun `send receipt is called accordingly when changing enabled`() {
+        sharingOption.isEnabled = false
+        subject.validateDraft().test().assertComplete()
+        verifyZeroInteractions(sender)
+
+        sharingOption.isEnabled = true
+        subject.validateDraft().test().assertComplete()
+        verify(sender, times(1)).send(id)
+
+        sharingOption.isEnabled = false
+        subject.validateDraft().test().assertComplete()
+        verifyNoMoreInteractions(sender)
     }
 }

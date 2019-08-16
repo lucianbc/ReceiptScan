@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.domain.model.ReceiptDefaults
+import com.lucianbc.receiptscan.domain.model.SharingOption
 import com.lucianbc.receiptscan.domain.viewfinder.LiveViewUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.AppDatabase
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
@@ -50,4 +51,9 @@ class AppModule {
     @Singleton
     fun providePreferencesDao(context: Context) : PreferencesDao =
         PreferencesDao(context.getSharedPreferences("Preferences", Context.MODE_PRIVATE))
+
+    @Provides
+    @Singleton
+    fun provideSharingOption(dao: PreferencesDao) : SharingOption =
+        dao
 }

@@ -3,11 +3,12 @@ package com.lucianbc.receiptscan.infrastructure.dao
 import android.content.SharedPreferences
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.ReceiptDefaults
+import com.lucianbc.receiptscan.domain.model.SharingOption
 import java.util.*
 
 class PreferencesDao (
     private val prefs: SharedPreferences
-) : ReceiptDefaults {
+) : ReceiptDefaults, SharingOption {
 
     private var receiptDefaults: ReceiptDefaultsValue
 
@@ -20,6 +21,9 @@ class PreferencesDao (
         get() = receiptDefaults.currency
     override val category: Category
         get() = receiptDefaults.category
+
+    override val enabled: Boolean
+        get() = _sendReceipt
 
     init {
         receiptDefaults = ReceiptDefaultsValue(
