@@ -118,4 +118,7 @@ dependencies {
 
     // sqlite debugger
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
+    // workers
+    implementation "androidx.work:work-runtime-ktx:2.2.0"
 }

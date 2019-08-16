@@ -10,6 +10,7 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AppModule::class,
+        WorkerBinds::class,
         ActivityModule::class,
         InterfaceBinds::class,
         FragmentModule::class,
