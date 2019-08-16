@@ -13,7 +13,7 @@ class SettingsViewModel @Inject constructor(
 ): ViewModel() {
     private val _currency = MutableLiveData(preferencesDao.currency)
     private val _category = MutableLiveData(preferencesDao.category)
-    private val _sendEnabled = MutableLiveData(preferencesDao.sendReceipt)
+    private val _sendEnabled = MutableLiveData(preferencesDao.enabled)
 
     val currency : LiveData<Currency>
         get() = _currency

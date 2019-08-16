@@ -14,8 +14,7 @@ class PreferencesDao (
 
     private var _sendReceipt: Boolean
 
-    val sendReceipt
-        get() = _sendReceipt
+    override val appId: String
 
     override val currency: Currency
         get() = receiptDefaults.currency
@@ -31,6 +30,7 @@ class PreferencesDao (
             readCategory()
         )
         _sendReceipt = readSendReceipt()
+        appId = readAppId()
     }
 
     fun setCategory(category: Category) = category.write()
@@ -68,6 +68,19 @@ class PreferencesDao (
             }
         }
 
+    private fun readAppId(): String {
+        val existingId = prefs.getString(APP_ID_KEY, null)
+        if (existingId == null) {
+            val newId = UUID.randomUUID().toString()
+            newId.writeId()
+            return newId
+        }
+        return existingId
+    }
+
+    private fun String.writeId() =
+        prefs.edit().putString(APP_ID_KEY, this).apply()
+
     private fun Currency.write() {
         receiptDefaults = receiptDefaults.copy(currency = this)
         prefs.edit().putString(CURRENCY_KEY, this.currencyCode).apply()
@@ -82,6 +95,7 @@ class PreferencesDao (
         private const val CATEGORY_KEY = "CATEGORY"
         private const val CURRENCY_KEY = "CURRENCY"
         private const val SEND_RECEIPT_KEY = "SEND_RECEIPT"
+        private const val APP_ID_KEY = "APP_ID"
 
         private val DEFAULT_CATEGORY = Category.Grocery
         private val DEFAULT_CURRENCY = Currency.getInstance("RON")!!

@@ -36,6 +36,7 @@ class ManageDraftUseCaseTest {
         var isEnabled = false
         override val enabled
             get() = isEnabled
+        override val appId = "myapp"
     }
 
     private val sender: ReceiptSender = mock()

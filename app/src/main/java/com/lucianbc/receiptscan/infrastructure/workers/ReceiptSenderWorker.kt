@@ -2,6 +2,7 @@ package com.lucianbc.receiptscan.infrastructure.workers
 
 import android.content.Context
 import androidx.work.*
+import com.lucianbc.receiptscan.domain.model.SharingOption
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.service.ReceiptSender
 import com.lucianbc.receiptscan.util.logd
@@ -19,6 +20,7 @@ class ReceiptSenderWorker(
         logd("Doing work in a fokin worker.")
 
         val id = inputData.getLong(RECEIPT_ID_KEY, ERROR_ID)
+        val appId = inputData.getString(APP_ID_KEY)
 
         if (id == ERROR_ID) {
             loge("Passed ID was -1")
@@ -36,7 +38,8 @@ class ReceiptSenderWorker(
     }
 
     class Runner @Inject constructor(
-        private val context: Context
+        private val context: Context,
+        private val sharingOption: SharingOption
     ) : ReceiptSender {
         override fun send(id: Long) {
             OneTimeWorkRequest
@@ -51,6 +54,7 @@ class ReceiptSenderWorker(
                     Data
                         .Builder()
                         .putLong(RECEIPT_ID_KEY, id)
+                        .putString(APP_ID_KEY, sharingOption.appId)
                         .build()
                 )
                 .build()
@@ -69,5 +73,7 @@ class ReceiptSenderWorker(
     companion object {
         private const val RECEIPT_ID_KEY = "RECEIPT_ID"
         private const val ERROR_ID = -1L
+
+        private const val APP_ID_KEY = "APP_ID"
     }
 }
