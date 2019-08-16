@@ -3,6 +3,8 @@ package com.lucianbc.receiptscan.util
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
+import io.reactivex.Flowable
+import io.reactivex.Single
 import java.util.*
 
 fun <X, Y> LiveData<X>.map(func: (X) -> Y): LiveData<Y> =
@@ -30,3 +32,5 @@ fun <T> MediatorLiveData<T>.sourceFirst(source: LiveData<T>) {
 fun Currency?.show() = this?.currencyCode ?: ""
 
 fun Float?.show() = (this ?: 0f).toString()
+
+fun <T> Flowable<T>.takeSingle(): Single<T> = this.take(1).singleOrError()

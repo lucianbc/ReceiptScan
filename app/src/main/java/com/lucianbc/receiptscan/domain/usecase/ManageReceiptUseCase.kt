@@ -7,6 +7,7 @@ import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.scanner.show
 import com.lucianbc.receiptscan.util.show
+import com.lucianbc.receiptscan.util.takeSingle
 import io.reactivex.Flowable
 import io.reactivex.Single
 import java.util.*
@@ -47,8 +48,6 @@ class ManageReceiptUseCase(
         ) + this.products.map { "${it.name}    ${it.price}" }
         return lines.joinToString("\n")
     }
-
-    private fun<T> Flowable<T>.takeSingle() = this.take(1).singleOrError()
 
     class Factory @Inject constructor(
         private val draftsRepository: DraftsRepository
