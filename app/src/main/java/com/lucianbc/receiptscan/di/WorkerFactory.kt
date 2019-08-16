@@ -5,7 +5,7 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.lucianbc.receiptscan.infrastructure.workers.ChildWorkerFactory
-import com.lucianbc.receiptscan.infrastructure.workers.ReceiptCollector
+import com.lucianbc.receiptscan.infrastructure.workers.ReceiptSenderWorker
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -18,8 +18,8 @@ import kotlin.reflect.KClass
 internal abstract class WorkerBinds {
     @Binds
     @IntoMap
-    @WorkerKey(ReceiptCollector::class)
-    abstract fun bindReceiptCollector(worker: ReceiptCollector.Factory): ChildWorkerFactory
+    @WorkerKey(ReceiptSenderWorker::class)
+    abstract fun bindReceiptCollector(worker: ReceiptSenderWorker.Factory): ChildWorkerFactory
 
     @Binds
     abstract fun bindFactory(factory: DaggerAwareWorkerFactory): WorkerFactory
