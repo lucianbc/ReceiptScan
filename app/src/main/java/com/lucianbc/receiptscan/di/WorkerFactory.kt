@@ -18,7 +18,7 @@ import kotlin.reflect.KClass
 internal abstract class WorkerBinds {
     @Binds
     @IntoMap
-    @WorkerKey(ReceiptCollector.Factory::class)
+    @WorkerKey(ReceiptCollector::class)
     abstract fun bindReceiptCollector(worker: ReceiptCollector.Factory): ChildWorkerFactory
 
     @Binds
@@ -26,7 +26,7 @@ internal abstract class WorkerBinds {
 }
 
 class DaggerAwareWorkerFactory @Inject constructor(
-    private val creators: Map<Class<out ChildWorkerFactory>, @JvmSuppressWildcards Provider<ChildWorkerFactory>>
+    private val creators: Map<Class<out ListenableWorker>, @JvmSuppressWildcards Provider<ChildWorkerFactory>>
 ): WorkerFactory() {
     override fun createWorker(
         appContext: Context,
@@ -58,4 +58,4 @@ class DaggerAwareWorkerFactory @Inject constructor(
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
 @Retention(AnnotationRetention.RUNTIME)
 @MapKey
-annotation class WorkerKey(val value: KClass<out ChildWorkerFactory>)
+annotation class WorkerKey(val value: KClass<out ListenableWorker>)
