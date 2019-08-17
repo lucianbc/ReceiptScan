@@ -2,6 +2,8 @@ package com.lucianbc.receiptscan.infrastructure.workers
 
 import android.content.Context
 import androidx.work.*
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.FirebaseFirestore
 import com.lucianbc.receiptscan.domain.model.SharingOption
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.service.ReceiptSender
@@ -13,7 +15,8 @@ import javax.inject.Inject
 class ReceiptSenderWorker(
     context: Context,
     workParams: WorkerParameters,
-    private val repo: DraftsRepository
+    private val repo: DraftsRepository,
+    private val firestore: FirebaseFirestore
 ) : Worker(context, workParams) {
 
     override fun doWork(): Result {
@@ -29,7 +32,17 @@ class ReceiptSenderWorker(
 
         return try {
             val result = repo.getReceipt(id).takeSingle().blockingGet()
-            println("Received result of ${result.total} monetary units")
+
+            val sendTask =
+                firestore
+                    .collection(COLLECTION)
+                    .add(hashMapOf(
+                        "appId" to appId,
+                        "receipt" to result
+                    ))
+
+            Tasks.await(sendTask)
+
             Result.success()
         } catch (e: Throwable) {
             loge("Error sending the receipt", e)
@@ -58,16 +71,16 @@ class ReceiptSenderWorker(
                         .build()
                 )
                 .build()
-
                 .let(WorkManager.getInstance(context)::enqueue)
         }
     }
 
     class Factory @Inject constructor(
-        private val repo: DraftsRepository
+        private val repo: DraftsRepository,
+        private val firestore: FirebaseFirestore
     ) : ChildWorkerFactory {
         override fun create(appContext: Context, workParams: WorkerParameters) =
-            ReceiptSenderWorker(appContext, workParams, repo)
+            ReceiptSenderWorker(appContext, workParams, repo, firestore)
     }
 
     companion object {
@@ -75,5 +88,7 @@ class ReceiptSenderWorker(
         private const val ERROR_ID = -1L
 
         private const val APP_ID_KEY = "APP_ID"
+
+        private const val COLLECTION = "collected"
     }
 }

@@ -1,6 +1,7 @@
 package com.lucianbc.receiptscan.di
 
 import android.content.Context
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.domain.model.ReceiptDefaults
@@ -56,4 +57,9 @@ class AppModule {
     @Singleton
     fun provideSharingOption(dao: PreferencesDao) : SharingOption =
         dao
+
+    @Provides
+    @Singleton
+    fun provideFirestore(): FirebaseFirestore =
+        FirebaseFirestore.getInstance()
 }
