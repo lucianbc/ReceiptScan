@@ -6,12 +6,10 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: 'com.google.gms.google-services'
-
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.lucianbc.receiptscan"
+        applicationId "com.lucianbc.receiptapp"
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
@@ -121,4 +119,9 @@ dependencies {
 
     // workers
     implementation "androidx.work:work-runtime-ktx:2.2.0"
+
+    // firestore
+    implementation 'com.google.firebase:firebase-firestore:20.2.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
