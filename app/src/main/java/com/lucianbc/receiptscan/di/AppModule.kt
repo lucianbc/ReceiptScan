@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
+import com.google.firebase.storage.FirebaseStorage
 import com.lucianbc.receiptscan.domain.model.ReceiptDefaults
 import com.lucianbc.receiptscan.domain.model.SharingOption
 import com.lucianbc.receiptscan.domain.viewfinder.LiveViewUseCase
@@ -62,4 +63,9 @@ class AppModule {
     @Singleton
     fun provideFirestore(): FirebaseFirestore =
         FirebaseFirestore.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideStorage(): FirebaseStorage =
+        FirebaseStorage.getInstance()
 }

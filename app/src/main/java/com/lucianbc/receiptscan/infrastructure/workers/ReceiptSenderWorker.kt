@@ -3,10 +3,16 @@ package com.lucianbc.receiptscan.infrastructure.workers
 import android.content.Context
 import androidx.work.*
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import com.lucianbc.receiptscan.domain.model.ImagePath
 import com.lucianbc.receiptscan.domain.model.SharingOption
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.service.ReceiptSender
+import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
+import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.util.loge
 import com.lucianbc.receiptscan.util.takeSingle
@@ -16,7 +22,9 @@ class ReceiptSenderWorker(
     context: Context,
     workParams: WorkerParameters,
     private val repo: DraftsRepository,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val storage: FirebaseStorage,
+    private val imagesDao: ImagesDao
 ) : Worker(context, workParams) {
 
     override fun doWork(): Result {
@@ -30,24 +38,41 @@ class ReceiptSenderWorker(
             return Result.failure()
         }
 
+        if (appId == null) {
+            loge("AppId was null")
+            return Result.failure()
+        }
+
         return try {
             val result = repo.getReceipt(id).takeSingle().blockingGet()
-
-            val sendTask =
-                firestore
-                    .collection(COLLECTION)
-                    .add(hashMapOf(
-                        "appId" to appId,
-                        "receipt" to result
-                    ))
-
-            Tasks.await(sendTask)
-
+            sendText(result, appId)
+            sendImage(result)
             Result.success()
         } catch (e: Throwable) {
             loge("Error sending the receipt", e)
             Result.failure()
         }
+    }
+
+    private fun sendText(value: ManageReceiptUseCase.Value, appId: String): DocumentReference? {
+        val sendTask =
+            firestore
+                .collection(COLLECTION)
+                .add(hashMapOf(
+                    "appId" to appId,
+                    "receipt" to value
+                ))
+        return Tasks.await(sendTask)
+    }
+
+    private fun sendImage(value: ManageReceiptUseCase.Value): UploadTask.TaskSnapshot? {
+        val imageUri = imagesDao.accessFile(ImagePath(value.imagePath))
+        val sendTask =
+            storage
+                .reference
+                .child("$COLLECTION/${value.imagePath}")
+                .putFile(imageUri)
+        return Tasks.await(sendTask)
     }
 
     class Runner @Inject constructor(
@@ -77,10 +102,12 @@ class ReceiptSenderWorker(
 
     class Factory @Inject constructor(
         private val repo: DraftsRepository,
-        private val firestore: FirebaseFirestore
+        private val firestore: FirebaseFirestore,
+        private val storage: FirebaseStorage,
+        private val imagesDao: ImagesDao
     ) : ChildWorkerFactory {
         override fun create(appContext: Context, workParams: WorkerParameters) =
-            ReceiptSenderWorker(appContext, workParams, repo, firestore)
+            ReceiptSenderWorker(appContext, workParams, repo, firestore, storage, imagesDao)
     }
 
     companion object {

@@ -122,6 +122,9 @@ dependencies {
 
     // firestore
     implementation 'com.google.firebase:firebase-firestore:20.2.0'
+
+    // storage
+    implementation 'com.google.firebase:firebase-storage:18.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
