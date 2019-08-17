@@ -1,10 +1,7 @@
 package com.lucianbc.receiptscan.domain.repository
 
 import android.graphics.Bitmap
-import com.lucianbc.receiptscan.domain.model.Draft
-import com.lucianbc.receiptscan.domain.model.DraftWithProducts
-import com.lucianbc.receiptscan.domain.model.OcrElement
-import com.lucianbc.receiptscan.domain.model.Product
+import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.scanner.DraftValue
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
@@ -29,4 +26,5 @@ interface DraftsRepository {
     fun deleteProduct(id: Long): Completable
     fun update(draft: Draft): Completable
     fun getReceipt(id: Long): Flowable<ManageReceiptUseCase.Value>
+    fun getExported(id: Long): Single<ExportedReceipt>
 }

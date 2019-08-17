@@ -7,15 +7,13 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import com.lucianbc.receiptscan.domain.model.ExportedReceipt
 import com.lucianbc.receiptscan.domain.model.ImagePath
 import com.lucianbc.receiptscan.domain.model.SharingOption
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.service.ReceiptSender
-import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
-import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.util.loge
-import com.lucianbc.receiptscan.util.takeSingle
 import javax.inject.Inject
 
 class ReceiptSenderWorker(
@@ -28,9 +26,7 @@ class ReceiptSenderWorker(
 ) : Worker(context, workParams) {
 
     override fun doWork(): Result {
-        logd("Doing work in a fokin worker.")
-
-        val id = inputData.getLong(RECEIPT_ID_KEY, ERROR_ID)
+         val id = inputData.getLong(RECEIPT_ID_KEY, ERROR_ID)
         val appId = inputData.getString(APP_ID_KEY)
 
         if (id == ERROR_ID) {
@@ -44,7 +40,7 @@ class ReceiptSenderWorker(
         }
 
         return try {
-            val result = repo.getReceipt(id).takeSingle().blockingGet()
+            val result = repo.getExported(id).blockingGet()
             sendText(result, appId)
             sendImage(result)
             Result.success()
@@ -54,7 +50,7 @@ class ReceiptSenderWorker(
         }
     }
 
-    private fun sendText(value: ManageReceiptUseCase.Value, appId: String): DocumentReference? {
+    private fun sendText(value: ExportedReceipt, appId: String): DocumentReference? {
         val sendTask =
             firestore
                 .collection(COLLECTION)
@@ -65,7 +61,7 @@ class ReceiptSenderWorker(
         return Tasks.await(sendTask)
     }
 
-    private fun sendImage(value: ManageReceiptUseCase.Value): UploadTask.TaskSnapshot? {
+    private fun sendImage(value: ExportedReceipt): UploadTask.TaskSnapshot? {
         val imageUri = imagesDao.accessFile(ImagePath(value.imagePath))
         val sendTask =
             storage

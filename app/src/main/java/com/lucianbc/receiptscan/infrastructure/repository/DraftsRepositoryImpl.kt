@@ -1,9 +1,6 @@
 package com.lucianbc.receiptscan.infrastructure.repository
 
-import com.lucianbc.receiptscan.domain.model.Draft
-import com.lucianbc.receiptscan.domain.model.DraftWithProducts
-import com.lucianbc.receiptscan.domain.model.OcrElement
-import com.lucianbc.receiptscan.domain.model.Product
+import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.scanner.DraftValue
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
@@ -64,4 +61,6 @@ class DraftsRepositoryImpl @Inject constructor(
     override fun deleteProduct(id: Long) = draftDao.deleteProduct(id)
 
     override fun getReceipt(id: Long) = draftDao.getReceipt(id)
+
+    override fun getExported(id: Long): Single<ExportedReceipt> = draftDao.getExported(id)
 }
