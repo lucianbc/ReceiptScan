@@ -17,6 +17,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".presentation.home.exports.form.FormActivity">
+        </activity>
         <activity android:name=".presentation.receipt.ReceiptActivity">
         </activity>
         <activity
@@ -36,21 +38,19 @@
         </activity>
 
         <provider
-                android:authorities="com.lucianbc.receiptscan"
                 android:name="androidx.core.content.FileProvider"
+                android:authorities="com.lucianbc.receiptscan"
                 android:exported="false"
                 android:grantUriPermissions="true">
             <meta-data
                     android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/file_sharing_paths" />
+                    android:resource="@xml/file_sharing_paths"/>
         </provider>
-
         <provider
                 android:name="androidx.work.impl.WorkManagerInitializer"
                 android:authorities="${applicationId}.workmanager-init"
-                tools:node="remove"
-                android:exported="false"/>
-
+                android:exported="false"
+                tools:node="remove"/>
     </application>
 
 </manifest>

@@ -1,12 +1,15 @@
 package com.lucianbc.receiptscan.presentation.home
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.lucianbc.receiptscan.presentation.home.drafts.DraftsFragment
+import com.lucianbc.receiptscan.presentation.home.exports.ExportFragment
 import com.lucianbc.receiptscan.presentation.home.receipts.ReceiptsFragment
 import com.lucianbc.receiptscan.presentation.home.settings.SettingsFragment
 
+@SuppressLint("WrongConstant")
 class HomePagerAdapter(fm: FragmentManager) :
     FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     private val fragmentList = listOf(

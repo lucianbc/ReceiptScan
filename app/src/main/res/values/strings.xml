@@ -49,4 +49,9 @@
     <string name="default_category">Default Category</string>
     <string name="send_receipt_opt">Send Receipt Anonymously</string>
     <string name="settings_title">Settings</string>
+    <string name="exports_title">Exports</string>
+    <string name="content_text_only">Text Only</string>
+    <string name="content_text_and_image">Text and Image</string>
+    <string name="content_csv">CSV</string>
+    <string name="content_json">JSON</string>
 </resources>

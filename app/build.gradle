@@ -125,6 +125,9 @@ dependencies {
 
     // storage
     implementation 'com.google.firebase:firebase-storage:18.1.1'
+
+    // dots indicator
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:2.1.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
