@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.ViewPager
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentFormContainerBinding
+import com.lucianbc.receiptscan.domain.export.ExportException
 import kotlinx.android.synthetic.main.fragment_form_container.*
 
 
@@ -58,6 +60,16 @@ class FormContainerFragment
 
         wormDotsIndicator.setViewPager(exportOptionsPager)
 
-        actionButton.setOnClickListener { viewModel.handleOption() }
+        actionButton.setOnClickListener {
+            if (viewModel.option.value == FormViewModel.Option.Next)
+                exportOptionsPager.currentItem = exportOptionsPager.currentItem + 1
+            else {
+                try {
+                    viewModel.validateInput()
+                } catch (e: ExportException) {
+                    Toast.makeText(activity, e.error.name, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }

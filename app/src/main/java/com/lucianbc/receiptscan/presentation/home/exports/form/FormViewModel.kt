@@ -2,7 +2,8 @@ package com.lucianbc.receiptscan.presentation.home.exports.form
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lucianbc.receiptscan.util.logd
+import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.domain.export.Session
 import com.lucianbc.receiptscan.util.map
 import java.util.*
 import javax.inject.Inject
@@ -21,11 +22,26 @@ class FormViewModel @Inject constructor() : ViewModel() {
     val option = MutableLiveData<Option>(Option.Next)
     val isCheck = option.map { it == Option.Check }
 
+    fun validateInput() = Session.validate(
+        firstDate.value!!,
+        lastDate.value!!,
+        content(),
+        format()
+    )
 
-    fun handleOption() {
-        logd(contentOption.value.toString())
-        logd(formatOption.value.toString())
-        logd(firstDate.value.toString())
-        logd(lastDate.value.toString())
-    }
+    private fun content(): Session.Content? =
+        contentOption.value?.let {
+            when(it) {
+                R.id.contentText -> Session.Content.TextOnly
+                else -> Session.Content.TextAndImage
+            }
+        }
+
+    private fun format(): Session.Format? =
+        formatOption.value?.let {
+            when(it) {
+                R.id.contentCsv -> Session.Format.CSV
+                else -> Session.Format.JSON
+            }
+        }
 }
