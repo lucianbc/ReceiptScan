@@ -7,6 +7,7 @@ import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.presentation.Event
 import com.lucianbc.receiptscan.presentation.draft.CategoryFragment
 import com.lucianbc.receiptscan.presentation.draft.CurrencyFragment
+import com.lucianbc.receiptscan.presentation.home.exports.form.FormContainerFragment
 import com.lucianbc.receiptscan.presentation.scanner.ScannerActivity
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -75,6 +76,12 @@ class MainActivity : DaggerAppCompatActivity() {
     fun onCategoryTapped(event: Event.CategoryTapped) {
         val frag = CategoryFragment(event.callback)
         addFragment(CategoryFragment.TAG, frag)
+    }
+
+    @Subscribe
+    fun onExportForm(event: Event.ExportForm) {
+        val frag = FormContainerFragment(event.callback)
+        addFragment(FormContainerFragment.TAG, frag)
     }
 
     private fun addFragment(tag: String, frag: Fragment) {

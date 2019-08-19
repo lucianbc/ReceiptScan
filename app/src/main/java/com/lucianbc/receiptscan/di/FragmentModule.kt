@@ -3,6 +3,7 @@ package com.lucianbc.receiptscan.di
 import com.lucianbc.receiptscan.presentation.draft.DraftFragment
 import com.lucianbc.receiptscan.presentation.draft.ReceiptImageFragment
 import com.lucianbc.receiptscan.presentation.home.drafts.DraftsFragment
+import com.lucianbc.receiptscan.presentation.home.exports.ExportFragment
 import com.lucianbc.receiptscan.presentation.home.exports.form.ContentFormatFragment
 import com.lucianbc.receiptscan.presentation.home.exports.form.ContentFragment
 import com.lucianbc.receiptscan.presentation.home.exports.form.DateRangeFragment
@@ -53,4 +54,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeFormContainer(): FormContainerFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeExportFragment(): ExportFragment
 }

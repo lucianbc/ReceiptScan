@@ -11,10 +11,13 @@ import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentFormContainerBinding
 import com.lucianbc.receiptscan.domain.export.ExportException
+import com.lucianbc.receiptscan.domain.export.Session
 import kotlinx.android.synthetic.main.fragment_form_container.*
 
 
-class FormContainerFragment
+class FormContainerFragment(
+    private val callback: (Session) -> Unit
+)
     : BaseFragment<FormViewModel>(FormViewModel::class.java) {
 
     override fun onCreateView(
@@ -65,11 +68,18 @@ class FormContainerFragment
                 exportOptionsPager.currentItem = exportOptionsPager.currentItem + 1
             else {
                 try {
-                    viewModel.validateInput()
+                    viewModel.validateInput().let { callback?.invoke(it) }
                 } catch (e: ExportException) {
                     Toast.makeText(activity, e.error.name, Toast.LENGTH_SHORT).show()
                 }
             }
         }
+        closeFormBtn.setOnClickListener {
+            fragmentManager?.popBackStack()
+        }
+    }
+
+    companion object {
+        const val TAG = "EXPORT_FORM_CONTAINER"
     }
 }
