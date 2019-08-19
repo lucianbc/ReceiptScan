@@ -1,51 +1,56 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.lucianbc.receiptscan.presentation.home.exports.form.FormContainerFragment">
-
-    <androidx.viewpager.widget.ViewPager
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="viewModel" type="com.lucianbc.receiptscan.presentation.home.exports.form.FormViewModel"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/exportOptionsPager"
-    />
+            tools:context="com.lucianbc.receiptscan.presentation.home.exports.form.FormContainerFragment">
 
-    <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
-            android:id="@+id/wormDotsIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:dotsColor="@color/black"
-            tools:layout_width="100dp"
-            tools:layout_height="30dp"
-            tools:background="@color/black"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"/>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:weightSum="2"
-            app:layout_constraintBottom_toBottomOf="@+id/exportOptionsPager" android:id="@+id/linearLayout">
-
-        <ImageButton
-                android:layout_width="0dp"
+        <androidx.viewpager.widget.ViewPager
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="?android:selectableItemBackground"
-                android:src="@drawable/ic_clear_black_24dp"
+                android:id="@+id/exportOptionsPager"
         />
 
-        <ImageButton
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="?android:selectableItemBackground"
-                android:src="@drawable/ic_navigate_next_black_24dp"
-        />
+        <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+                android:id="@+id/wormDotsIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:dotsColor="@color/black"
+                tools:layout_width="100dp"
+                tools:layout_height="30dp"
+                tools:background="@color/black"
+                android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout"/>
 
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:weightSum="2"
+                app:layout_constraintBottom_toBottomOf="@+id/exportOptionsPager" android:id="@+id/linearLayout">
 
-    </LinearLayout>
+            <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?android:selectableItemBackground"
+                    android:src="@drawable/ic_clear_black_24dp"
+                    android:id="@+id/closeFormBtn"
+            />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?android:selectableItemBackground"
+                    android:src="@{safeUnbox(viewModel.isCheck) ? @drawable/ic_check_black_24dp: @drawable/ic_navigate_next_black_24dp }"
+                    android:id="@+id/actionButton"
+            />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

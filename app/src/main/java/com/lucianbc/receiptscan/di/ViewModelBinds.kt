@@ -3,6 +3,7 @@ package com.lucianbc.receiptscan.di
 import androidx.lifecycle.ViewModel
 import com.lucianbc.receiptscan.presentation.draft.DraftViewModel
 import com.lucianbc.receiptscan.presentation.home.drafts.DraftsViewModel
+import com.lucianbc.receiptscan.presentation.home.exports.form.FormViewModel
 import com.lucianbc.receiptscan.presentation.home.receipts.ReceiptsViewModel
 import com.lucianbc.receiptscan.presentation.home.settings.SettingsViewModel
 import com.lucianbc.receiptscan.presentation.receipt.ReceiptViewModel
@@ -54,4 +55,9 @@ abstract class ViewModelBinds {
     @IntoMap
     @ViewModelKey(SettingsViewModel::class)
     abstract fun bindSettingsVM(vm: SettingsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FormViewModel::class)
+    abstract fun bindFormVM(vm: FormViewModel): ViewModel
 }

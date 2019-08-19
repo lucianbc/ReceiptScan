@@ -128,6 +128,9 @@ dependencies {
 
     // dots indicator
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:2.1.2'
+
+    // range date picker
+    implementation 'com.savvi.datepicker:rangepicker:1.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

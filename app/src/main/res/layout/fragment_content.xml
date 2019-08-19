@@ -1,33 +1,39 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.lucianbc.receiptscan.presentation.home.exports.form.ContentFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="viewModel" type="com.lucianbc.receiptscan.presentation.home.exports.form.FormViewModel"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.lucianbc.receiptscan.presentation.home.exports.form.ContentFragment">
 
-    <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content"
+        <RadioGroup
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
                 android:layout_marginBottom="56dp" app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5"
                 android:id="@+id/contentRadioGroup"
-    >
+                android:checkedButton="@={viewModel.contentOption}"
+        >
 
-        <com.google.android.material.radiobutton.MaterialRadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/content_text_only"
-                android:id="@+id/contentText"
-        />
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/content_text_only"
+                    android:id="@+id/contentText"
+            />
 
-        <com.google.android.material.radiobutton.MaterialRadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/content_text_and_image"
-                android:id="@+id/contentTextImage"
-        />
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/content_text_and_image"
+                    android:id="@+id/contentTextImage"
+            />
 
-    </RadioGroup>
+        </RadioGroup>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
