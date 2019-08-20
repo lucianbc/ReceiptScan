@@ -23,8 +23,8 @@ class FormViewModel @Inject constructor() : ViewModel() {
     val isCheck = option.map { it == Option.Check }
 
     fun validateInput() = Session.validate(
-        firstDate.value!!,
-        lastDate.value!!,
+        firstDate.value,
+        lastDate.value,
         content(),
         format()
     )

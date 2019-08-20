@@ -68,9 +68,9 @@ class FormContainerFragment(
                 exportOptionsPager.currentItem = exportOptionsPager.currentItem + 1
             else {
                 try {
-                    viewModel.validateInput().let { callback?.invoke(it) }
+                    viewModel.validateInput().let(callback::invoke)
                 } catch (e: ExportException) {
-                    Toast.makeText(activity, e.error.name, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity!!, e.error.name, Toast.LENGTH_SHORT).show()
                 }
             }
         }
