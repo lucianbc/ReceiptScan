@@ -23,10 +23,17 @@ class HomePagerAdapter(fm: FragmentManager) :
 
     override fun getCount(): Int = fragmentList.size
 
+    enum class Page(val position: Int) {
+        EXPORT(0),
+        DRAFTS(1),
+        RECEIPTS(2),
+        SETTINGS(3)
+    }
+
     companion object {
-        const val EXPORT = 0
-        const val DRAFTS = 1
-        const val RECEIPTS = 2
-        const val SETTINGS = 3
+        val EXPORT = Page.EXPORT
+        val DRAFTS = Page.DRAFTS
+        val RECEIPTS = Page.RECEIPTS
+        val SETTINGS = Page.SETTINGS
     }
 }
