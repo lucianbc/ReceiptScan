@@ -1,6 +1,8 @@
 package com.lucianbc.receiptscan.presentation.home
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.lucianbc.receiptscan.R
@@ -33,10 +35,14 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     private fun initAdapter() {
+        val page = intent?.extras?.getString(PAGE_KEY)
+                    ?.let(HomePagerAdapter.Page::valueOf)
+                    ?: HomePagerAdapter.RECEIPTS
+
         supportFragmentManager.apply {
             HomePagerAdapter(this).also {
                 pager.adapter = it
-                pager.currentItem = HomePagerAdapter.RECEIPTS
+                pager.currentItem = page.position
             }
         }
     }
@@ -49,7 +55,7 @@ class MainActivity : DaggerAppCompatActivity() {
         scanner_button.setOnClickListener { goToScanner() }
     }
 
-    private fun setView(pos: Int) = pager.setCurrentItem(pos, false)
+    private fun setView(page: HomePagerAdapter.Page) = pager.setCurrentItem(page.position, false)
 
     private fun goToScanner() {
         val intent = ScannerActivity.navIntent(this)
@@ -91,5 +97,16 @@ class MainActivity : DaggerAppCompatActivity() {
             .add(R.id.homeFrame, frag, tag)
             .addToBackStack(tag)
             .commit()
+    }
+
+    companion object {
+        fun navIntent(context: Context, page: HomePagerAdapter.Page) =
+            navIntent(context).apply {
+                putExtra(PAGE_KEY, page.toString())
+            }
+
+        private fun navIntent(context: Context) = Intent(context, MainActivity::class.java)
+
+        private const val PAGE_KEY = "PAGE"
     }
 }

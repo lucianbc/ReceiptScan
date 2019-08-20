@@ -1,14 +1,17 @@
 package com.lucianbc.receiptscan.domain.export
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Suppress("DataClassPrivateConstructor")
-data class Session private constructor(
+@Parcelize
+data class Session(
     private val firstDate: Date,
     private val lastDate: Date,
     private val content: Content,
     private val format: Format
-) {
+) : Parcelable {
     enum class Content {
         TextOnly,
         TextAndImage

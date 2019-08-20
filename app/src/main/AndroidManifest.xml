@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <uses-feature android:name="android.hardware.camera"/>
 
@@ -17,8 +18,13 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".presentation.home.exports.form.FormActivity">
-        </activity>
+        <service
+                android:name="com.lucianbc.receiptscan.presentation.home.exports.ExportService"
+                android:enabled="true"
+                android:exported="false"
+        >
+        </service>
+
         <activity android:name=".presentation.receipt.ReceiptActivity">
         </activity>
         <activity

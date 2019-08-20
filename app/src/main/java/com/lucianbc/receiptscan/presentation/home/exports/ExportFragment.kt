@@ -28,7 +28,11 @@ class ExportFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createExportBtn.setOnClickListener {
-            eventBus.post(Event.ExportForm {})
+            eventBus.post(Event.ExportForm { s ->
+                activity?.let {
+                    ExportService.intent(activity!!, s).let(it::startService)
+                }
+            })
         }
     }
 }
