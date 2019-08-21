@@ -6,10 +6,12 @@ import com.lucianbc.receiptscan.domain.scanner.DraftValue
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
+import com.lucianbc.receiptscan.presentation.home.exports.ExportUseCase
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
+import java.util.*
 
 interface DraftsRepository {
     fun create(value: DraftValue): Observable<Long>
@@ -27,4 +29,6 @@ interface DraftsRepository {
     fun update(draft: Draft): Completable
     fun getReceipt(id: Long): Flowable<ManageReceiptUseCase.Value>
     fun getExported(id: Long): Single<ExportedReceipt>
+    fun getTextReceiptsBeteewn(firstDate: Date, lastDate: Date): Single<ExportUseCase.TextReceipt>
+    fun getImageReceiptsBetween(firstDate: Date, lastDate: Date): Single<ExportUseCase.ImageReceipt>
 }

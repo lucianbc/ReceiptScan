@@ -5,6 +5,7 @@ import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
+import com.lucianbc.receiptscan.presentation.home.exports.ExportUseCase
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -57,4 +58,18 @@ interface DraftDao {
 
     @Query("select id, merchantName, date, total, currency, category, imagePath from receipt where id = :id")
     fun getExported(id: Long): Single<ExportedReceipt>
+
+    @Query("""
+        select  id, merchantName, date, total, currency, category 
+        from    receipt 
+        where   date between :firstDate and :lastDate
+    """)
+    fun getTextReceiptsBetween(firstDate: Long, lastDate: Long): Single<ExportUseCase.TextReceipt>
+
+    @Query("""
+        select  id, merchantName, date, total, currency, category, imagePath 
+        from    receipt 
+        where   date between :firstDate and :lastDate
+    """)
+    fun getImageReceiptsBetween(firstDate: Long, lastDate: Long): Single<ExportUseCase.ImageReceipt>
 }

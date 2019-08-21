@@ -46,6 +46,7 @@ class FormContainerFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = OptionsAdapter(fragmentManager!!)
+        exportOptionsPager.offscreenPageLimit = adapter.count
         exportOptionsPager.adapter = adapter
 
         exportOptionsPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

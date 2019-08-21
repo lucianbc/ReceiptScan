@@ -11,6 +11,7 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         WorkerBinds::class,
+        ServiceModule::class,
         ActivityModule::class,
         InterfaceBinds::class,
         FragmentModule::class,

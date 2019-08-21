@@ -7,11 +7,13 @@ import java.util.*
 @Suppress("DataClassPrivateConstructor")
 @Parcelize
 data class Session(
-    private val firstDate: Date,
-    private val lastDate: Date,
-    private val content: Content,
-    private val format: Format
+    val firstDate: Date,
+    val lastDate: Date,
+    val content: Content,
+    val format: Format,
+    val id: String
 ) : Parcelable {
+
     enum class Content {
         TextOnly,
         TextAndImage
@@ -36,7 +38,8 @@ data class Session(
                 _firstDate,
                 _lastDate,
                 _content,
-                _format
+                _format,
+                UUID.randomUUID().toString()
             )
         }
     }

@@ -32,6 +32,7 @@ class ExportFragment
                 activity?.let {
                     ExportService.intent(activity!!, s).let(it::startService)
                 }
+                fragmentManager?.popBackStack()
             })
         }
     }
