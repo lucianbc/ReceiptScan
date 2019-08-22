@@ -27,6 +27,7 @@ Analizarea și procesarea bonurilor fiscale pe baza imaginilor obținute folosin
 * [@Receipts2Go]
 * [@DL_receipt_understanding]
 * [@Heuristics_extract]
+* [https://www.neat.com/]
 
 ## Obiectivele lucrării
 
