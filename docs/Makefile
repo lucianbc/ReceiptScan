@@ -45,6 +45,22 @@ pdf:
 	--filter pandoc-crossref \
 	--verbose 
 
+chapter:
+	pandoc "$(INPUTDIR)"/$(in).md \
+	-o "$(OUTPUTDIR)/$(STDNO)-$(out).pdf" \
+	-H "$(STYLEDIR)/preamble.tex" \
+	--template="$(STYLEDIR)/template.tex" \
+	--latex-engine=xelatex \
+	--bibliography="$(BIBFILE)" 2>pandoc.log \
+	--csl="$(STYLEDIR)/ref_format.csl" \
+	--highlight-style pygments \
+	-V fontsize=12pt \
+	-V papersize=a4paper \
+	-V documentclass:report \
+	-N \
+	--filter pandoc-crossref \
+	--verbose
+
 tex:
 	pandoc "$(INPUTDIR)"/*.md \
 	-o "$(OUTPUTDIR)/thesis.tex" \
