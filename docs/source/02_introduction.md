@@ -22,9 +22,20 @@ Principalul obstacol al acestei aplicații este înțelegerea automată a bonuri
 
 ## Lucrări asemănătoare
 
-Procesarea bonurilor fiscale a stârnit un ușor interes în comunitatea științifică și tehnică
+Analizarea și procesarea bonurilor fiscale pe baza imaginilor obținute folosind camera foto a telefoanelor a stârnit un interes moderat în comunitatea științifică și tehnică.
 
-## Demo
+* [@Receipts2Go]
+* [@DL_receipt_understanding]
+* [@Heuristics_extract]
 
-Donec ut justo nec justo tincidunt dignissim. Aenean vel tempor orci. Curabitur ullamcorper elit et risus viverra faucibus at vel justo. Quisque tristique lorem eget nunc gravida, fringilla rhoncus leo tempor. Vestibulum ut laoreet felis. Pellentesque vel hendrerit justo. Phasellus molestie turpis sed faucibus varius. Mauris enim odio, tincidunt vel nisi eu, dictum sollicitudin tellus. Vestibulum vitae ligula pellentesque, pulvinar mi non, eleifend ligula. Suspendisse volutpat semper augue, sed pulvinar elit auctor in. Praesent a tincidunt diam. Morbi mollis gravida odio, et fermentum ipsum commodo facilisis. [@Cousteau1963]
+## Obiectivele lucrării
 
+Așa cum am arătat în secțunile precedente, problema aleasă este una complexă, pentru care nu există o soluție standard. De asemenea, o abordare nouă are potențialul de a aduce valoare unei categorii de utilizatori. Așadar, această lucrare își propune:
+
+* Dezvoltarea unui algoritm de procesare și analizare a bonurilor fiscale sub formă de imagini obținute cu un telefon mobil;
+* Distribuirea acestui algoritm sub forma unei aplicații mobile, dezvoltată în manieră Open Source și publicată pe GitHub;
+* Construirea unei baze de date cu imagini și informațiile aferente ce poate fi folosită în viitor pentru îmbunătățirea algoritmului.
+
+## Structura lucrării
+
+Lorem Ipsum
