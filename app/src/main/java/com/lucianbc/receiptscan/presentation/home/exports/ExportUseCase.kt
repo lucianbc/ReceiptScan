@@ -10,15 +10,18 @@ import com.lucianbc.receiptscan.domain.model.ImagePath
 import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
+import com.squareup.inject.assisted.dagger2.AssistedModule
 import io.reactivex.Completable
 import java.util.*
 import javax.inject.Inject
 
-class ExportUseCase(
+class ExportUseCase @AssistedInject constructor(
     private val repo: DraftsRepository,
     private val imagesDao: ImagesDao,
     private val storage: FirebaseStorage,
-    private val manifest: Session
+    @Assisted private val manifest: Session
 ) {
     fun execute(): Completable {
         return sendContent().andThen(sendManifest())
@@ -100,13 +103,8 @@ class ExportUseCase(
         val products: List<Product>
     )
 
-    class Factory @Inject constructor(
-        private val repo: DraftsRepository,
-        private val storage: FirebaseStorage,
-        private val imagesDao: ImagesDao
-    ) {
-        fun create(manifest: Session): ExportUseCase {
-            return ExportUseCase(repo, imagesDao, storage, manifest)
-        }
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(manifest: Session): ExportUseCase
     }
 }

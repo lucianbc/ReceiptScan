@@ -14,16 +14,18 @@ import com.lucianbc.receiptscan.domain.repository.DraftsRepository
 import com.lucianbc.receiptscan.domain.service.ReceiptSender
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.lucianbc.receiptscan.util.loge
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import javax.inject.Inject
 
-class ReceiptSenderWorker(
-    context: Context,
-    workParams: WorkerParameters,
+class ReceiptSenderWorker @AssistedInject constructor(
+    @Assisted appContext: Context,
+    @Assisted workParams: WorkerParameters,
     private val repo: DraftsRepository,
     private val firestore: FirebaseFirestore,
     private val storage: FirebaseStorage,
     private val imagesDao: ImagesDao
-) : Worker(context, workParams) {
+) : Worker(appContext, workParams) {
 
     override fun doWork(): Result {
          val id = inputData.getLong(RECEIPT_ID_KEY, ERROR_ID)
@@ -96,14 +98,9 @@ class ReceiptSenderWorker(
         }
     }
 
-    class Factory @Inject constructor(
-        private val repo: DraftsRepository,
-        private val firestore: FirebaseFirestore,
-        private val storage: FirebaseStorage,
-        private val imagesDao: ImagesDao
-    ) : ChildWorkerFactory {
-        override fun create(appContext: Context, workParams: WorkerParameters) =
-            ReceiptSenderWorker(appContext, workParams, repo, firestore, storage, imagesDao)
+    @AssistedInject.Factory
+    interface Factory : ChildWorkerFactory {
+        override fun create(appContext: Context, workParams: WorkerParameters): ReceiptSenderWorker
     }
 
     companion object {

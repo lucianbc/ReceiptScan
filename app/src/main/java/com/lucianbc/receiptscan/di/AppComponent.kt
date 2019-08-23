@@ -17,7 +17,8 @@ import javax.inject.Singleton
         FragmentModule::class,
         ViewModelBinds::class,
         ViewModelFactoryBinds::class,
-        AndroidSupportInjectionModule::class
+        AndroidSupportInjectionModule::class,
+        AssistedModule::class
     ]
 )
 interface AppComponent : AndroidInjector<ReceiptScan> {
