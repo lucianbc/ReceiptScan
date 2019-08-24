@@ -1,5 +1,6 @@
-package com.lucianbc.receiptscan.domain.model
+package com.lucianbc.receiptscan.domain.extract
 
+import com.lucianbc.receiptscan.domain.model.Category
 import java.util.*
 
 interface ReceiptDefaults {

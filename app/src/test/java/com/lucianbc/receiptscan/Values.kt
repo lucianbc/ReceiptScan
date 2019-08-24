@@ -1,7 +1,7 @@
 package com.lucianbc.receiptscan
 
 import com.lucianbc.receiptscan.domain.model.Category
-import com.lucianbc.receiptscan.domain.model.ReceiptDefaults
+import com.lucianbc.receiptscan.domain.extract.ReceiptDefaults
 import java.util.*
 
 val TestDefaults = object: ReceiptDefaults {

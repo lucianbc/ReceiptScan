@@ -23,6 +23,10 @@ class ImagesDao @Inject constructor(
         return filename
     }
 
+    fun saveWithPath(image: Bitmap): ImagePath {
+        return saveImage(image).let(::ImagePath)
+    }
+
     fun readImage(path: String): Bitmap {
         val directory = context.filesDir
         val file = File(directory, path)

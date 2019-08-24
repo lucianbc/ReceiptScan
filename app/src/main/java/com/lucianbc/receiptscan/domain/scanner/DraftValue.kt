@@ -1,6 +1,7 @@
 package com.lucianbc.receiptscan.domain.scanner
 
 import android.graphics.Bitmap
+import com.lucianbc.receiptscan.domain.extract.ReceiptDefaults
 import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElements

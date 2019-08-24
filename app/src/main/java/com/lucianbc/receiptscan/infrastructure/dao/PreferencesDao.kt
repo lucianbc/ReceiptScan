@@ -2,7 +2,7 @@ package com.lucianbc.receiptscan.infrastructure.dao
 
 import android.content.SharedPreferences
 import com.lucianbc.receiptscan.domain.model.Category
-import com.lucianbc.receiptscan.domain.model.ReceiptDefaults
+import com.lucianbc.receiptscan.domain.extract.ReceiptDefaults
 import com.lucianbc.receiptscan.domain.model.SharingOption
 import java.util.*
 
