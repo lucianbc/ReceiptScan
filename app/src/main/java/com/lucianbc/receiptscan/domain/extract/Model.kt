@@ -31,5 +31,5 @@ data class Product (
 sealed class State {
     object Processing : State()
     object Idle : State()
-    class Error(val err: Throwable) : State()
+    data class Error(val err: Throwable) : State()
 }
