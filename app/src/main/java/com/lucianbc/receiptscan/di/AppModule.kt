@@ -5,9 +5,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.google.firebase.storage.FirebaseStorage
+import com.lucianbc.receiptscan.domain.extract.ExtractUseCase
+import com.lucianbc.receiptscan.domain.extract.ExtractUseCaseImpl
 import com.lucianbc.receiptscan.domain.extract.ReceiptDefaults
 import com.lucianbc.receiptscan.domain.model.SharingOption
-import com.lucianbc.receiptscan.domain.viewfinder.LiveViewUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.AppDatabase
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.dao.PreferencesDao
@@ -24,8 +25,9 @@ class AppModule {
         application.applicationContext
 
     @Provides
-    fun provideLiveViewUseCase(): LiveViewUseCase =
-        LiveViewUseCase(5f)
+    @Singleton
+    fun provideExtractUseCase(factory: ExtractUseCaseImpl.Factory): ExtractUseCase =
+        factory.create(5f)
 
     @Provides
     fun provideFirebaseRecognizer(): FirebaseVisionTextRecognizer =

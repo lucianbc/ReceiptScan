@@ -1,9 +1,11 @@
 package com.lucianbc.receiptscan.domain.extract
 
 import com.lucianbc.receiptscan.domain.model.Category
+import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import java.util.*
 
 typealias DraftId = Long
+typealias OcrElements = Sequence<OcrElementValue>
 
 data class Draft (
     val merchantName: String?,

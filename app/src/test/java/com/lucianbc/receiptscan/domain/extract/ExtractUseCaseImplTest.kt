@@ -2,8 +2,6 @@ package com.lucianbc.receiptscan.domain.extract
 
 import android.graphics.Bitmap
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
-import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
-import com.lucianbc.receiptscan.domain.viewfinder.Scannable
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.Observable

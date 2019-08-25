@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.domain.viewfinder
+package com.lucianbc.receiptscan.domain.extract
 
 import android.graphics.Bitmap
 import io.reactivex.Observable

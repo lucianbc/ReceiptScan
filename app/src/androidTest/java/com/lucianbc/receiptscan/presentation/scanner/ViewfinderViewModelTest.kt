@@ -9,8 +9,11 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
-import com.lucianbc.receiptscan.domain.viewfinder.LiveViewUseCase
+import com.lucianbc.receiptscan.domain.extract.ExtractRepository
+import com.lucianbc.receiptscan.domain.extract.ExtractUseCaseImpl
+import com.lucianbc.receiptscan.domain.extract.Extractor
 import com.lucianbc.receiptscan.infrastructure.ScannableFactory
+import com.nhaarman.mockitokotlin2.mock
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -21,13 +24,16 @@ class ViewfinderViewModelTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    lateinit var viewModel: ViewfinderViewModel
-    lateinit var factory: ScannableFactory
-    lateinit var recognizer: FirebaseVisionTextRecognizer
+    private lateinit var viewModel: ViewfinderViewModel
+    private lateinit var factory: ScannableFactory
+    private lateinit var recognizer: FirebaseVisionTextRecognizer
+
+    private val mockExtractor: Extractor = mock()
+    private val mockRepo: ExtractRepository = mock()
 
     @Before
     fun setup() {
-        val useCase = LiveViewUseCase(15f)
+        val useCase = ExtractUseCaseImpl(15f, mockRepo, mockExtractor)
         recognizer = FirebaseVision.getInstance().onDeviceTextRecognizer
         factory = ScannableFactory(recognizer)
         viewModel = ViewfinderViewModel(useCase, factory)

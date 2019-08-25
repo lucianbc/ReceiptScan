@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lucianbc.receiptscan.domain.scanner.ScanUseCase
-import com.lucianbc.receiptscan.domain.viewfinder.Scannable
+import com.lucianbc.receiptscan.domain.extract.Scannable
 import com.lucianbc.receiptscan.infrastructure.ScannableFactory
 import com.lucianbc.receiptscan.presentation.Event
 import com.lucianbc.receiptscan.util.loge

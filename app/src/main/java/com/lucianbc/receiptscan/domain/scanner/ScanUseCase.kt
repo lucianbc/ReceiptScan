@@ -1,9 +1,9 @@
 package com.lucianbc.receiptscan.domain.scanner
 
 import android.graphics.Bitmap
+import com.lucianbc.receiptscan.domain.extract.OcrElements
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
-import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
-import com.lucianbc.receiptscan.domain.viewfinder.Scannable
+import com.lucianbc.receiptscan.domain.extract.Scannable
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable

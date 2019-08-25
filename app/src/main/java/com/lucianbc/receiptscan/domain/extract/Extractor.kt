@@ -1,11 +1,9 @@
 package com.lucianbc.receiptscan.domain.extract
 
-import android.graphics.Bitmap
 import com.lucianbc.receiptscan.domain.model.RawReceipt
 import com.lucianbc.receiptscan.domain.scanner.ProductsAndTotalStrategy
 import com.lucianbc.receiptscan.domain.scanner.extractDate
 import com.lucianbc.receiptscan.domain.scanner.extractMerchant
-import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
 import javax.inject.Inject
 
 class Extractor @Inject constructor(

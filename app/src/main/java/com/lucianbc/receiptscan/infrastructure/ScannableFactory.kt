@@ -6,9 +6,9 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
+import com.lucianbc.receiptscan.domain.extract.OcrElements
 import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
-import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
-import com.lucianbc.receiptscan.domain.viewfinder.Scannable
+import com.lucianbc.receiptscan.domain.extract.Scannable
 import com.otaliastudios.cameraview.Frame
 import com.otaliastudios.cameraview.PictureResult
 import com.otaliastudios.cameraview.RxPictureResult

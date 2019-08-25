@@ -1,7 +1,7 @@
 package com.lucianbc.receiptscan.domain.extract
 
-import com.lucianbc.receiptscan.domain.viewfinder.OcrElements
-import com.lucianbc.receiptscan.domain.viewfinder.Scannable
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -9,12 +9,9 @@ import io.reactivex.rxkotlin.zipWith
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ExtractUseCaseImpl @Inject constructor(
-    fps: Float,
+class ExtractUseCaseImpl @AssistedInject constructor(
+    @Assisted fps: Float,
     private val repository: ExtractRepository,
     private val extractor: Extractor
 ) : ExtractUseCase {
@@ -67,6 +64,11 @@ class ExtractUseCaseImpl @Inject constructor(
     init {
         state = stateProcessing()
         preview = frameSourceProcessing()
+    }
+
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(fps: Float): ExtractUseCaseImpl
     }
 
     companion object {
