@@ -9,11 +9,11 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
+import com.lucianbc.receiptscan.AndroidTestDefaults
 import com.lucianbc.receiptscan.domain.extract.ExtractRepository
 import com.lucianbc.receiptscan.domain.extract.ExtractUseCaseImpl
 import com.lucianbc.receiptscan.domain.extract.Extractor
 import com.lucianbc.receiptscan.infrastructure.ScannableFactory
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,8 +28,9 @@ class ViewfinderViewModelTest {
     private lateinit var factory: ScannableFactory
     private lateinit var recognizer: FirebaseVisionTextRecognizer
 
-    private val mockExtractor: Extractor = mock()
-    private val mockRepo: ExtractRepository = mock()
+    private val mockExtractor: Extractor = Extractor(AndroidTestDefaults)
+
+    private val mockRepo: ExtractRepository = Mockito.mock(ExtractRepository::class.java)
 
     @Before
     fun setup() {
