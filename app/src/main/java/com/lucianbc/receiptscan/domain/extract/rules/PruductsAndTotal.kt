@@ -1,7 +1,7 @@
-package com.lucianbc.receiptscan.domain.scanner
+package com.lucianbc.receiptscan.domain.extract.rules
 
-import com.lucianbc.receiptscan.domain.model.RawReceipt
-import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
+import com.lucianbc.receiptscan.domain.extract.OcrElement
+import com.lucianbc.receiptscan.domain.extract.Product
 import com.lucianbc.receiptscan.util.Just
 import com.lucianbc.receiptscan.util.None
 import com.lucianbc.receiptscan.util.Optional
@@ -9,7 +9,7 @@ import com.lucianbc.receiptscan.util.Optional
 class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
     private val horizontalBorders: HorizontalBorders
 
-    private var lastKey: Optional<OcrElementValue> = None
+    private var lastKey: Optional<OcrElement> = None
 
     private val totalMarkRegex = "total|ammount|summe".toRegex()
 
@@ -19,12 +19,12 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         horizontalBorders = boundaries(receipt)
     }
 
-    fun execute(): Pair<Float?, List<DraftValue.Product>> {
+    fun execute(): Pair<Float?, List<Product>> {
         walkAndProcess()
         return makeResult()
     }
 
-    private fun makeResult(): Pair<Float?, List<DraftValue.Product>> {
+    private fun makeResult(): Pair<Float?, List<Product>> {
         val price = keyPriceResults
             .mapNotNull {
                 when (it) {
@@ -43,7 +43,7 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
                 }
             }
             .filter { if (price != null) it.top < price.top else true }
-            .map { DraftValue.Product(it.name, it.price) }
+            .map { Product(it.name, it.price) }
         return price?.price to products
     }
 
@@ -63,7 +63,7 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         }
     }
 
-    private fun processPrice(priceElement: OcrElementValue) {
+    private fun processPrice(priceElement: OcrElement) {
         val price = parseNumber(priceElement.text)
         price?.let {
             val mLastKey = lastKey
@@ -78,14 +78,14 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         }
     }
 
-    private fun processKey(element: OcrElementValue) {
+    private fun processKey(element: OcrElement) {
         val digitCount = element.text.count { it.isDigit() }
         if (digitCount < 0.3 * element.text.length) {
             lastKey = Just(element)
         }
     }
 
-    private fun processKeyValue(element: OcrElementValue) {
+    private fun processKeyValue(element: OcrElement) {
         val price = parseNumber(element.text)
         price?.let {
             val name = element.text.split(" ").take(3).joinToString(" ")
@@ -95,7 +95,7 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         }
     }
 
-    private fun makeResult(key: String, price: Float, element: OcrElementValue) {
+    private fun makeResult(key: String, price: Float, element: OcrElement) {
         val keyLowercase = element.text.toLowerCase()
         if (keyLowercase.contains(totalMarkRegex)) {
             keyPriceResults.add(
@@ -115,7 +115,7 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         }
     }
 
-    private fun makeResult(keyElement: OcrElementValue, price: Float) {
+    private fun makeResult(keyElement: OcrElement, price: Float) {
         val keyLowercase = keyElement.text.toLowerCase()
         if (keyLowercase.contains(totalMarkRegex)) {
             keyPriceResults.add(
@@ -135,10 +135,10 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
         }
     }
 
-    private fun isAlignedToLeft(element: OcrElementValue): Boolean =
+    private fun isAlignedToLeft(element: OcrElement): Boolean =
         (element.left - horizontalBorders.left).toFloat() / horizontalBorders.width < ALIGN_THRESH
 
-    private fun isAlignedToRight(element: OcrElementValue): Boolean =
+    private fun isAlignedToRight(element: OcrElement): Boolean =
         (horizontalBorders.right - element.right).toFloat() / horizontalBorders.width < ALIGN_THRESH
 
     private fun boundaries(receipt: RawReceipt): HorizontalBorders {
@@ -153,7 +153,10 @@ class ProductsAndTotalStrategy(private val receipt: RawReceipt) {
             if (a.bottom > bottom) bottom = a.bottom
             if (a.right > right) right = a.right
         }
-        return HorizontalBorders(left, right)
+        return HorizontalBorders(
+            left,
+            right
+        )
     }
 
     private class HorizontalBorders(val left: Int, val right: Int)

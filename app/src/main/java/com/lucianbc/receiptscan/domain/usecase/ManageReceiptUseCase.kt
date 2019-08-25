@@ -5,7 +5,7 @@ import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.ImagePath
 import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
-import com.lucianbc.receiptscan.domain.scanner.show
+import com.lucianbc.receiptscan.domain.extract.rules.show
 import com.lucianbc.receiptscan.util.show
 import com.lucianbc.receiptscan.util.takeSingle
 import io.reactivex.Flowable

@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.domain.scanner
+package com.lucianbc.receiptscan.domain.extract.rules
 
 import java.text.ParseException
 import java.text.SimpleDateFormat

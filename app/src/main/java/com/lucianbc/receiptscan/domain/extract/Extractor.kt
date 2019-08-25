@@ -1,9 +1,9 @@
 package com.lucianbc.receiptscan.domain.extract
 
-import com.lucianbc.receiptscan.domain.model.RawReceipt
-import com.lucianbc.receiptscan.domain.scanner.ProductsAndTotalStrategy
-import com.lucianbc.receiptscan.domain.scanner.extractDate
-import com.lucianbc.receiptscan.domain.scanner.extractMerchant
+import com.lucianbc.receiptscan.domain.extract.rules.RawReceipt
+import com.lucianbc.receiptscan.domain.extract.rules.ProductsAndTotalStrategy
+import com.lucianbc.receiptscan.domain.extract.rules.extractDate
+import com.lucianbc.receiptscan.domain.extract.rules.extractMerchant
 import javax.inject.Inject
 
 class Extractor @Inject constructor(
@@ -16,7 +16,9 @@ class Extractor @Inject constructor(
         val date = extractDate(text)
         val currency = defaults.currency
         val category = defaults.category
-        val (total, products) = ProductsAndTotalStrategy(receipt).execute()
+        val (total, products) = ProductsAndTotalStrategy(
+            receipt
+        ).execute()
         return Draft (
             merchant,
             date,

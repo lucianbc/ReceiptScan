@@ -1,11 +1,10 @@
 package com.lucianbc.receiptscan.domain.extract
 
 import com.lucianbc.receiptscan.domain.model.Category
-import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import java.util.*
 
 typealias DraftId = Long
-typealias OcrElements = Sequence<OcrElementValue>
+typealias OcrElements = Sequence<OcrElement>
 
 data class Draft (
     val merchantName: String?,
@@ -23,7 +22,13 @@ data class OcrElement (
     val bottom: Int,
     val left: Int,
     val right: Int
-)
+) {
+    val mid: Float
+        get() = (bottom - top).toFloat() / 2
+
+    val height: Int
+        get() = bottom - top + 1
+}
 
 data class Product (
     val name: String,

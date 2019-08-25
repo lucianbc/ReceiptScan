@@ -3,25 +3,31 @@ package com.lucianbc.receiptscan.presentation.home.drafts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
+import com.lucianbc.receiptscan.domain.extract.ExtractUseCase
+import com.lucianbc.receiptscan.domain.extract.State
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
-import com.lucianbc.receiptscan.domain.scanner.ScanUseCase
+import com.lucianbc.receiptscan.util.logd
 import javax.inject.Inject
 
 class DraftsViewModel @Inject constructor(
     listDraftsUseCase: ListDraftsUseCase,
-    scanUseCase: ScanUseCase
+    extractUseCase: ExtractUseCase
 ) : ViewModel() {
+
+    init {
+        logd("In drafts screen ${extractUseCase.hashCode()}")
+    }
+
     val drafts: LiveData<List<ListDraftsUseCase.DraftItem>> = listDraftsUseCase.execute().toLiveData()
     val scanningState: LiveData<String> =
-        scanUseCase.state
+        extractUseCase.state
             .map { it.message }
             .toLiveData()
 
-    private val ScanUseCase.State.message: String
+    private val State.message: String
         get() = when (this) {
-            ScanUseCase.State.OCR -> "Ocr"
-            ScanUseCase.State.Saving -> "Saving"
-            ScanUseCase.State.Idle -> "Idle"
-            ScanUseCase.State.Error -> "Error"
+            State.Processing -> "Processing"
+            State.Idle -> "Idle"
+            is State.Error -> "Error ${this.err.message}"
         }
 }

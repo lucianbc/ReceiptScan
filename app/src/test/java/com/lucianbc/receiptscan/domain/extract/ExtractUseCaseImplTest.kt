@@ -1,7 +1,6 @@
 package com.lucianbc.receiptscan.domain.extract
 
 import android.graphics.Bitmap
-import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.Observable
@@ -102,7 +101,7 @@ class ExtractUseCaseImplTest {
     private val mockExtractor: Extractor = mock()
 
     private val dummyDraftId = 1L
-    private val dummyElements = sequenceOf(OcrElementValue("text", 0, 0, 1, 1))
+    private val dummyElements = sequenceOf(OcrElement("text", 0, 0, 1, 1))
 
     private val dummyScannable = object : Scannable {
         override fun ocrElements(): Observable<OcrElements> {

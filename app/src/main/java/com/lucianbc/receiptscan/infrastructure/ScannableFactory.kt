@@ -6,8 +6,8 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
+import com.lucianbc.receiptscan.domain.extract.OcrElement
 import com.lucianbc.receiptscan.domain.extract.OcrElements
-import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
 import com.lucianbc.receiptscan.domain.extract.Scannable
 import com.otaliastudios.cameraview.Frame
 import com.otaliastudios.cameraview.PictureResult
@@ -76,13 +76,13 @@ class ScannableFactory @Inject constructor(
                     .asSequence()
                     .mapNotNull { it.toOcrElement() }
             } catch (e: InterruptedException) {
-                emptySequence<OcrElementValue>()
+                emptySequence<OcrElement>()
             }
         }
 
-    private fun FirebaseVisionText.Line.toOcrElement(): OcrElementValue? =
+    private fun FirebaseVisionText.Line.toOcrElement(): OcrElement? =
         if (this.boundingBox != null)
-            OcrElementValue(
+            OcrElement(
                 this.text,
                 this.boundingBox!!.top,
                 this.boundingBox!!.left,

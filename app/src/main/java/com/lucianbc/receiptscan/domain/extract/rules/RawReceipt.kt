@@ -1,14 +1,14 @@
-package com.lucianbc.receiptscan.domain.model
+package com.lucianbc.receiptscan.domain.extract.rules
 
 import com.lucianbc.receiptscan.domain.extract.OcrElements
-import com.lucianbc.receiptscan.domain.viewfinder.OcrElementValue
+import com.lucianbc.receiptscan.domain.extract.OcrElement
 import java.util.*
 import kotlin.collections.ArrayList
 
 class RawReceipt(private val lines: List<Line>) : Iterable<RawReceipt.Line> {
     override fun iterator(): Iterator<Line> = lines.iterator()
 
-    class Line(private val elements: List<OcrElementValue>) : Iterable<OcrElementValue> {
+    class Line(private val elements: List<OcrElement>) : Iterable<OcrElement> {
         override fun iterator() = elements.iterator()
         val text by lazy { elements.joinToString(" ") { it.text } }
         val height by lazy { elements.map { it.height }.average() }
@@ -26,7 +26,7 @@ class RawReceipt(private val lines: List<Line>) : Iterable<RawReceipt.Line> {
             val sorted = elements.sortedBy { t -> t.mid }
             val unifiedLines = LinkedList<Line>()
 
-            var currentLine = ArrayList<OcrElementValue>()
+            var currentLine = ArrayList<OcrElement>()
             val boxesIterator = sorted.iterator()
 
             if (boxesIterator.hasNext()) {
@@ -40,7 +40,11 @@ class RawReceipt(private val lines: List<Line>) : Iterable<RawReceipt.Line> {
                         currentLine.add(crtBox)
                     } else {
                         val sortedLine = currentLine.sortedBy { it.left }
-                        unifiedLines.add(Line(sortedLine))
+                        unifiedLines.add(
+                            Line(
+                                sortedLine
+                            )
+                        )
                         currentLine = ArrayList()
                         currentLine.add(crtBox)
                     }
@@ -49,7 +53,11 @@ class RawReceipt(private val lines: List<Line>) : Iterable<RawReceipt.Line> {
             }
 
             if (currentLine.isNotEmpty()) {
-                unifiedLines.add(Line(currentLine))
+                unifiedLines.add(
+                    Line(
+                        currentLine
+                    )
+                )
             }
 
             return RawReceipt(unifiedLines)
@@ -57,5 +65,3 @@ class RawReceipt(private val lines: List<Line>) : Iterable<RawReceipt.Line> {
     }
 }
 
-val OcrElement.height: Int
-    get() = this.bottom - this.top + 1

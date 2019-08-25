@@ -2,14 +2,12 @@ package com.lucianbc.receiptscan.infrastructure.repository
 
 import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.repository.DraftsRepository
-import com.lucianbc.receiptscan.domain.scanner.DraftValue
 import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.Converters
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
@@ -31,18 +29,6 @@ class DraftsRepositoryImpl @Inject constructor(
         )
 
     override fun validate(draftId: Long) = draftDao.validate(draftId)
-
-    override fun create(value: DraftValue): Observable<Long> =
-        Observable
-            .fromCallable { imagesDao.saveImage(value.image) }
-            .flatMapSingle { draftDao.insert(value.receipt(it)) }
-            .flatMapSingle { receiptId ->
-                draftDao.insertProducts(value.products(receiptId)).map { receiptId }
-            }
-            .flatMapSingle { receiptId ->
-                val els = value.elements(receiptId)
-                draftDao.insert(els).map { receiptId }
-            }
 
     override fun insert(draft: Draft) = draftDao.insert(draft.entity())
 

@@ -4,10 +4,11 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lucianbc.receiptscan.domain.scanner.ScanUseCase
+import com.lucianbc.receiptscan.domain.extract.ExtractUseCase
 import com.lucianbc.receiptscan.domain.extract.Scannable
 import com.lucianbc.receiptscan.infrastructure.ScannableFactory
 import com.lucianbc.receiptscan.presentation.Event
+import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.util.loge
 import com.lucianbc.receiptscan.util.map
 import com.otaliastudios.cameraview.PictureResult
@@ -18,7 +19,7 @@ import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
 class ScannerViewModel @Inject constructor(
-    private val scanUseCase: ScanUseCase,
+    private val extractUseCase: ExtractUseCase,
     private val factory: ScannableFactory,
     private val eventBus: EventBus
 ) : ViewModel() {
@@ -27,6 +28,10 @@ class ScannerViewModel @Inject constructor(
         object Allowed : State()
         object Error : State()
         object Processing : State()
+    }
+
+    init {
+        logd("In scanner screen ${extractUseCase.hashCode()}")
     }
 
     private val disposables = CompositeDisposable()
@@ -61,8 +66,8 @@ class ScannerViewModel @Inject constructor(
     }
 
     private fun Scannable.scan() {
-        scanUseCase
-            .scan(this)
+        extractUseCase
+            .extract(this)
             .subscribe(
                 { eventBus.post(Event.ImageScanned(it)) },
                 { loge("Error when processing camera picture", it) }

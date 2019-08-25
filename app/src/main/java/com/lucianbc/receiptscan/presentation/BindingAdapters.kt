@@ -4,7 +4,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.lucianbc.receiptscan.domain.model.Category
-import com.lucianbc.receiptscan.domain.scanner.show
+import com.lucianbc.receiptscan.domain.extract.rules.show
 import java.util.*
 
 @BindingAdapter("android:text")
