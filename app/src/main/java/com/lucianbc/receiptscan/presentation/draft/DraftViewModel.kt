@@ -5,20 +5,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
+import com.lucianbc.receiptscan.domain.drafts.Draft
+import com.lucianbc.receiptscan.domain.drafts.DraftsUseCase
+import com.lucianbc.receiptscan.domain.drafts.Product
 import com.lucianbc.receiptscan.domain.model.Category
-import com.lucianbc.receiptscan.domain.model.DraftWithProducts
-import com.lucianbc.receiptscan.domain.model.Product
-import com.lucianbc.receiptscan.domain.drafts.ManageDraftUseCase
 import com.lucianbc.receiptscan.util.*
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class DraftViewModel @Inject constructor(
-    private val useCaseFactory: ManageDraftUseCase.Factory
+    private val draftsUseCase: DraftsUseCase
 ) : ViewModel() {
     val merchant = mld<String>()
     val date = mld<Date>()
@@ -27,48 +26,55 @@ class DraftViewModel @Inject constructor(
     val category = mld<Category>()
     val products = mld<List<Product>>()
 
-    val image = mld<Bitmap>()
+    val receiptImage = mld<Bitmap>()
 
-
-    private lateinit var useCase: ManageDraftUseCase
+    private lateinit var useCase: DraftsUseCase.Manage
     private val disposables = CompositeDisposable()
 
     fun init(draftId: Long) {
-        useCase = useCaseFactory.fetch(draftId)
-        merchant.sourceFirst(useCase.extract { it.receipt.merchantName ?: "" })
-        date.sourceFirst(useCase.extract { it.receipt.date ?: Date() })
-        total.sourceFirst(useCase.extract { it.receipt.total.show() })
-        currency.sourceFirst(useCase.extract { it.receipt.currency.show() })
-        products.sourceFirst(useCase.extract { it.products })
-        category.sourceFirst(useCase.extract { it.receipt.category })
-        image.source(useCase.image.toLiveData())
+        useCase = draftsUseCase.fetch(draftId).apply {
+            extract { it.merchantName ?: "" }.also(merchant::sourceFirst)
+            extract { it.date }.also(date::sourceFirst)
+            extract { it.total.show() }.also(total::sourceFirst)
+            extract { it.currency.show() }.also(currency::sourceFirst)
+            extract { it.products }.also(products::sourceFirst)
+            extract { it.category }.also(category::sourceFirst)
+            image.toLiveData().also { receiptImage.source(it) }
+        }
+        useCase.value.subscribe { println("Received some data here $it") } .addTo(disposables)
     }
 
     val updateMerchant =
         debounced<String>(disposables, TIMEOUT, TIME_UNIT) {
-            useCase.update(it) { v, dwp -> dwp.receipt.copy(merchantName = v) }
+            useCase.update(it) { v, dwp -> dwp.copy(merchantName = v) }
+                .subscribe()
         }
 
     val updateTotal =
         debounced<Float>(disposables, TIMEOUT, TIME_UNIT) {
-            useCase.update(it) { v, dwp -> dwp.receipt.copy(total = v) }
+            useCase.update(it) { v, dwp -> dwp.copy(total = v) }
+                .subscribe()
         }
 
     val updateDate =
         debounced<Date>(disposables, TIMEOUT, TIME_UNIT) {
-            useCase.update(it) { v, dwp -> dwp.receipt.copy(date = v) }
+            useCase.update(it) { v, dwp -> dwp.copy(date = v) }
+                .subscribe()
         }
 
     val updateProduct =
         debounced<Product>(disposables, TIMEOUT, TIME_UNIT) {
             useCase.updateProduct(it)
+                .subscribe()
         }
 
     val updateCurrency =
         debounced<Currency>(disposables, TIMEOUT, TIME_UNIT) { c ->
             useCase
-                .updateSubs(c) { v, dwp -> dwp.receipt.copy(currency = v) }
-                .andThen { currency.postValue(c.show()) }
+                .update(c) { v, dwp -> dwp.copy(currency = v) }
+                .andThen {
+                    currency.postValue(c.show())
+                }
                 .subscribe()
         }
 
@@ -76,25 +82,21 @@ class DraftViewModel @Inject constructor(
     val updateCategory =
         debounced<Category>(disposables, TIMEOUT, TIME_UNIT) { c ->
             useCase
-                .updateSubs(c) { v, dwp -> dwp.receipt.copy(category = v) }
+                .update(c) { v, dwp -> dwp.copy(category = v) }
                 .andThen { category.postValue(c) }
                 .subscribe()
-
         }
-
 
     fun discardDraft() {
         useCase
-            .deleteDraft()
-            .subscribeOn(Schedulers.io())
+            .delete()
             .subscribe()
             .addTo(disposables)
     }
 
     fun validateDraft() {
         useCase
-            .validateDraft()
-            .subscribeOn(Schedulers.io())
+            .moveToValid()
             .subscribe()
             .addTo(disposables)
     }
@@ -124,8 +126,8 @@ class DraftViewModel @Inject constructor(
             .addTo(disposables)
     }
 
-    private fun <T> ManageDraftUseCase.extract(
-        extractor: ((DraftWithProducts) -> T)
+    private fun <T> DraftsUseCase.Manage.extract(
+        extractor: (Draft) -> T
     ) = this.value.map(extractor).toLiveData()
 
     private fun <T> MediatorLiveData<T>.source(source: LiveData<T>) {

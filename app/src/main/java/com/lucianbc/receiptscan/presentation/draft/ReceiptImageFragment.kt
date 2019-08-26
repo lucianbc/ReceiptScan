@@ -27,7 +27,7 @@ class ReceiptImageFragment
     }
 
     private fun observe(viewModel: DraftViewModel) {
-        viewModel.image.observe(viewLifecycleOwner, Observer {
+        viewModel.receiptImage.observe(viewLifecycleOwner, Observer {
             receiptView.swapImageBitmap(it)
         })
     }

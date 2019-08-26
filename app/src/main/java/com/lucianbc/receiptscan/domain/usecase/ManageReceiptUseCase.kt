@@ -3,7 +3,7 @@ package com.lucianbc.receiptscan.domain.usecase
 import androidx.room.Relation
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.ImagePath
-import com.lucianbc.receiptscan.domain.model.Product
+import com.lucianbc.receiptscan.domain.model.ProductEntity
 import com.lucianbc.receiptscan.domain.repository.AppRepository
 import com.lucianbc.receiptscan.domain.extract.rules.show
 import com.lucianbc.receiptscan.util.show
@@ -27,7 +27,7 @@ class ManageReceiptUseCase(
         val category: Category,
         val imagePath: String,
         @Relation(parentColumn = "id", entityColumn = "receiptId")
-        val products: List<Product>
+        val productEntities: List<ProductEntity>
     )
 
     fun exportReceipt(): Single<String> =
@@ -45,7 +45,7 @@ class ManageReceiptUseCase(
             "Merchant: ${this.merchantName}",
             "Date: ${this.date.show()}",
             "Total: ${this.total.show()} ${this.currency.currencyCode}"
-        ) + this.products.map { "${it.name}    ${it.price}" }
+        ) + this.productEntities.map { "${it.name}    ${it.price}" }
         return lines.joinToString("\n")
     }
 

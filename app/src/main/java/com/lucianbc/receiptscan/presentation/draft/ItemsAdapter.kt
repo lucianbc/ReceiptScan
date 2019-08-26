@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.domain.model.Product
+import com.lucianbc.receiptscan.domain.drafts.Product
 import com.lucianbc.receiptscan.util.Callback
 import kotlinx.android.synthetic.main.editable_item_layout.view.*
 
@@ -27,7 +27,7 @@ class ItemsAdapter : ListAdapter<Product, ItemsAdapter.Holder>(Diff()) {
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val element = getItem(position)
-        holder.product = element
+        holder.productEntity = element
     }
 
     fun bindSwipe(recyclerView: RecyclerView) {
@@ -53,18 +53,24 @@ class ItemsAdapter : ListAdapter<Product, ItemsAdapter.Holder>(Diff()) {
         private val onItemEdit: Callback<Product>?
     ): RecyclerView.ViewHolder(view) {
         private val editable = Editable.Factory.getInstance()
-        var product: Product? = null
+        var productEntity: Product? = null
             set(value) {
                 field = value
                 view.itemName.text = value?.let { editable.newEditable(it.name) }
                 view.itemPrice.text = value?.let { editable.newEditable(it.price.toString()) }
                 view.itemName.addTextChangedListener {
-                    value?.name = it.toString()
-                    value?.let { t -> onItemEdit?.invoke(t) }
+                    value?.apply {
+                        name = it.toString()
+                        onItemEdit?.invoke(this)
+                    }
                 }
                 view.itemPrice.addTextChangedListener {
-                    it.toString().toFloatOrNull()?.let { t -> value?.price = t }
-                    value?.let { t -> onItemEdit?.invoke(t) }
+                    it.toString().toFloatOrNull()?.let { np ->
+                        value?.apply {
+                            price = np
+                            onItemEdit?.invoke(this)
+                        }
+                    }
                 }
             }
     }

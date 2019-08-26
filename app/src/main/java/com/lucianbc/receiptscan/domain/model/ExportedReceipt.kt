@@ -12,7 +12,7 @@ data class ExportedReceipt(
     val category: Category,
     val imagePath: String,
     @Relation(parentColumn = "id", entityColumn = "receiptId")
-    val products: List<Product>,
+    val productEntities: List<ProductEntity>,
     @Relation(parentColumn = "id", entityColumn = "receiptId")
-    val ocrElements: List<OcrElement>
+    val ocrElements: List<OcrElementEntity>
 )

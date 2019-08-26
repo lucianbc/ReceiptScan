@@ -7,7 +7,7 @@ import com.google.gson.Gson
 import com.lucianbc.receiptscan.domain.export.Session
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.ImagePath
-import com.lucianbc.receiptscan.domain.model.Product
+import com.lucianbc.receiptscan.domain.model.ProductEntity
 import com.lucianbc.receiptscan.domain.repository.AppRepository
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.squareup.inject.assisted.Assisted
@@ -86,7 +86,7 @@ class ExportUseCase @AssistedInject constructor(
         val currency: Currency,
         val category: Category,
         @Relation(parentColumn = "id", entityColumn = "receiptId")
-        val products: List<Product>
+        val productEntities: List<ProductEntity>
     )
 
     data class ImageReceipt(
@@ -98,7 +98,7 @@ class ExportUseCase @AssistedInject constructor(
         val category: Category,
         val imagePath: String,
         @Relation(parentColumn = "id", entityColumn = "receiptId")
-        val products: List<Product>
+        val productEntities: List<ProductEntity>
     )
 
     @AssistedInject.Factory

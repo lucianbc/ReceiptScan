@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.model.Category
-import com.lucianbc.receiptscan.domain.model.Product
+import com.lucianbc.receiptscan.domain.model.ProductEntity
 import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.lucianbc.receiptscan.util.mld
@@ -28,7 +28,7 @@ class ReceiptViewModel @Inject constructor(
     val total = mld<String>()
     val currency = mld<String>()
     val category = mld<Category>()
-    val products = mld<List<Product>>()
+    val products = mld<List<ProductEntity>>()
 
     fun init(receiptId: Long) {
         useCase = useCaseFactory.fetch(receiptId).apply {
@@ -37,7 +37,7 @@ class ReceiptViewModel @Inject constructor(
             extract { it.total.show() }.also(total::sourceFirst)
             extract { it.currency.show() }.also(currency::sourceFirst)
             extract { it.category }.also(category::sourceFirst)
-            extract { it.products }.also(products::sourceFirst)
+            extract { it.productEntities }.also(products::sourceFirst)
         }
     }
 

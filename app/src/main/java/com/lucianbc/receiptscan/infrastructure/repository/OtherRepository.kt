@@ -3,6 +3,7 @@ package com.lucianbc.receiptscan.infrastructure.repository
 import android.graphics.Bitmap
 import com.lucianbc.receiptscan.domain.extract.*
 import com.lucianbc.receiptscan.domain.model.ImagePath
+import com.lucianbc.receiptscan.domain.model.ProductEntity
 import com.lucianbc.receiptscan.domain.model.ReceiptEntity
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
@@ -56,14 +57,14 @@ private fun Draft.persisted(imagePath: ImagePath) =
 
 private fun List<Product>.persisted(parentId: DraftId) =
     this.map {
-        com.lucianbc.receiptscan.domain.model.Product(
+        ProductEntity(
             it.name, it.price, receiptId = parentId
         )
     }
 
 private fun List<OcrElement>.persistedOcr(parentId: DraftId) =
     this.map {
-        com.lucianbc.receiptscan.domain.model.OcrElement(
+        com.lucianbc.receiptscan.domain.model.OcrElementEntity(
             it.text,
             it.top,
             it.left,

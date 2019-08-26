@@ -6,8 +6,8 @@ import com.lucianbc.receiptscan.domain.drafts.DraftsUseCaseImpl
 import com.lucianbc.receiptscan.domain.extract.ExtractRepository
 import com.lucianbc.receiptscan.domain.repository.AppRepository
 import com.lucianbc.receiptscan.domain.service.ReceiptSender
-import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
 import com.lucianbc.receiptscan.infrastructure.repository.AppRepositoryImpl
+import com.lucianbc.receiptscan.infrastructure.repository.DraftsRepositoryImpl
 import com.lucianbc.receiptscan.infrastructure.repository.OtherRepository
 import com.lucianbc.receiptscan.infrastructure.workers.ReceiptSenderWorker
 import dagger.Binds
@@ -28,5 +28,5 @@ abstract class InterfaceBinds {
     abstract fun bindDraftsUseCase(obj: DraftsUseCaseImpl): DraftsUseCase
 
     @Binds
-    abstract fun bindDraftsRepository(obj: DraftDao): DraftsRepository
+    abstract fun bindDraftsRepository(obj: DraftsRepositoryImpl): DraftsRepository
 }

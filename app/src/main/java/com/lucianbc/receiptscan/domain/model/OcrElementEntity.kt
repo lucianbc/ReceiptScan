@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "productDraft",
+    tableName = "ocrElement",
     foreignKeys = [
         ForeignKey(
             entity = ReceiptEntity::class,
@@ -17,10 +17,13 @@ import androidx.room.PrimaryKey
     ],
     indices = [Index("receiptId")]
 )
-data class Product(
-    var name: String,
-    var price: Float,
+data class OcrElementEntity(
+    val text: String,
+    val top: Int,
+    val left: Int,
+    val bottom: Int,
+    val right: Int,
+    val receiptId: Long? = null,
     @PrimaryKey(autoGenerate = true)
-    var id: Long? = null,
-    var receiptId: Long? = null
+    val id: Long? = null
 )
