@@ -1,16 +1,9 @@
 package com.lucianbc.receiptscan.presentation.service
 
-import android.graphics.*
-import com.lucianbc.receiptscan.domain.model.OcrElement
-
-fun paint(bitmap: Bitmap, ocrElements: Collection<OcrElement>): Bitmap {
-    val drawableBitmap = bitmap.copy(bitmap.config, true)
-    val canvas = Canvas(drawableBitmap)
-    for (a in ocrElements) {
-        canvas.drawRect(a.rect, BOX_PAINT)
-    }
-    return drawableBitmap
-}
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
 
 fun paint(canvas: Canvas, boxes: Sequence<Rect>) {
     for (a in boxes) {
@@ -23,6 +16,3 @@ private val BOX_PAINT = Paint().apply {
     color = Color.WHITE
     alpha = 150
 }
-
-private val OcrElement.rect
-    get() = Rect(left, top, right, bottom)
