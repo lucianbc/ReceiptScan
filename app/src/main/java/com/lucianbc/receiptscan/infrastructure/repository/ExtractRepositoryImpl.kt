@@ -11,7 +11,7 @@ import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
 
-class OtherRepository @Inject constructor(
+class ExtractRepositoryImpl @Inject constructor(
     private val draftDao: DraftDao,
     private val imagesDao: ImagesDao
 ) : ExtractRepository {
