@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
+import com.lucianbc.receiptscan.domain.drafts.DraftListItem
 import kotlinx.android.synthetic.main.draft_item_layout.view.*
 
-typealias DraftItemClick = ((ListDraftsUseCase.DraftItem) -> Unit)
+typealias DraftItemClick = ((DraftListItem) -> Unit)
 
-class DraftsAdapter(private val itemCallback: DraftItemClick) : ListAdapter<ListDraftsUseCase.DraftItem, DraftItemViewHolder>(
+class DraftsAdapter(private val itemCallback: DraftItemClick) : ListAdapter<DraftListItem, DraftItemViewHolder>(
     Diff()
 ) {
 
@@ -30,19 +30,19 @@ class DraftsAdapter(private val itemCallback: DraftItemClick) : ListAdapter<List
         holder.view.setOnClickListener { itemCallback.invoke(element) }
     }
 
-    class Diff : DiffUtil.ItemCallback<ListDraftsUseCase.DraftItem>() {
-        override fun areContentsTheSame(oldItem: ListDraftsUseCase.DraftItem, newItem: ListDraftsUseCase.DraftItem): Boolean {
+    class Diff : DiffUtil.ItemCallback<DraftListItem>() {
+        override fun areContentsTheSame(oldItem: DraftListItem, newItem: DraftListItem): Boolean {
             return oldItem == newItem
         }
 
-        override fun areItemsTheSame(oldItem: ListDraftsUseCase.DraftItem, newItem: ListDraftsUseCase.DraftItem): Boolean {
+        override fun areItemsTheSame(oldItem: DraftListItem, newItem: DraftListItem): Boolean {
             return oldItem.creationTimestamp == newItem.creationTimestamp
         }
     }
 }
 
 class DraftItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-    var item: ListDraftsUseCase.DraftItem? = null
+    var item: DraftListItem? = null
         set(value) {
             field = value
             view.draftItemTitle.text = "${value?.creationTimestamp}"

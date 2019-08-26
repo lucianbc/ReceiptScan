@@ -1,14 +1,14 @@
 package com.lucianbc.receiptscan.domain.usecase
 
-import com.lucianbc.receiptscan.domain.repository.DraftsRepository
+import com.lucianbc.receiptscan.domain.repository.AppRepository
 import io.reactivex.Flowable
 import javax.inject.Inject
 
 class ListReceiptsUseCase @Inject constructor(
-    private val draftsRepository: DraftsRepository
+    private val appRepository: AppRepository
 ) {
     fun execute(): Flowable<List<Item>> =
-            draftsRepository.getAllReceiptItems()
+            appRepository.getAllReceiptItems()
 
     data class Item(
         val id: Long,

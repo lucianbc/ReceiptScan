@@ -8,7 +8,7 @@ import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.DraftWithProducts
 import com.lucianbc.receiptscan.domain.model.Product
-import com.lucianbc.receiptscan.domain.usecase.ManageDraftUseCase
+import com.lucianbc.receiptscan.domain.drafts.ManageDraftUseCase
 import com.lucianbc.receiptscan.util.*
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo

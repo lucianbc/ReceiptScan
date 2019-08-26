@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentDraftsBinding
-import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
+import com.lucianbc.receiptscan.domain.drafts.DraftListItem
 import com.lucianbc.receiptscan.presentation.draft.DraftReviewActivity
 import kotlinx.android.synthetic.main.fragment_drafts.*
 
@@ -56,7 +56,7 @@ class DraftsFragment : BaseFragment<DraftsViewModel>(DraftsViewModel::class.java
     private fun observe(viewModel: DraftsViewModel) =
         viewModel.drafts.observe(viewLifecycleOwner, Observer { it?.submit() })
 
-    private fun List<ListDraftsUseCase.DraftItem>.submit() = draftsAdapter.submitList(this)
+    private fun List<DraftListItem>.submit() = draftsAdapter.submitList(this)
 
     private val goToDraft: DraftItemClick = {
         val intent = DraftReviewActivity.navIntent(activity!!, it.id)

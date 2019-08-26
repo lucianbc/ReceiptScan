@@ -43,6 +43,7 @@ class AppModule {
         AppDatabase.getInstance(context)
 
     @Provides
+    @Singleton
     fun provideDraftDao(database: AppDatabase): DraftDao =
         database.draftDao()
 

@@ -1,7 +1,8 @@
 package com.lucianbc.receiptscan.domain.usecase
 
+import com.lucianbc.receiptscan.domain.drafts.ManageDraftUseCase
 import com.lucianbc.receiptscan.domain.model.*
-import com.lucianbc.receiptscan.domain.repository.DraftsRepository
+import com.lucianbc.receiptscan.domain.repository.AppRepository
 import com.lucianbc.receiptscan.domain.service.ReceiptSender
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
@@ -41,13 +42,15 @@ class ManageDraftUseCaseTest {
 
     private val sender: ReceiptSender = mock()
 
-    private val repo: DraftsRepository = mock()
+    private val repo: AppRepository = mock()
 
-    private val subject = ManageDraftUseCase(id,
+    private val subject = ManageDraftUseCase(
+        id,
         Flowable.just(data).replay(1).autoConnect(),
         repo,
         sharingOption,
-        sender)
+        sender
+    )
 
     private val savedValueCaptor = argumentCaptor<Draft>()
 

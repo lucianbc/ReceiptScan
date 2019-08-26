@@ -1,10 +1,10 @@
-package com.lucianbc.receiptscan.domain.usecase
+package com.lucianbc.receiptscan.domain.drafts
 
 import com.lucianbc.receiptscan.domain.model.Draft
 import com.lucianbc.receiptscan.domain.model.DraftWithProducts
 import com.lucianbc.receiptscan.domain.model.Product
 import com.lucianbc.receiptscan.domain.model.SharingOption
-import com.lucianbc.receiptscan.domain.repository.DraftsRepository
+import com.lucianbc.receiptscan.domain.repository.AppRepository
 import com.lucianbc.receiptscan.domain.service.ReceiptSender
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -17,7 +17,7 @@ import javax.inject.Inject
 class ManageDraftUseCase(
     private val draftId: Long,
     val value: Flowable<DraftWithProducts>,
-    private val repository: DraftsRepository,
+    private val repository: AppRepository,
     private val sharingOption: SharingOption,
     private val sender: ReceiptSender
 ) {
@@ -81,16 +81,22 @@ class ManageDraftUseCase(
     }
 
     class Factory @Inject constructor (
-        private val draftsRepository: DraftsRepository,
+        private val appRepository: AppRepository,
         private val sharingOption: SharingOption,
         private val sender: ReceiptSender
     ) {
         fun fetch(draftId: Long): ManageDraftUseCase {
-            val value = draftsRepository
+            val value = appRepository
                 .getDraft(draftId)
                 .replay(1)
                 .autoConnect()
-            return ManageDraftUseCase(draftId, value, draftsRepository, sharingOption, sender)
+            return ManageDraftUseCase(
+                draftId,
+                value,
+                appRepository,
+                sharingOption,
+                sender
+            )
         }
     }
 }

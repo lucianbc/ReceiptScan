@@ -10,7 +10,7 @@ import com.google.firebase.storage.UploadTask
 import com.lucianbc.receiptscan.domain.model.ExportedReceipt
 import com.lucianbc.receiptscan.domain.model.ImagePath
 import com.lucianbc.receiptscan.domain.model.SharingOption
-import com.lucianbc.receiptscan.domain.repository.DraftsRepository
+import com.lucianbc.receiptscan.domain.repository.AppRepository
 import com.lucianbc.receiptscan.domain.service.ReceiptSender
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.lucianbc.receiptscan.util.loge
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class ReceiptSenderWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workParams: WorkerParameters,
-    private val repo: DraftsRepository,
+    private val repo: AppRepository,
     private val firestore: FirebaseFirestore,
     private val storage: FirebaseStorage,
     private val imagesDao: ImagesDao

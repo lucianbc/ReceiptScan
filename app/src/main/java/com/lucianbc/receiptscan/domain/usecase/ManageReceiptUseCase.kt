@@ -4,7 +4,7 @@ import androidx.room.Relation
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.ImagePath
 import com.lucianbc.receiptscan.domain.model.Product
-import com.lucianbc.receiptscan.domain.repository.DraftsRepository
+import com.lucianbc.receiptscan.domain.repository.AppRepository
 import com.lucianbc.receiptscan.domain.extract.rules.show
 import com.lucianbc.receiptscan.util.show
 import com.lucianbc.receiptscan.util.takeSingle
@@ -50,10 +50,10 @@ class ManageReceiptUseCase(
     }
 
     class Factory @Inject constructor(
-        private val draftsRepository: DraftsRepository
+        private val appRepository: AppRepository
     ) {
         fun fetch(receiptId: Long): ManageReceiptUseCase {
-            val value = draftsRepository
+            val value = appRepository
                 .getReceipt(receiptId)
             return ManageReceiptUseCase(value)
         }

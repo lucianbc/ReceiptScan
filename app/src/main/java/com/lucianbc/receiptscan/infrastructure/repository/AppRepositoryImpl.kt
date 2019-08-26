@@ -1,8 +1,7 @@
 package com.lucianbc.receiptscan.infrastructure.repository
 
 import com.lucianbc.receiptscan.domain.model.*
-import com.lucianbc.receiptscan.domain.repository.DraftsRepository
-import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
+import com.lucianbc.receiptscan.domain.repository.AppRepository
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.Converters
 import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
@@ -12,10 +11,10 @@ import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
 
-class DraftsRepositoryImpl @Inject constructor(
+class AppRepositoryImpl @Inject constructor(
     private val draftDao: DraftDao,
     private val imagesDao: ImagesDao
-) : DraftsRepository {
+) : AppRepository {
     override fun getTextReceiptsBeteewn(firstDate: Date, lastDate: Date) =
         draftDao.getTextReceiptsBetween(
             Converters.toTimestamp(firstDate)!!,
@@ -40,9 +39,6 @@ class DraftsRepositoryImpl @Inject constructor(
         draftDao
             .getImagePath(id)
             .map { imagesDao.readImage(it) }
-
-    override fun getAllItems(): Flowable<List<ListDraftsUseCase.DraftItem>> =
-        draftDao.getDraftItems()
 
     override fun getAllReceiptItems(): Flowable<List<ListReceiptsUseCase.Item>> =
         draftDao.getReceiptItems()

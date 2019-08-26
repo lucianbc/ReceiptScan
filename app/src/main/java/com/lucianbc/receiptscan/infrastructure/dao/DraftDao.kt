@@ -1,8 +1,9 @@
 package com.lucianbc.receiptscan.infrastructure.dao
 
 import androidx.room.*
+import com.lucianbc.receiptscan.domain.drafts.DraftListItem
+import com.lucianbc.receiptscan.domain.drafts.DraftsRepository
 import com.lucianbc.receiptscan.domain.model.*
-import com.lucianbc.receiptscan.domain.usecase.ListDraftsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
 import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
 import com.lucianbc.receiptscan.presentation.home.exports.ExportUseCase
@@ -11,7 +12,7 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 
 @Dao
-interface DraftDao {
+interface DraftDao : DraftsRepository {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(draft: ReceiptEntity): Single<Long>
 
@@ -21,8 +22,13 @@ interface DraftDao {
     @Insert
     fun insert(ocrElements: List<OcrElement>): Single<List<Long>>
 
-    @Query("select id, creationTimestamp from receipt where isDraft == 1 order by creationTimestamp desc")
-    fun getDraftItems(): Flowable<List<ListDraftsUseCase.DraftItem>>
+    @Query("""
+        select  id, creationTimestamp 
+        from    receipt 
+        where   isDraft == 1 
+        order   by creationTimestamp desc
+    """)
+    override fun listDrafts(): Flowable<List<DraftListItem>>
 
     @Query("select imagePath from receipt where id = :id")
     fun getImagePath(id: Long): Flowable<String>
