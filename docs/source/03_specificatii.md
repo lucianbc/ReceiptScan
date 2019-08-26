@@ -54,7 +54,7 @@ Imaginile se salvează astfel încât să nu fie accesibile din galerie.
 
 ### Mențiuni
 
-Algoritmul de validare poate fi subiectul unor modificări ulterioare și trebuie să fie ușor de modificat. 
+Algoritmul de validare poate fi subiectul unor modificări ulterioare și trebuie să fie ușor de înlocuit. 
 
 Validarea considerată la momentul scrierii presupune ca niciun câmp să nu fie null sau fără conținut.
 
