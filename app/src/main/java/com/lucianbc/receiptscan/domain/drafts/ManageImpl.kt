@@ -25,6 +25,9 @@ class ManageImpl @AssistedInject constructor(
         repository.getImage(draftId).subscribeOn(Schedulers.computation())
     }
 
+    // Since I am using a custom query, I do not get the updates from room.
+    // TODO: Look more into this problem
+    // At the moment, I am updating those values, but the products are not updated.
     private val _value = BehaviorSubject.create<Draft>()
 
     override val value: Flowable<Draft> = _value
@@ -49,8 +52,6 @@ class ManageImpl @AssistedInject constructor(
             }
             .subscribeOn(Schedulers.io())
     }
-
-
 
     override fun delete() =
         repository.delete(draftId)
