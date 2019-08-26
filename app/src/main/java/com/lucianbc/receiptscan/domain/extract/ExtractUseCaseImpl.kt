@@ -22,21 +22,30 @@ class ExtractUseCaseImpl @AssistedInject constructor(
 
     override fun fetchPreview(frame: Scannable) = _frameSource.onNext(frame)
 
-    override fun extract(frame: Scannable): Single<DraftId> =
-        (
-            if (_state.value != State.Idle)
-                Single.error(IllegalArgumentException("Use case is not in Idle mode"))
-            else frame.ocrElements()
-                .zipWith(frame.image())
-                .singleOrError()
-                .observeOn(Schedulers.computation())
-                .map { (els, img) -> extractor(els) to img }
-                .flatMap { (draft, img) -> repository.persist(draft, img) }
-        )
-        .doOnSubscribe { _state.onNext(State.Processing) }
-        .doOnSuccess { _state.onNext(State.Idle) }
-        .doOnError { _state.onNext(State.Error(it)) }
-        .cache()
+    override fun extract(frame: Scannable): Single<DraftId> {
+        return (
+                if (_state.value != State.Idle)
+                    Single.error(IllegalStateException("Use case is not in Idle mode"))
+                else frame.ocrElements()
+                    .zipWith(frame.image())
+                    .singleOrError()
+                    .observeOn(Schedulers.computation())
+                    .map { (els, img) -> extractor(els) to img }
+                    .flatMap { (draft, img) -> repository.persist(draft, img) }
+                    .doOnSubscribe {
+                        _state.onNext(State.Processing)
+                    }
+                    .doOnSuccess {
+                        _state.onNext(State.Idle)
+                    }
+                    .doOnError {
+                        _state.onNext(State.Error(it))
+                    }
+                )
+
+            .subscribeOn(Schedulers.computation())
+            .cache()
+    }
 
     private fun stateProcessing(): Flowable<State> {
         return _state.toFlowable(BackpressureStrategy.LATEST)
