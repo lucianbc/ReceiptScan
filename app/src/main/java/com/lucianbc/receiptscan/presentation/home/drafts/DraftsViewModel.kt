@@ -14,10 +14,6 @@ class DraftsViewModel @Inject constructor(
     extractUseCase: ExtractUseCase
 ) : ViewModel() {
 
-    init {
-        logd("In drafts screen ${extractUseCase.hashCode()}")
-    }
-
     val drafts: LiveData<List<ListDraftsUseCase.DraftItem>> = listDraftsUseCase.execute().toLiveData()
     val scanningState: LiveData<String> =
         extractUseCase.state

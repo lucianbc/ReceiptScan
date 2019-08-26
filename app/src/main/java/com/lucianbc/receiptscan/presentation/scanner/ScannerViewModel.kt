@@ -30,10 +30,6 @@ class ScannerViewModel @Inject constructor(
         object Processing : State()
     }
 
-    init {
-        logd("In scanner screen ${extractUseCase.hashCode()}")
-    }
-
     private val disposables = CompositeDisposable()
 
     private val _state = MutableLiveData<State>()

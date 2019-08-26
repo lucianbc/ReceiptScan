@@ -11,10 +11,6 @@ class ProcessingViewModel @Inject constructor(
     extractUseCase: ExtractUseCase
 ) : ViewModel() {
 
-    init {
-        logd("In processing screen ${extractUseCase.hashCode()}")
-    }
-
     val scanningState = extractUseCase
         .state
         .map { it.message }
