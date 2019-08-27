@@ -8,7 +8,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.lucianbc.receiptscan.domain.extract.ExtractUseCase
 import com.lucianbc.receiptscan.domain.extract.ExtractUseCaseImpl
 import com.lucianbc.receiptscan.domain.extract.ReceiptDefaults
-import com.lucianbc.receiptscan.domain.model.SharingOption
+import com.lucianbc.receiptscan.domain.collect.CollectingOption
 import com.lucianbc.receiptscan.infrastructure.dao.AppDatabase
 import com.lucianbc.receiptscan.infrastructure.dao.AppDao
 import com.lucianbc.receiptscan.infrastructure.dao.PreferencesDao
@@ -59,7 +59,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSharingOption(dao: PreferencesDao) : SharingOption =
+    fun provideSharingOption(dao: PreferencesDao) : CollectingOption =
         dao
 
     @Provides

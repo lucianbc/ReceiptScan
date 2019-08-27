@@ -1,8 +1,8 @@
 package com.lucianbc.receiptscan.domain.drafts
 
 import com.lucianbc.receiptscan.domain.extract.DraftId
-import com.lucianbc.receiptscan.domain.model.SharingOption
-import com.lucianbc.receiptscan.domain.service.ReceiptSender
+import com.lucianbc.receiptscan.domain.collect.CollectingOption
+import com.lucianbc.receiptscan.domain.collect.ReceiptCollector
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.Flowable
@@ -46,8 +46,8 @@ class DraftsUseCaseImplTest {
             on { getDraft(dummyId) } doReturn work
         }
 
-        val mockShare = mock<SharingOption>()
-        val mockSender = mock<ReceiptSender>()
+        val mockShare = mock<CollectingOption>()
+        val mockSender = mock<ReceiptCollector>()
 
         val mockFactory = object: ManageImpl.Factory {
             override fun create(draftId: DraftId, source: Flowable<Draft>): ManageImpl {

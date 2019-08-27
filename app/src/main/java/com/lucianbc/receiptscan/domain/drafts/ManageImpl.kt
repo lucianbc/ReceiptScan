@@ -1,8 +1,8 @@
 package com.lucianbc.receiptscan.domain.drafts
 
 import com.lucianbc.receiptscan.domain.extract.DraftId
-import com.lucianbc.receiptscan.domain.model.SharingOption
-import com.lucianbc.receiptscan.domain.service.ReceiptSender
+import com.lucianbc.receiptscan.domain.collect.CollectingOption
+import com.lucianbc.receiptscan.domain.collect.ReceiptCollector
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.BackpressureStrategy
@@ -17,8 +17,8 @@ class ManageImpl @AssistedInject constructor(
     @Assisted private val draftId: DraftId,
     @Assisted private val source: Flowable<Draft>,
     private val repository: DraftsRepository,
-    private val sharingOption: SharingOption,
-    private val sender: ReceiptSender
+    private val collectingOption: CollectingOption,
+    private val collector: ReceiptCollector
 ) : DraftsUseCase.Manage {
 
     override val image by lazy {
@@ -76,7 +76,7 @@ class ManageImpl @AssistedInject constructor(
 
     private val sendReceiptComputation = Completable.defer {
         when {
-            sharingOption.enabled -> Completable.fromCallable { sender.send(draftId) }
+            collectingOption.enabled -> Completable.fromCallable { collector.send(draftId) }
             else -> Completable.complete()
         }
     }

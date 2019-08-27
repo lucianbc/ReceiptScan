@@ -1,7 +1,7 @@
 package com.lucianbc.receiptscan.domain.drafts
 
-import com.lucianbc.receiptscan.domain.model.SharingOption
-import com.lucianbc.receiptscan.domain.service.ReceiptSender
+import com.lucianbc.receiptscan.domain.collect.CollectingOption
+import com.lucianbc.receiptscan.domain.collect.ReceiptCollector
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -79,14 +79,14 @@ class ManageImplTest {
         whenever(mockRepo.moveDraftToValid(dummyId)).thenReturn(Completable.complete())
     }
 
-    private val mockSharingOption = object : SharingOption {
+    private val mockSharingOption = object : CollectingOption {
         var isEnabled = false
         override val enabled: Boolean
             get() = isEnabled
         override val appId = "myApp"
     }
 
-    private val mockSender = mock<ReceiptSender>()
+    private val mockSender = mock<ReceiptCollector>()
 
     private val mockRepo = mock<DraftsRepository>()
 

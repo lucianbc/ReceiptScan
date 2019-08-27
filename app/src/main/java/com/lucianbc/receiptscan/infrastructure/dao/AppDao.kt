@@ -1,10 +1,15 @@
 package com.lucianbc.receiptscan.infrastructure.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.lucianbc.receiptscan.domain.drafts.DraftListItem
 import com.lucianbc.receiptscan.domain.extract.DraftId
-import com.lucianbc.receiptscan.domain.model.*
-import com.lucianbc.receiptscan.domain.receipts.Receipt
+import com.lucianbc.receiptscan.domain.model.Category
+import com.lucianbc.receiptscan.domain.model.OcrElementEntity
+import com.lucianbc.receiptscan.domain.model.ProductEntity
+import com.lucianbc.receiptscan.domain.model.ReceiptEntity
 import com.lucianbc.receiptscan.domain.receipts.ReceiptId
 import com.lucianbc.receiptscan.domain.receipts.ReceiptListItem
 import com.lucianbc.receiptscan.presentation.home.exports.ExportUseCase
@@ -46,13 +51,6 @@ interface AppDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(productEntity: ProductEntity): Single<Long>
-
-    @Query("""
-        select  id, merchantName, date, total, currency, category, imagePath 
-        from    receipt 
-        where   id = :id
-    """)
-    fun getExported(id: Long): Single<ExportedReceipt>
 
     @Query("""
         select  id, merchantName, date, total, currency, category 

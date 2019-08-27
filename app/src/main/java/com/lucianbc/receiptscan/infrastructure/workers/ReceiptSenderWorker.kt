@@ -3,17 +3,16 @@ package com.lucianbc.receiptscan.infrastructure.workers
 import android.content.Context
 import androidx.work.*
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.UploadTask
-import com.lucianbc.receiptscan.domain.model.ExportedReceipt
+import com.lucianbc.receiptscan.domain.collect.CollectRepository
+import com.lucianbc.receiptscan.domain.collect.CollectingOption
+import com.lucianbc.receiptscan.domain.collect.Receipt
+import com.lucianbc.receiptscan.domain.collect.ReceiptCollector
 import com.lucianbc.receiptscan.domain.model.ImagePath
-import com.lucianbc.receiptscan.domain.model.SharingOption
-import com.lucianbc.receiptscan.domain.repository.AppRepository
-import com.lucianbc.receiptscan.domain.service.ReceiptSender
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.lucianbc.receiptscan.util.loge
+import com.lucianbc.receiptscan.util.logi
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import javax.inject.Inject
@@ -21,14 +20,14 @@ import javax.inject.Inject
 class ReceiptSenderWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workParams: WorkerParameters,
-    private val repo: AppRepository,
+    private val repository: CollectRepository,
     private val firestore: FirebaseFirestore,
     private val storage: FirebaseStorage,
     private val imagesDao: ImagesDao
 ) : Worker(appContext, workParams) {
 
     override fun doWork(): Result {
-         val id = inputData.getLong(RECEIPT_ID_KEY, ERROR_ID)
+        val id = inputData.getLong(RECEIPT_ID_KEY, ERROR_ID)
         val appId = inputData.getString(APP_ID_KEY)
 
         if (id == ERROR_ID) {
@@ -42,9 +41,10 @@ class ReceiptSenderWorker @AssistedInject constructor(
         }
 
         return try {
-            val result = repo.getExported(id).blockingGet()
+            val result = repository.getReceipt(id).blockingGet()
             sendText(result, appId)
             sendImage(result)
+            logi("Receipt with id $id was successfuly sent")
             Result.success()
         } catch (e: Throwable) {
             loge("Error sending the receipt", e)
@@ -52,31 +52,30 @@ class ReceiptSenderWorker @AssistedInject constructor(
         }
     }
 
-    private fun sendText(value: ExportedReceipt, appId: String): DocumentReference? {
-        val sendTask =
-            firestore
-                .collection(COLLECTION)
-                .add(hashMapOf(
+    private fun sendText(value: Receipt, appId: String) =
+        firestore
+            .collection(COLLECTION)
+            .add(
+                hashMapOf(
                     "appId" to appId,
                     "receipt" to value
-                ))
-        return Tasks.await(sendTask)
-    }
+                )
+            ).let { Tasks.await(it) }
 
-    private fun sendImage(value: ExportedReceipt): UploadTask.TaskSnapshot? {
-        val imageUri = imagesDao.accessFile(ImagePath(value.imagePath))
-        val sendTask =
-            storage
-                .reference
-                .child("$COLLECTION/${value.imagePath}")
-                .putFile(imageUri)
-        return Tasks.await(sendTask)
-    }
+    private fun sendImage(value: Receipt) =
+        imagesDao
+            .accessFile(ImagePath(value.imagePath))
+            .let {
+                storage
+                    .reference
+                    .child("$COLLECTION/${value.imagePath}")
+                    .putFile(it)
+            }.let { Tasks.await(it) }
 
     class Runner @Inject constructor(
         private val context: Context,
-        private val sharingOption: SharingOption
-    ) : ReceiptSender {
+        private val collectingOption: CollectingOption
+    ) : ReceiptCollector {
         override fun send(id: Long) {
             OneTimeWorkRequest
                 .Builder(ReceiptSenderWorker::class.java)
@@ -90,7 +89,7 @@ class ReceiptSenderWorker @AssistedInject constructor(
                     Data
                         .Builder()
                         .putLong(RECEIPT_ID_KEY, id)
-                        .putString(APP_ID_KEY, sharingOption.appId)
+                        .putString(APP_ID_KEY, collectingOption.appId)
                         .build()
                 )
                 .build()
