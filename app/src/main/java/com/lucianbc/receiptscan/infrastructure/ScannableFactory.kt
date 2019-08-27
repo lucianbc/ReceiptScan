@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
+import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.domain.extract.OcrElement
 import com.lucianbc.receiptscan.domain.extract.OcrElements
@@ -101,3 +102,16 @@ class ScannableFactory @Inject constructor(
         return FirebaseVisionImage.fromByteArray(this.data, metadata)
     }
 }
+
+private fun FirebaseVisionText.Line.toOcrElement(): OcrElement? {
+    return this.boundingBox ?.let {
+        OcrElement(
+            this.text,
+            top = it.top,
+            bottom = it.bottom,
+            left = it.left,
+            right = it.right
+        )
+    }
+}
+
