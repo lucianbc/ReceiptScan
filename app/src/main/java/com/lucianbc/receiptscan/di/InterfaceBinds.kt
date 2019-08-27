@@ -8,7 +8,7 @@ import com.lucianbc.receiptscan.domain.extract.ExtractRepository
 import com.lucianbc.receiptscan.domain.receipts.ReceiptsRepository
 import com.lucianbc.receiptscan.domain.receipts.ReceiptsUseCase
 import com.lucianbc.receiptscan.domain.receipts.ReceiptsUseCaseImpl
-import com.lucianbc.receiptscan.domain.repository.AppRepository
+import com.lucianbc.receiptscan.domain.export.ExportRepository
 import com.lucianbc.receiptscan.domain.collect.ReceiptCollector
 import com.lucianbc.receiptscan.infrastructure.repository.*
 import com.lucianbc.receiptscan.infrastructure.workers.ReceiptSenderWorker
@@ -18,7 +18,7 @@ import dagger.Module
 @Module
 abstract class InterfaceBinds {
     @Binds
-    abstract fun bindDraftsRepo(obj: AppRepositoryImpl): AppRepository
+    abstract fun bindDraftsRepo(obj: ExportRepositoryImpl): ExportRepository
 
     @Binds
     abstract fun bindReceiptSender(obj: ReceiptSenderWorker.Runner): ReceiptCollector

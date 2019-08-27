@@ -8,7 +8,7 @@ import com.lucianbc.receiptscan.domain.export.Session
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.ImagePath
 import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
-import com.lucianbc.receiptscan.domain.repository.AppRepository
+import com.lucianbc.receiptscan.domain.export.ExportRepository
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -16,7 +16,7 @@ import io.reactivex.Completable
 import java.util.*
 
 class ExportUseCase @AssistedInject constructor(
-    private val repo: AppRepository,
+    private val repo: ExportRepository,
     private val imagesDao: ImagesDao,
     private val storage: FirebaseStorage,
     @Assisted private val manifest: Session
