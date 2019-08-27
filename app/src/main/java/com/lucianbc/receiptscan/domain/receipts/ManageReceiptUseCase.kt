@@ -12,7 +12,7 @@ import io.reactivex.Single
 class ManageReceiptUseCase @AssistedInject constructor(
     @Assisted source: Flowable<Receipt>
 ) : ReceiptsUseCase.Manage {
-    override val receipt = source
+    override val receipt = source.replay(1).autoConnect()
 
     override fun exportReceipt(): Single<String> =
         receipt.map { it.exported() }.takeSingle()

@@ -33,6 +33,8 @@ class ManageImpl @AssistedInject constructor(
     override val value: Flowable<Draft> = _value
         .mergeWith(source.toObservable())
         .toFlowable(BackpressureStrategy.LATEST)
+        .replay(1)
+        .autoConnect()
 
     override fun <T> update(newVal: T, mapper: (T, Draft) -> Draft): Completable {
         return Observable.just(newVal)

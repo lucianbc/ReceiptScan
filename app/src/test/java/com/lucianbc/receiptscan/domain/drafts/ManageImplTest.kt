@@ -94,7 +94,7 @@ class ManageImplTest {
 
     private val subject: DraftsUseCase.Manage = ManageImpl(
         dummyId,
-        Flowable.just(dummyDraft).replay(1).autoConnect(),
+        Flowable.just(dummyDraft),
         mockRepo,
         mockSharingOption,
         mockSender

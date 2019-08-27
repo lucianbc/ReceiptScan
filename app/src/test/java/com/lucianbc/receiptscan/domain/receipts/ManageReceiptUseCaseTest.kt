@@ -27,7 +27,6 @@ class ManageReceiptUseCaseTest {
         )
         subject = ManageReceiptUseCase(
             source.toFlowable(BackpressureStrategy.LATEST)
-                .replay(1).autoConnect()
         )
     }
 

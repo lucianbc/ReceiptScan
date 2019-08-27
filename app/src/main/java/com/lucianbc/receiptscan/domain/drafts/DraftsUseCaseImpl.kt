@@ -13,8 +13,6 @@ class DraftsUseCaseImpl @Inject constructor(
     override fun fetch(draftId: DraftId) =
         repository
             .getDraft(draftId)
-            .replay(1)
-            .autoConnect()
             .subscribeOn(Schedulers.io())
             .let { manageFactory.create(draftId, it) }
 }

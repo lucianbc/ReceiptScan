@@ -14,8 +14,6 @@ class ReceiptsUseCaseImpl @Inject constructor(
     override fun fetch(receiptId: ReceiptId): ReceiptsUseCase.Manage {
         return repository
             .getReceipt(receiptId)
-            .replay(1)
-            .autoConnect()
             .subscribeOn(Schedulers.io())
             .let { manageFactory.create(it) }
     }
