@@ -24,7 +24,7 @@ data class OcrElement (
     val right: Int
 ) {
     val mid: Float
-        get() = (bottom - top).toFloat() / 2
+        get() = (bottom + top).toFloat() / 2
 
     val height: Int
         get() = bottom - top + 1
