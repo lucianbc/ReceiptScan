@@ -24,7 +24,7 @@ class DraftsRepositoryImpl @Inject constructor(
     override fun getDraft(draftId: DraftId) =
         appDao.run {
             Flowable.zip(
-                selectReceipt(draftId),
+                selectDraft(draftId),
                 selectProducts(draftId),
                 selectOcrElements(draftId),
                 Function3(::create)

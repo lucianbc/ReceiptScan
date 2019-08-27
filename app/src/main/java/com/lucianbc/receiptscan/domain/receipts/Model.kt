@@ -1,8 +1,6 @@
 package com.lucianbc.receiptscan.domain.receipts
 
-import androidx.room.Relation
 import com.lucianbc.receiptscan.domain.model.Category
-import com.lucianbc.receiptscan.domain.model.ProductEntity
 import java.util.*
 
 typealias ReceiptId = Long
@@ -21,6 +19,10 @@ data class Receipt (
     val currency: Currency,
     val category: Category,
     val imagePath: String,
-    @Relation(parentColumn = "id", entityColumn = "receiptId")
-    val productEntities: List<ProductEntity>
+    val productEntities: List<Product>
+)
+
+data class Product (
+    val name: String,
+    val price: Float
 )

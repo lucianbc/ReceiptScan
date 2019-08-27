@@ -5,6 +5,7 @@ import com.lucianbc.receiptscan.domain.drafts.DraftListItem
 import com.lucianbc.receiptscan.domain.extract.DraftId
 import com.lucianbc.receiptscan.domain.model.*
 import com.lucianbc.receiptscan.domain.receipts.Receipt
+import com.lucianbc.receiptscan.domain.receipts.ReceiptId
 import com.lucianbc.receiptscan.domain.receipts.ReceiptListItem
 import com.lucianbc.receiptscan.presentation.home.exports.ExportUseCase
 import io.reactivex.Completable
@@ -22,14 +23,6 @@ interface AppDao {
 
     @Query("select imagePath from receipt where id = :id")
     fun getImagePath(id: Long): Flowable<String>
-
-    @Query("""
-        select  id, merchantName, date, total, currency, category, imagePath 
-        from    receipt 
-        where   id = :id
-    """)
-    @Transaction
-    fun getReceipt(id: Long): Flowable<Receipt>
 
     @Query("delete from receipt where id = :receiptId")
     fun delete(receiptId: Long): Completable
@@ -86,7 +79,10 @@ interface AppDao {
     fun listDrafts(): Flowable<List<DraftListItem>>
 
     @Query("select * from receipt where id == :id and isDraft == 1")
-    fun selectReceipt(id: DraftId): Flowable<ReceiptEntity>
+    fun selectDraft(id: DraftId): Flowable<ReceiptEntity>
+
+    @Query("select * from receipt where id == :id and isDraft == 0")
+    fun selectReceipt(id: ReceiptId): Flowable<ReceiptEntity>
 
     @Query("select * from productDraft where receiptId == :draftId")
     fun selectProducts(draftId: DraftId): Flowable<List<ProductEntity>>

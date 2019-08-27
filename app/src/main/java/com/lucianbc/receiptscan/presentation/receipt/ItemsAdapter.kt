@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.domain.model.ProductEntity
+import com.lucianbc.receiptscan.domain.receipts.Product
 import com.lucianbc.receiptscan.util.show
 import kotlinx.android.synthetic.main.receipt_item_layout.view.*
 
-class ItemsAdapter : ListAdapter<ProductEntity, ItemsAdapter.Holder>(Diff()) {
+class ItemsAdapter : ListAdapter<Product, ItemsAdapter.Holder>(Diff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         LayoutInflater
@@ -21,11 +21,11 @@ class ItemsAdapter : ListAdapter<ProductEntity, ItemsAdapter.Holder>(Diff()) {
 
     override fun onBindViewHolder(holder: Holder, position: Int) =
         getItem(position)
-            .let { holder.productEntity = it }
+            .let { holder.product = it }
 
 
     class Holder(val view: View) : RecyclerView.ViewHolder(view) {
-        var productEntity: ProductEntity? = null
+        var product: Product? = null
             set(value) {
                 field = value
                 view.itemName.text = value?.name
@@ -33,11 +33,11 @@ class ItemsAdapter : ListAdapter<ProductEntity, ItemsAdapter.Holder>(Diff()) {
             }
     }
 
-    class Diff : DiffUtil.ItemCallback<ProductEntity>() {
-        override fun areItemsTheSame(oldItem: ProductEntity, newItem: ProductEntity) =
-            oldItem.id == newItem.id
+    class Diff : DiffUtil.ItemCallback<Product>() {
+        override fun areItemsTheSame(oldItem: Product, newItem: Product) =
+            oldItem == newItem
 
-        override fun areContentsTheSame(oldItem: ProductEntity, newItem: ProductEntity) =
+        override fun areContentsTheSame(oldItem: Product, newItem: Product) =
             oldItem == newItem
     }
 }
