@@ -23,7 +23,5 @@ class AppRepositoryImpl @Inject constructor(
             Converters.toTimestamp(lastDate)!!
         )
 
-    override fun getReceipt(id: Long) = appDao.getReceipt(id)
-
     override fun getExported(id: Long): Single<ExportedReceipt> = appDao.getExported(id)
 }

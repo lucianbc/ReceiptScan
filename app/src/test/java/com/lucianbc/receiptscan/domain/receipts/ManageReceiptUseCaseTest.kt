@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.domain.usecase
+package com.lucianbc.receiptscan.domain.receipts
 
 import com.lucianbc.receiptscan.domain.model.Category
 import io.reactivex.BackpressureStrategy
@@ -10,12 +10,12 @@ import java.util.*
 class ManageReceiptUseCaseTest {
 
     private lateinit var subject: ManageReceiptUseCase
-    private val source = PublishSubject.create<ManageReceiptUseCase.Value>()
-    private lateinit var value: ManageReceiptUseCase.Value
+    private val source = PublishSubject.create<Receipt>()
+    private lateinit var value: Receipt
 
     @Before
     fun setup() {
-        value = ManageReceiptUseCase.Value(
+        value = Receipt(
             1L,
             "Merchant",
             Date(),
@@ -25,7 +25,10 @@ class ManageReceiptUseCaseTest {
             "path",
             emptyList()
         )
-        subject = ManageReceiptUseCase(source.toFlowable(BackpressureStrategy.LATEST))
+        subject = ManageReceiptUseCase(
+            source.toFlowable(BackpressureStrategy.LATEST)
+                .replay(1).autoConnect()
+        )
     }
 
     @Test
@@ -33,7 +36,7 @@ class ManageReceiptUseCaseTest {
         subject.receipt.subscribe()
         source.onNext(value)
 
-        subject.exportReceipt().test().assertComplete()
+        subject.exportReceipt().test().await().assertComplete()
     }
 
     @Test

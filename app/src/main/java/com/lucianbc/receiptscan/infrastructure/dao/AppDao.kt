@@ -4,8 +4,8 @@ import androidx.room.*
 import com.lucianbc.receiptscan.domain.drafts.DraftListItem
 import com.lucianbc.receiptscan.domain.extract.DraftId
 import com.lucianbc.receiptscan.domain.model.*
+import com.lucianbc.receiptscan.domain.receipts.Receipt
 import com.lucianbc.receiptscan.domain.receipts.ReceiptListItem
-import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
 import com.lucianbc.receiptscan.presentation.home.exports.ExportUseCase
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -29,7 +29,7 @@ interface AppDao {
         where   id = :id
     """)
     @Transaction
-    fun getReceipt(id: Long): Flowable<ManageReceiptUseCase.Value>
+    fun getReceipt(id: Long): Flowable<Receipt>
 
     @Query("delete from receipt where id = :receiptId")
     fun delete(receiptId: Long): Completable

@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.ProductEntity
-import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
+import com.lucianbc.receiptscan.domain.receipts.Receipt
+import com.lucianbc.receiptscan.domain.receipts.ReceiptsUseCase
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.lucianbc.receiptscan.util.mld
 import com.lucianbc.receiptscan.util.show
@@ -16,10 +17,10 @@ import java.util.*
 import javax.inject.Inject
 
 class ReceiptViewModel @Inject constructor(
-    private val useCaseFactory: ManageReceiptUseCase.Factory,
+    private val manageReceiptUseCase: ReceiptsUseCase,
     private val imagesDao: ImagesDao
 ) : ViewModel() {
-    private lateinit var useCase: ManageReceiptUseCase
+    private lateinit var useCase: ReceiptsUseCase.Manage
 
     private val disposables = CompositeDisposable()
 
@@ -31,7 +32,7 @@ class ReceiptViewModel @Inject constructor(
     val products = mld<List<ProductEntity>>()
 
     fun init(receiptId: Long) {
-        useCase = useCaseFactory.fetch(receiptId).apply {
+        useCase = manageReceiptUseCase.fetch(receiptId).apply {
             extract { it.merchantName }.also(merchant::sourceFirst)
             extract { it.date }.also(date::sourceFirst)
             extract { it.total.show() }.also(total::sourceFirst)
@@ -67,7 +68,7 @@ class ReceiptViewModel @Inject constructor(
         disposables.clear()
     }
 
-    private fun <T> ManageReceiptUseCase.extract(
-        extractor: (ManageReceiptUseCase.Value) -> T
+    private fun <T> ReceiptsUseCase.Manage.extract(
+        extractor: (Receipt) -> T
     ) = this.receipt.map(extractor).toLiveData()
 }
