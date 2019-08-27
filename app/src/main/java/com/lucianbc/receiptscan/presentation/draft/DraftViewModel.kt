@@ -41,7 +41,6 @@ class DraftViewModel @Inject constructor(
             extract { it.category }.also(category::sourceFirst)
             image.toLiveData().also { receiptImage.source(it) }
         }
-        useCase.value.subscribe { println("Received some data here $it") } .addTo(disposables)
     }
 
     val updateMerchant =
