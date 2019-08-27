@@ -10,3 +10,6 @@ inline fun <reified T> T.loge(message: String) = Log.e(T::class.java.simpleName,
 
 @Suppress("unused")
 inline fun <reified T> T.loge(message: String, t: Throwable) = Log.e(T::class.java.simpleName, message, t)
+
+@Suppress("unused")
+inline fun <reified T> T.logi(message: String) = Log.i(T::class.simpleName, message)
