@@ -1,7 +1,8 @@
-package com.lucianbc.receiptscan.domain.model
+package com.lucianbc.receiptscan.infrastructure.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.lucianbc.receiptscan.domain.model.Category
 import java.util.*
 
 @Entity(tableName = "receipt")

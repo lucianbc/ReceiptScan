@@ -3,10 +3,11 @@ package com.lucianbc.receiptscan.infrastructure.repository
 import android.graphics.Bitmap
 import com.lucianbc.receiptscan.domain.extract.*
 import com.lucianbc.receiptscan.domain.model.ImagePath
-import com.lucianbc.receiptscan.domain.model.ProductEntity
-import com.lucianbc.receiptscan.domain.model.ReceiptEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ReceiptEntity
 import com.lucianbc.receiptscan.infrastructure.dao.AppDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
+import com.lucianbc.receiptscan.infrastructure.entities.OcrElementEntity
 import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
@@ -64,7 +65,7 @@ private fun List<Product>.persisted(parentId: DraftId) =
 
 private fun List<OcrElement>.persistedOcr(parentId: DraftId) =
     this.map {
-        com.lucianbc.receiptscan.domain.model.OcrElementEntity(
+        OcrElementEntity(
             it.text,
             it.top,
             it.left,

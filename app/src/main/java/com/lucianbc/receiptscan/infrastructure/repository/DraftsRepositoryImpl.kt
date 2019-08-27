@@ -4,9 +4,9 @@ import com.lucianbc.receiptscan.domain.drafts.Draft
 import com.lucianbc.receiptscan.domain.drafts.DraftsRepository
 import com.lucianbc.receiptscan.domain.drafts.Product
 import com.lucianbc.receiptscan.domain.extract.DraftId
-import com.lucianbc.receiptscan.domain.model.OcrElementEntity
-import com.lucianbc.receiptscan.domain.model.ProductEntity
-import com.lucianbc.receiptscan.domain.model.ReceiptEntity
+import com.lucianbc.receiptscan.infrastructure.entities.OcrElementEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ReceiptEntity
 import com.lucianbc.receiptscan.infrastructure.dao.AppDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import io.reactivex.Completable

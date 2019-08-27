@@ -4,9 +4,9 @@ import com.lucianbc.receiptscan.domain.collect.CollectRepository
 import com.lucianbc.receiptscan.domain.collect.OcrElement
 import com.lucianbc.receiptscan.domain.collect.Product
 import com.lucianbc.receiptscan.domain.collect.Receipt
-import com.lucianbc.receiptscan.domain.model.OcrElementEntity
-import com.lucianbc.receiptscan.domain.model.ProductEntity
-import com.lucianbc.receiptscan.domain.model.ReceiptEntity
+import com.lucianbc.receiptscan.infrastructure.entities.OcrElementEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ReceiptEntity
 import com.lucianbc.receiptscan.domain.receipts.ReceiptId
 import com.lucianbc.receiptscan.infrastructure.dao.AppDao
 import com.lucianbc.receiptscan.util.takeSingle

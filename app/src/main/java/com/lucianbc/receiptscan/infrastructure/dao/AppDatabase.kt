@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.lucianbc.receiptscan.domain.model.OcrElementEntity
-import com.lucianbc.receiptscan.domain.model.ProductEntity
-import com.lucianbc.receiptscan.domain.model.ReceiptEntity
+import com.lucianbc.receiptscan.infrastructure.entities.OcrElementEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ReceiptEntity
 
 @Database(entities = [
     ReceiptEntity::class,

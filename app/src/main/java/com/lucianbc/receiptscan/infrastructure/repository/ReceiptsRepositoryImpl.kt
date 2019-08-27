@@ -1,7 +1,7 @@
 package com.lucianbc.receiptscan.infrastructure.repository
 
-import com.lucianbc.receiptscan.domain.model.ProductEntity
-import com.lucianbc.receiptscan.domain.model.ReceiptEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ReceiptEntity
 import com.lucianbc.receiptscan.domain.receipts.Product
 import com.lucianbc.receiptscan.domain.receipts.Receipt
 import com.lucianbc.receiptscan.domain.receipts.ReceiptId

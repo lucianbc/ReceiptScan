@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.domain.model
+package com.lucianbc.receiptscan.infrastructure.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

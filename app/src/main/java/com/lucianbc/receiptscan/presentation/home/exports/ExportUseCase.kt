@@ -7,7 +7,7 @@ import com.google.gson.Gson
 import com.lucianbc.receiptscan.domain.export.Session
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.ImagePath
-import com.lucianbc.receiptscan.domain.model.ProductEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
 import com.lucianbc.receiptscan.domain.repository.AppRepository
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.squareup.inject.assisted.Assisted
