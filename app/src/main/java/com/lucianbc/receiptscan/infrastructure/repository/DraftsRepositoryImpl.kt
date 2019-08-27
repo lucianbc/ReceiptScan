@@ -7,7 +7,7 @@ import com.lucianbc.receiptscan.domain.extract.DraftId
 import com.lucianbc.receiptscan.domain.model.OcrElementEntity
 import com.lucianbc.receiptscan.domain.model.ProductEntity
 import com.lucianbc.receiptscan.domain.model.ReceiptEntity
-import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
+import com.lucianbc.receiptscan.infrastructure.dao.AppDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -15,14 +15,14 @@ import io.reactivex.functions.Function3
 import javax.inject.Inject
 
 class DraftsRepositoryImpl @Inject constructor(
-    private val draftDao: DraftDao,
+    private val appDao: AppDao,
     private val imagesDao: ImagesDao
 ) : DraftsRepository {
     override fun listDrafts() =
-        draftDao.listDrafts()
+        appDao.listDrafts()
 
     override fun getDraft(draftId: DraftId) =
-        draftDao.run {
+        appDao.run {
             Flowable.zip(
                 selectReceipt(draftId),
                 selectProducts(draftId),
@@ -32,14 +32,14 @@ class DraftsRepositoryImpl @Inject constructor(
         }
 
     override fun getImage(draftId: DraftId) =
-        draftDao
+        appDao
             .getImagePath(draftId)
             .map(imagesDao::readImage)
 
 
     override fun update(draft: Draft): Completable {
         return draft.run {
-            draftDao.updateDraft(
+            appDao.updateDraft(
                 merchantName,
                 date,
                 total,
@@ -51,14 +51,14 @@ class DraftsRepositoryImpl @Inject constructor(
     }
 
     override fun delete(draftId: DraftId) =
-        draftDao.delete(draftId)
+        appDao.delete(draftId)
 
     override fun moveDraftToValid(draftId: DraftId) =
-        draftDao.validate(draftId)
+        appDao.validate(draftId)
 
     override fun addEmptyProductTo(draftId: DraftId) =
         ProductEntity("", 0f, receiptId = draftId).run {
-            draftDao
+            appDao
                 .insert(this)
                 .map { id = it; product() }
         }
@@ -66,10 +66,10 @@ class DraftsRepositoryImpl @Inject constructor(
     override fun updateProductIn(product: Product, draftId: DraftId): Completable =
         product.run {
             ProductEntity(name, price, id, draftId)
-        }.let(draftDao::insert).ignoreElement()
+        }.let(appDao::insert).ignoreElement()
 
     override fun deleteProduct(product: Product) =
-        draftDao.deleteProduct(product.id)
+        appDao.deleteProduct(product.id)
 }
 
 private fun create(

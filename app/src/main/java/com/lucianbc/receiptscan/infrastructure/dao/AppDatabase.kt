@@ -17,7 +17,7 @@ import com.lucianbc.receiptscan.domain.model.ReceiptEntity
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun draftDao(): DraftDao
+    abstract fun appDao(): AppDao
 
     companion object {
         @Volatile private var instance: AppDatabase? = null

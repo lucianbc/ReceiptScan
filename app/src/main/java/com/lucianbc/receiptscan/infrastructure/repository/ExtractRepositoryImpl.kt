@@ -5,14 +5,14 @@ import com.lucianbc.receiptscan.domain.extract.*
 import com.lucianbc.receiptscan.domain.model.ImagePath
 import com.lucianbc.receiptscan.domain.model.ProductEntity
 import com.lucianbc.receiptscan.domain.model.ReceiptEntity
-import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
+import com.lucianbc.receiptscan.infrastructure.dao.AppDao
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
 
 class ExtractRepositoryImpl @Inject constructor(
-    private val draftDao: DraftDao,
+    private val appDao: AppDao,
     private val imagesDao: ImagesDao
 ) : ExtractRepository {
     override fun persist(draft: Draft, image: Bitmap): Single<DraftId> {
@@ -26,11 +26,11 @@ class ExtractRepositoryImpl @Inject constructor(
         Single.fromCallable { imagesDao.saveWithPath(image) }
 
     private fun Single<ImagePath>.saveDraft(draft: Draft) =
-        this.flatMap { draft.persisted(it).let(draftDao::insert) }
+        this.flatMap { draft.persisted(it).let(appDao::insert) }
 
     private fun Single<DraftId>.saveProducts(draft: Draft) =
         this.flatMap { draftId ->
-            draftDao
+            appDao
                 .insertProducts(draft.products.persisted(draftId))
                 .map { draftId }
         }
@@ -38,7 +38,7 @@ class ExtractRepositoryImpl @Inject constructor(
     private fun Single<DraftId>.saveOcrElements(draft: Draft) =
         this.flatMap { draftId ->
             draft.ocrElements.persistedOcr(draftId)
-                .let(draftDao::insert)
+                .let(appDao::insert)
                 .map { draftId }
         }
 }

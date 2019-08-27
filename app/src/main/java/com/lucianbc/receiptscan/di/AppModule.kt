@@ -10,7 +10,7 @@ import com.lucianbc.receiptscan.domain.extract.ExtractUseCaseImpl
 import com.lucianbc.receiptscan.domain.extract.ReceiptDefaults
 import com.lucianbc.receiptscan.domain.model.SharingOption
 import com.lucianbc.receiptscan.infrastructure.dao.AppDatabase
-import com.lucianbc.receiptscan.infrastructure.dao.DraftDao
+import com.lucianbc.receiptscan.infrastructure.dao.AppDao
 import com.lucianbc.receiptscan.infrastructure.dao.PreferencesDao
 import com.lucianbc.receiptscan.presentation.ReceiptScan
 import dagger.Module
@@ -44,8 +44,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideDraftDao(database: AppDatabase): DraftDao =
-        database.draftDao()
+    fun provideDraftDao(database: AppDatabase): AppDao =
+        database.appDao()
 
     @Provides
     @Singleton

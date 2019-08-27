@@ -13,12 +13,9 @@ import io.reactivex.Single
 import java.util.*
 
 @Dao
-interface DraftDao {
+interface AppDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(draft: ReceiptEntity): Single<Long>
-
-    @Update
-    fun update(draft: ReceiptEntity): Completable
 
     @Insert
     fun insert(ocrElementEntities: List<OcrElementEntity>): Single<List<Long>>
