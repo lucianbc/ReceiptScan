@@ -4,7 +4,7 @@ import androidx.room.*
 import com.lucianbc.receiptscan.domain.drafts.DraftListItem
 import com.lucianbc.receiptscan.domain.extract.DraftId
 import com.lucianbc.receiptscan.domain.model.*
-import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
+import com.lucianbc.receiptscan.domain.receipts.ReceiptListItem
 import com.lucianbc.receiptscan.domain.usecase.ManageReceiptUseCase
 import com.lucianbc.receiptscan.presentation.home.exports.ExportUseCase
 import io.reactivex.Completable
@@ -40,7 +40,7 @@ interface AppDao {
     fun validate(draftId: Long): Completable
 
     @Query("select id, merchantName, total from receipt where isDraft == 0 order by date desc")
-    fun getReceiptItems(): Flowable<List<ListReceiptsUseCase.Item>>
+    fun getReceiptItems(): Flowable<List<ReceiptListItem>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(productEntity: ProductEntity): Single<Long>

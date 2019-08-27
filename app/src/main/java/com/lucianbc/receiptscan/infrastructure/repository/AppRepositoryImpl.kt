@@ -2,10 +2,8 @@ package com.lucianbc.receiptscan.infrastructure.repository
 
 import com.lucianbc.receiptscan.domain.model.ExportedReceipt
 import com.lucianbc.receiptscan.domain.repository.AppRepository
-import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
-import com.lucianbc.receiptscan.infrastructure.dao.Converters
 import com.lucianbc.receiptscan.infrastructure.dao.AppDao
-import io.reactivex.Flowable
+import com.lucianbc.receiptscan.infrastructure.dao.Converters
 import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
@@ -24,9 +22,6 @@ class AppRepositoryImpl @Inject constructor(
             Converters.toTimestamp(firstDate)!!,
             Converters.toTimestamp(lastDate)!!
         )
-
-    override fun getAllReceiptItems(): Flowable<List<ListReceiptsUseCase.Item>> =
-        appDao.getReceiptItems()
 
     override fun getReceipt(id: Long) = appDao.getReceipt(id)
 

@@ -4,11 +4,15 @@ import com.lucianbc.receiptscan.domain.drafts.DraftsRepository
 import com.lucianbc.receiptscan.domain.drafts.DraftsUseCase
 import com.lucianbc.receiptscan.domain.drafts.DraftsUseCaseImpl
 import com.lucianbc.receiptscan.domain.extract.ExtractRepository
+import com.lucianbc.receiptscan.domain.receipts.ReceiptsRepository
+import com.lucianbc.receiptscan.domain.receipts.ReceiptsUseCase
+import com.lucianbc.receiptscan.domain.receipts.ReceiptsUseCaseImpl
 import com.lucianbc.receiptscan.domain.repository.AppRepository
 import com.lucianbc.receiptscan.domain.service.ReceiptSender
 import com.lucianbc.receiptscan.infrastructure.repository.AppRepositoryImpl
 import com.lucianbc.receiptscan.infrastructure.repository.DraftsRepositoryImpl
 import com.lucianbc.receiptscan.infrastructure.repository.ExtractRepositoryImpl
+import com.lucianbc.receiptscan.infrastructure.repository.ReceiptsRepositoryImpl
 import com.lucianbc.receiptscan.infrastructure.workers.ReceiptSenderWorker
 import dagger.Binds
 import dagger.Module
@@ -29,4 +33,10 @@ abstract class InterfaceBinds {
 
     @Binds
     abstract fun bindDraftsRepository(obj: DraftsRepositoryImpl): DraftsRepository
+
+    @Binds
+    abstract fun bindReceiptsRepository(obj: ReceiptsRepositoryImpl): ReceiptsRepository
+
+    @Binds
+    abstract fun bindReceiptsUseCase(obj: ReceiptsUseCaseImpl): ReceiptsUseCase
 }

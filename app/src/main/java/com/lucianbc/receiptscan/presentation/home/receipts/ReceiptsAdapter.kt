@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lucianbc.receiptscan.R
-import com.lucianbc.receiptscan.domain.usecase.ListReceiptsUseCase
+import com.lucianbc.receiptscan.domain.receipts.ReceiptListItem
 import kotlinx.android.synthetic.main.receipt_list_item_layout.view.*
 
-class ReceiptsAdapter(private val callback: (ListReceiptsUseCase.Item) -> Unit) :
-    ListAdapter<ListReceiptsUseCase.Item, ReceiptsAdapter.Holder>(Diff()) {
+class ReceiptsAdapter(private val callback: (ReceiptListItem) -> Unit) :
+    ListAdapter<ReceiptListItem, ReceiptsAdapter.Holder>(Diff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater
@@ -26,18 +26,18 @@ class ReceiptsAdapter(private val callback: (ListReceiptsUseCase.Item) -> Unit) 
         holder.item = element
     }
 
-    class Diff : DiffUtil.ItemCallback<ListReceiptsUseCase.Item>() {
-        override fun areItemsTheSame(oldItem: ListReceiptsUseCase.Item, newItem: ListReceiptsUseCase.Item) =
+    class Diff : DiffUtil.ItemCallback<ReceiptListItem>() {
+        override fun areItemsTheSame(oldItem: ReceiptListItem, newItem: ReceiptListItem) =
             oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: ListReceiptsUseCase.Item, newItem: ListReceiptsUseCase.Item): Boolean {
+        override fun areContentsTheSame(oldItem: ReceiptListItem, newItem: ReceiptListItem): Boolean {
             return oldItem == newItem
         }
     }
 
 
     inner class Holder(val view: View) : RecyclerView.ViewHolder(view) {
-        var item: ListReceiptsUseCase.Item? = null
+        var item: ReceiptListItem? = null
             set(value) {
                 field = value
                 value?.let {
