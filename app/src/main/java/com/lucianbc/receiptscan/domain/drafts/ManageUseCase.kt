@@ -13,7 +13,7 @@ import io.reactivex.rxkotlin.zipWith
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 
-class ManageImpl @AssistedInject constructor(
+class ManageUseCase @AssistedInject constructor(
     @Assisted private val draftId: DraftId,
     @Assisted private val source: Flowable<Draft>,
     private val repository: DraftsRepository,
@@ -83,6 +83,6 @@ class ManageImpl @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(draftId: DraftId, source: Flowable<Draft>): ManageImpl
+        fun create(draftId: DraftId, source: Flowable<Draft>): ManageUseCase
     }
 }

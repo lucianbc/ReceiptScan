@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class DraftsUseCaseImpl @Inject constructor(
     private val repository: DraftsRepository,
-    private val manageFactory: ManageImpl.Factory
+    private val manageFactory: ManageUseCase.Factory
 ) : DraftsUseCase {
     override fun list() = repository.listDrafts()
 

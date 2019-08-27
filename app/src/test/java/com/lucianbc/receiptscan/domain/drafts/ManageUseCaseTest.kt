@@ -9,7 +9,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class ManageImplTest {
+class ManageUseCaseTest {
 
     @Test
     fun `when update value changes`() {
@@ -92,7 +92,7 @@ class ManageImplTest {
 
     private val savedValueCaptor = argumentCaptor<Draft>()
 
-    private val subject: DraftsUseCase.Manage = ManageImpl(
+    private val subject: DraftsUseCase.Manage = ManageUseCase(
         dummyId,
         Flowable.just(dummyDraft),
         mockRepo,

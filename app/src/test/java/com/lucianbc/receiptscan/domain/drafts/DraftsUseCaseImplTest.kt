@@ -49,9 +49,9 @@ class DraftsUseCaseImplTest {
         val mockShare = mock<CollectingOption>()
         val mockSender = mock<ReceiptCollector>()
 
-        val mockFactory = object: ManageImpl.Factory {
-            override fun create(draftId: DraftId, source: Flowable<Draft>): ManageImpl {
-                return ManageImpl(draftId, source, mockRepo, mockShare, mockSender)
+        val mockFactory = object: ManageUseCase.Factory {
+            override fun create(draftId: DraftId, source: Flowable<Draft>): ManageUseCase {
+                return ManageUseCase(draftId, source, mockRepo, mockShare, mockSender)
             }
         }
 
