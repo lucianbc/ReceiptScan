@@ -23,7 +23,11 @@ interface AppDao {
     @Query("select imagePath from receipt where id = :id")
     fun getImagePath(id: Long): Flowable<String>
 
-    @Query("select id, merchantName, date, total, currency, category, imagePath from receipt where id = :id")
+    @Query("""
+        select  id, merchantName, date, total, currency, category, imagePath 
+        from    receipt 
+        where   id = :id
+    """)
     @Transaction
     fun getReceipt(id: Long): Flowable<ManageReceiptUseCase.Value>
 
@@ -39,13 +43,22 @@ interface AppDao {
     @Query("update receipt set isDraft = 0 where id = :draftId")
     fun validate(draftId: Long): Completable
 
-    @Query("select id, merchantName, total from receipt where isDraft == 0 order by date desc")
+    @Query("""
+        select  id, merchantName, total 
+        from    receipt 
+        where   isDraft == 0 
+        order   by date desc
+    """)
     fun getReceiptItems(): Flowable<List<ReceiptListItem>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(productEntity: ProductEntity): Single<Long>
 
-    @Query("select id, merchantName, date, total, currency, category, imagePath from receipt where id = :id")
+    @Query("""
+        select  id, merchantName, date, total, currency, category, imagePath 
+        from    receipt 
+        where   id = :id
+    """)
     fun getExported(id: Long): Single<ExportedReceipt>
 
     @Query("""
