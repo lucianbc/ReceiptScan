@@ -64,7 +64,7 @@ exports.exportProcessor = functions
                 .then(result => {
                     return {
                         url: result[0],
-                        expires: expiration
+                        expires: expiration.toString()
                     }
                 })
         };
