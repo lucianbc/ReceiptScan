@@ -89,10 +89,6 @@ Asupra unui draft, utilizatorul are la dispoziție următoarele opțiuni:
 * adăugarea unui produs, prin apăsarea butonului de adăugare;
 * ștergerea, validarea și vizualizarea imaginii aferente prin butoanele din bara de opțiuni;
 
-Validarea unui draft mută acel bon în lista de bonuri validate și poate fi văzut în ecranul *Receipts*. Totodată, validarea declanșează și trimiterea bonului împreună cu imaginea aferentă către cloud în cazul în care utilizatorul permite colectarea datelor. Această acțiune nu este una de importanță majoră pentru utilizator și este executată în background.
-
-### Implementare
-
 La nivelul modelului, aceste opțiuni sunt reprezentate prin interfața `DraftsUseCase`. Atât funcționalitatea de listare, cât și cea de editare se folosesc de funcționalitatea *Room* prin care atunci când apare o modificare la nivelul bazei de date, o nouă valoare este emisă pentru interogările deja executate. Astfel, este ușoară o implementare reactivă pentru aceste funcționalități.
 
 \lstinputlisting[style=javaCodeStyle, caption=Interfața Drafts Use Case]{source/code/DraftsUseCase.kt}
@@ -106,13 +102,12 @@ Editarea câmpurilor text se face în manieră *on the fly*, ceea ce înseamnă 
 \lstinputlisting[style=javaCodeStyle, caption=Funcții throttled]{source/code/ThrottleImplementation.kt}
 
 
-<!-- TODO: Implementarea colectării -->
-
 ## Setări
 
 ![Ecranul de setări \label{settingsScreen}](source/figures/SettingsScreen.png)
 
 Ecranul de setări controlează valorile predefinite utilizate în extragerea datelor despre bonuri și indicatorul care permite sau nu colectarea datelor. Modificarea acestor valori nu este inclusă explicit în domeniul aplicației, de aceea această funcționalitate este implementată numai la nivelul prezentării și infrastructurii. Interfețele definite de model, `CollectingOption` și `ReceiptDefaults` sunt implementate de clasa `PreferencesDao`, care este folosită pentru a accesa mediul de stocare `SharedPreferences`.
 
+## Colectarea datelor
 
-
+Motivația colectării datelor a fost prezentată anterior. Totuși, această aplicație este bazată pe ideea de a pune utilizatorii în posesia propriilor date și de a face asta într-un mod transparent. De aceea colectarea datelor se face numai cu acordul utilizatorului și este dezactivată la instalare. În cazul în care aceasta este activată, datele sunt colectate în mod anonim. Acestea sunt trimise având un ID unic generat prima dată când funcționalitatea este folosită și nu supraviețuiește la reinstalarea aplicației. 
