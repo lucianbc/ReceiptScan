@@ -72,9 +72,9 @@ Procesarea unei imagini durează în funcție de performanțele telefonului, tim
 
 ## Gestionare Drafturi
 
-![Caption 2 \label{draftList}](source/figures/DraftsList.png){ height=50% }
+![Ecranul de listare a drafturilor \label{draftList}](source/figures/DraftsList.png){ height=50% }
 
-![Caption 1 \label{draftScreen}](source/figures/DraftScreen.png){ height=50% }
+![Ecranul de editare draft \label{draftScreen}](source/figures/DraftScreen.png){ height=50% }
 
 Întrucât extragerea informațiilor nu este un proces robust, datele extrase trebuie validate de utilizator. Odată ce imaginile sunt procesate, datele extrase sunt salvate în baza de date, sub categoria *drafts*. În acest moment, bonurile sunt editabile. Figura \ref{draftList} prezintă ecranul unde utilizatorul vede toate drafturile, iar figura \ref{draftScreen} ilustrează ecranul de editare.
 
@@ -99,7 +99,7 @@ La nivelul modelului, aceste opțiuni sunt reprezentate prin interfața `DraftsU
 
 Editarea câmpurilor text se face în manieră *on the fly*, ceea ce înseamnă că nu este necesar un ecran separat drept formular și apăsarea unui buton de persistare a modificărilor. Aceasta se realizează înregistrând un *callback* pe câmpurile de text, care apelează funcția de update. Această abordare ridică problema unor fluxuri de date mult prea rapide. De aceea, asupra fluxului de modificări este aplicat operatorul RxJava `throttleLast`. Figura \ref{throttle}, din documentația RxJava [@ThrottleLast] ilustrează modul în care acest operator funcționează.
 
-![Caption 1 \label{throttle}](source/figures/throttleLast.png)
+![Ilustrație throttleLast \label{throttle}](source/figures/throttleLast.png)
 
 În continuare este prezentată utilizarea operatorului `throttleLast`, împreună cu un exemplu de utilizare. Funcția `throttled` primește argumentele pentru aplicarea operatorului și o funcție și returnează o nouă funcție care are aceeași signatură, același comportament, dar executată la o rată de timp specificată. În acest mod sunt exemplificate funcțiile de ordin înalt și abilitatea de a reprezenta funcțiile ca valori în limbajul Kotlin.
 
@@ -107,5 +107,12 @@ Editarea câmpurilor text se face în manieră *on the fly*, ceea ce înseamnă 
 
 
 <!-- TODO: Implementarea colectării -->
+
+## Setări
+
+![Ecranul de setări \label{settingsScreen}](source/figures/SettingsScreen.png)
+
+Ecranul de setări controlează valorile predefinite utilizate în extragerea datelor despre bonuri și indicatorul care permite sau nu colectarea datelor. Modificarea acestor valori nu este inclusă explicit în domeniul aplicației, de aceea această funcționalitate este implementată numai la nivelul prezentării și infrastructurii. Interfețele definite de model, `CollectingOption` și `ReceiptDefaults` sunt implementate de clasa `PreferencesDao`, care este folosită pentru a accesa mediul de stocare `SharedPreferences`.
+
 
 
