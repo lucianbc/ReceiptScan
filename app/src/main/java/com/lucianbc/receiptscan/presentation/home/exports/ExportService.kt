@@ -30,7 +30,7 @@ class ExportService : DaggerService() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        session = intent?.extras?.getParcelable<Session>(SESSION_KEY)!!
+        session = intent?.extras?.getParcelable(SESSION_KEY)!!
 
         startForeground(1, notification())
 
@@ -49,8 +49,9 @@ class ExportService : DaggerService() {
         val pendingIntent = PendingIntent.getActivity(this, 0, tapIntent, 0)
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Notification MOFO")
-            .setContentText("Sending MoFo")
+            .setContentTitle("Exporting")
+            .setContentText("Uploading your data to cloud")
+            .setProgress(0, 0, true)
             .setSmallIcon(R.drawable.ic_android_black_24dp)
             .setContentIntent(pendingIntent)
             .build()

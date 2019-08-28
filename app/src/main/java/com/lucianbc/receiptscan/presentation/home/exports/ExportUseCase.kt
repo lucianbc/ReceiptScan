@@ -2,6 +2,7 @@ package com.lucianbc.receiptscan.presentation.home.exports
 
 import androidx.room.Relation
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import com.lucianbc.receiptscan.domain.export.Session
@@ -19,6 +20,7 @@ class ExportUseCase @AssistedInject constructor(
     private val repo: ExportRepository,
     private val imagesDao: ImagesDao,
     private val storage: FirebaseStorage,
+    private val firestore: FirebaseFirestore,
     @Assisted private val manifest: Session
 ) {
     fun execute(): Completable {
@@ -38,10 +40,9 @@ class ExportUseCase @AssistedInject constructor(
 
     private fun sendManifest(): Completable =
         Completable.fromCallable {
-            val task = storage.reference
-                .child("manifests")
-                .child("${manifest.id}.json")
-                .putBytes(gson.toJson(manifest).toString().toByteArray())
+            val task = firestore
+                .collection("manifests")
+                .add(manifest)
             Tasks.await(task)
         }
 
