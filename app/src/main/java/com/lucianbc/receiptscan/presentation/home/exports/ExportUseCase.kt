@@ -5,12 +5,13 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
+import com.lucianbc.receiptscan.domain.export.ExportRepository
 import com.lucianbc.receiptscan.domain.export.Session
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.ImagePath
-import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
-import com.lucianbc.receiptscan.domain.export.ExportRepository
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
+import com.lucianbc.receiptscan.infrastructure.dao.PreferencesDao
+import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.Completable
@@ -19,6 +20,7 @@ import java.util.*
 class ExportUseCase @AssistedInject constructor(
     private val repo: ExportRepository,
     private val imagesDao: ImagesDao,
+    private val prefs: PreferencesDao,
     private val storage: FirebaseStorage,
     private val firestore: FirebaseFirestore,
     @Assisted private val manifest: Session
@@ -31,10 +33,10 @@ class ExportUseCase @AssistedInject constructor(
         return when(manifest.content) {
             Session.Content.TextOnly ->
                 repo.getTextReceiptsBeteewn(manifest.firstDate, manifest.lastDate)
-                    .flatMapCompletable(::send)
+                    .flatMapCompletable { Completable.concat(it.map(this::send)) }
             Session.Content.TextAndImage ->
                 repo.getImageReceiptsBetween(manifest.firstDate, manifest.lastDate)
-                    .flatMapCompletable(::send)
+                    .flatMapCompletable { Completable.concat(it.map(this::send)) }
         }
     }
 
@@ -42,7 +44,7 @@ class ExportUseCase @AssistedInject constructor(
         Completable.fromCallable {
             val task = firestore
                 .collection("manifests")
-                .add(manifest)
+                .add(Manifest(manifest, prefs.notificationToken))
             Tasks.await(task)
         }
 
@@ -101,6 +103,30 @@ class ExportUseCase @AssistedInject constructor(
         @Relation(parentColumn = "id", entityColumn = "receiptId")
         val productEntities: List<ProductEntity>
     )
+
+    data class Manifest (
+        val firstDate: Date,
+        val lastDate: Date,
+        val content: Session.Content,
+        val format: Session.Format,
+        val id: String,
+        val notificationToken: String
+    ) {
+        companion object {
+            operator fun invoke(session: Session, notificationToken: String): Manifest {
+                return session.run {
+                    Manifest (
+                        firstDate,
+                        lastDate,
+                        content,
+                        format,
+                        id,
+                        notificationToken
+                    )
+                }
+            }
+        }
+    }
 
     @AssistedInject.Factory
     interface Factory {

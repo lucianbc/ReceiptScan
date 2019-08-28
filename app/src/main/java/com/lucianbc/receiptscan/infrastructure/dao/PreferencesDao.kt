@@ -1,9 +1,9 @@
 package com.lucianbc.receiptscan.infrastructure.dao
 
 import android.content.SharedPreferences
-import com.lucianbc.receiptscan.domain.model.Category
-import com.lucianbc.receiptscan.domain.extract.ReceiptDefaults
 import com.lucianbc.receiptscan.domain.collect.CollectingOption
+import com.lucianbc.receiptscan.domain.extract.ReceiptDefaults
+import com.lucianbc.receiptscan.domain.model.Category
 import java.util.*
 
 class PreferencesDao (
@@ -13,6 +13,9 @@ class PreferencesDao (
     private var receiptDefaults: ReceiptDefaultsValue
 
     private var _sendReceipt: Boolean
+
+    val notificationToken
+        get() = readNotificationToken()
 
     override val appId: String
 
@@ -78,6 +81,19 @@ class PreferencesDao (
         return existingId
     }
 
+    private fun readNotificationToken(): String {
+        return prefs.getString(NOTIFICATION_TOKEN_KEY, null).let {
+            when(it) {
+                null -> "None"
+                else -> it
+            }
+        }
+    }
+
+    fun setNotificationToken(newToken: String) {
+        prefs.edit().putString(NOTIFICATION_TOKEN_KEY, newToken).apply()
+    }
+
     private fun String.writeId() =
         prefs.edit().putString(APP_ID_KEY, this).apply()
 
@@ -96,6 +112,8 @@ class PreferencesDao (
         private const val CURRENCY_KEY = "CURRENCY"
         private const val SEND_RECEIPT_KEY = "SEND_RECEIPT"
         private const val APP_ID_KEY = "APP_ID"
+
+        private const val NOTIFICATION_TOKEN_KEY = "NOTIFICATION_TOKEN"
 
         private val DEFAULT_CATEGORY = Category.Grocery
         private val DEFAULT_CURRENCY = Currency.getInstance("RON")!!

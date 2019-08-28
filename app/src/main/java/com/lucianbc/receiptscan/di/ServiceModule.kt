@@ -1,5 +1,6 @@
 package com.lucianbc.receiptscan.di
 
+import com.lucianbc.receiptscan.infrastructure.services.NotificationService
 import com.lucianbc.receiptscan.presentation.home.exports.ExportService
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -8,4 +9,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class ServiceModule {
     @ContributesAndroidInjector
     abstract fun contributeExportService(): ExportService
+
+    @ContributesAndroidInjector
+    abstract fun contributeNotificationService(): NotificationService
 }
