@@ -91,7 +91,10 @@ Această aplicație folosește trei medii de persistență pentru stocarea datel
 
 Aceasta este o bază de date relațională ce este preinstalată pe sistemul de operare Android. Modelul de date stocat în această bază de date este unul simplu, prezentat în Figura \ref{sqldata}. Aceste tabele sunt generate cu ajutorul librăriei *Room*, folosind codul de mai jos:
 
+\clearpage
 \lstinputlisting[style=javaCodeStyle, caption=Entities.kt]{source/code/Entities.kt}
+
+<!-- TODO: așează imaginea mai bine -->
 
 ![Modelul de date SQL \label{sqldata}](source/figures/ReceiptScanDb.png)
 
@@ -103,4 +106,3 @@ Pe spațiul de stocare intern sunt salvate imaginile aferente bonurilor, fiind i
 * moneda predefinită;
 * permite sau nu colectarea anonimă a bonurilor;
 * un id unic al aplicației, generat la instalare;
-
