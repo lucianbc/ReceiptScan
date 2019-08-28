@@ -80,8 +80,13 @@ $if(biblio-files)$
 \bibliography{$biblio-files$}
 $endif$
 $endif$
-$if(listings)$
+
 \usepackage{listings}
+
+\usepackage{subcaption}
+
+$if(subfigure)$
+\usepackage{subfigure}
 $endif$
 $if(lhs)$
 \lstnewenvironment{code}{\lstset{language=Haskell,basicstyle=\small\ttfamily}}{}

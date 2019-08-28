@@ -72,9 +72,7 @@ tex:
 	-V documentclass:book \
 	-N \
 	--csl="$(STYLEDIR)/ref_format.csl" \
-	--pdf-engine=xelatex \
 	--filter pandoc-crossref
-	--variable subparagraph
 
 docx:
 	pandoc "$(INPUTDIR)"/*.md \
