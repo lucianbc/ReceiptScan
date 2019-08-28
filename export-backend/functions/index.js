@@ -73,6 +73,23 @@ exports.exportProcessor = functions
             .getFiles({ prefix: manifest.id })
             .then(result => result[0].map(file => file.name));
 
+
+        const notifyPromiseFactoryFunc = myManifest => payload => {
+            return admin
+                .messaging()
+                .sendToDevice(myManifest.notificationToken, {
+                    data: payload,
+                    notification: {
+                        title: 'Export Finished'
+                    }
+                })
+        };
+
+        const notifyPromiseFactory =
+            manifest.notificationToken
+                ? notifyPromiseFactoryFunc(manifest)
+                : () => Promise.resolve();
+
         console.log("before read");
 
         const result = filesPromise
@@ -92,6 +109,17 @@ exports.exportProcessor = functions
                 console.log("Finished making the file public.");
                 console.log(result);
                 return result;
+            })
+            .then( result => {
+                console.log("Sending notification to device");
+                return notifyPromiseFactory(result)
+                    .then(() => {
+                        console.log("Notification sent");
+                        return result;
+                    })
+                    .catch((err) => {
+                        console.log("Error sending", err)
+                    })
             });
 
         console.log("after read");
