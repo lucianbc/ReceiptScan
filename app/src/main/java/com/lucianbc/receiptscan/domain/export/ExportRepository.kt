@@ -5,6 +5,6 @@ import io.reactivex.Single
 import java.util.*
 
 interface ExportRepository {
-    fun getTextReceiptsBeteewn(firstDate: Date, lastDate: Date): Single<ExportUseCase.TextReceipt>
-    fun getImageReceiptsBetween(firstDate: Date, lastDate: Date): Single<ExportUseCase.ImageReceipt>
+    fun getTextReceiptsBeteewn(firstDate: Date, lastDate: Date): Single<List<ExportUseCase.TextReceipt>>
+    fun getImageReceiptsBetween(firstDate: Date, lastDate: Date): Single<List<ExportUseCase.ImageReceipt>>
 }

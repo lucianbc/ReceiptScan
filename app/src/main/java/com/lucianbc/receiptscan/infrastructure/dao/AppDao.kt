@@ -57,14 +57,14 @@ interface AppDao {
         from    receipt 
         where   date between :firstDate and :lastDate
     """)
-    fun getTextReceiptsBetween(firstDate: Long, lastDate: Long): Single<ExportUseCase.TextReceipt>
+    fun getTextReceiptsBetween(firstDate: Long, lastDate: Long): Single<List<ExportUseCase.TextReceipt>>
 
     @Query("""
         select  id, merchantName, date, total, currency, category, imagePath 
         from    receipt 
         where   date between :firstDate and :lastDate
     """)
-    fun getImageReceiptsBetween(firstDate: Long, lastDate: Long): Single<ExportUseCase.ImageReceipt>
+    fun getImageReceiptsBetween(firstDate: Long, lastDate: Long): Single<List<ExportUseCase.ImageReceipt>>
 
     @Query(
         """
