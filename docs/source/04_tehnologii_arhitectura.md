@@ -98,7 +98,11 @@ Aceasta este o bază de date relațională ce este preinstalată pe sistemul de 
 
 ![Modelul de date SQL \label{sqldata}](source/figures/ReceiptScanDb.png)
 
+### Spațiul de stocare intern
+
 Pe spațiul de stocare intern sunt salvate imaginile aferente bonurilor, fiind inaccesibile altor aplicații, Acestea sunt salvate sub un nume aleatoriu, care este salvat în tabela sql (proprietatea imagePath din tabela Receipt).
+
+### Shared preferences
 
 *Shared preferences* sunt niște fișiere xml accesibile aplicațiilor Android, unde acestea pot salva valori sub format cheie-valoare. Aici sunt stocate:
 
