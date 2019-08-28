@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
 import com.lucianbc.receiptscan.AndroidTestDefaults
@@ -17,8 +18,10 @@ import com.lucianbc.receiptscan.infrastructure.ScannableFactory
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito
 
+@RunWith(AndroidJUnit4::class)
 class ViewfinderViewModelTest {
 
     @get:Rule
