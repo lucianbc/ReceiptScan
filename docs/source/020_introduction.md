@@ -1,3 +1,5 @@
+\pagenumbering{arabic}
+
 # Introducere
 
 Această lucrare prezintă \AppName, o aplicație mobilă de scanare a bonurilor fiscale și vizualizare a cheltuielilor, disponibilă pentru platforma *Android*.

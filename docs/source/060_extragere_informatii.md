@@ -9,7 +9,7 @@ Există câteva lucrări în comunitatea științifică axate pe analizarea și 
 
 ### Detectarea textului din imagini
 
-Soluția open soruce standard pentru probleme de OCR este [@Tesseract], dezvoltat în prezent de Google și disponibil sub licența Apache 2.0. Tesseract poate fi integrat intr-o aplicație Android, deci este un candidat pentru a rezolva problema de OCR.
+Soluția open soruce standard pentru probleme de OCR este , dezvoltat în prezent de Google și disponibil sub licența Apache 2.0. Tesseract poate fi integrat intr-o aplicație Android, deci este un candidat pentru a rezolva problema de OCR.
 
 În contextul aplicațiilor mobile, atât Android cât și iOS, Google pune la dispoziție SDK-ul Firebase ML Kit care conține și o librărie pentru OCR, cu suport pentru procesare atât local, pe dispozitiv, cât și în cloud. Acest SDK nu este open source și este supus politicii de monetizare stabilită de Google, dar rularea algoritmilor pe dispozitiv este gratuită.
 
