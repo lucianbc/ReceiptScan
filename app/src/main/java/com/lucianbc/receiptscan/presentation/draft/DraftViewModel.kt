@@ -44,31 +44,31 @@ class DraftViewModel @Inject constructor(
     }
 
     val updateMerchant =
-        debounced<String>(disposables, TIMEOUT, TIME_UNIT) {
+        throttled<String>(disposables, TIMEOUT, TIME_UNIT) {
             useCase.update(it) { v, dwp -> dwp.copy(merchantName = v) }
                 .subscribe()
         }
 
     val updateTotal =
-        debounced<Float>(disposables, TIMEOUT, TIME_UNIT) {
+        throttled<Float>(disposables, TIMEOUT, TIME_UNIT) {
             useCase.update(it) { v, dwp -> dwp.copy(total = v) }
                 .subscribe()
         }
 
     val updateDate =
-        debounced<Date>(disposables, TIMEOUT, TIME_UNIT) {
+        throttled<Date>(disposables, TIMEOUT, TIME_UNIT) {
             useCase.update(it) { v, dwp -> dwp.copy(date = v) }
                 .subscribe()
         }
 
     val updateProduct =
-        debounced<Product>(disposables, TIMEOUT, TIME_UNIT) {
+        throttled<Product>(disposables, TIMEOUT, TIME_UNIT) {
             useCase.updateProduct(it)
                 .subscribe()
         }
 
     val updateCurrency =
-        debounced<Currency>(disposables, TIMEOUT, TIME_UNIT) { c ->
+        throttled<Currency>(disposables, TIMEOUT, TIME_UNIT) { c ->
             useCase
                 .update(c) { v, dwp -> dwp.copy(currency = v) }
                 .andThen {
@@ -79,7 +79,7 @@ class DraftViewModel @Inject constructor(
 
 
     val updateCategory =
-        debounced<Category>(disposables, TIMEOUT, TIME_UNIT) { c ->
+        throttled<Category>(disposables, TIMEOUT, TIME_UNIT) { c ->
             useCase
                 .update(c) { v, dwp -> dwp.copy(category = v) }
                 .andThen { category.postValue(c) }

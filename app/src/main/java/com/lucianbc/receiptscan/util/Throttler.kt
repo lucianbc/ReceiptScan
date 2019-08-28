@@ -1,10 +1,11 @@
 package com.lucianbc.receiptscan.util
 
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-fun <T> debounced(
+fun <T> throttled(
     disposable: CompositeDisposable,
     timeout: Long,
     unit: TimeUnit,
@@ -12,11 +13,10 @@ fun <T> debounced(
 ): ((T) -> Unit) {
     val subject = PublishSubject.create<T>()
 
-    val d = subject
+    subject
         .throttleLast(timeout, unit)
         .subscribe(func)
-
-    disposable.add(d)
+        .addTo(disposable)
 
     return { t -> subject.onNext(t) }
 }
