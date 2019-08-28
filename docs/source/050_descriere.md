@@ -24,6 +24,7 @@ O soluție open source populară pentru rezolvarea problemelor OCR este *Tessera
 * Asupra ambelor rezultate a fost aplicat un algoritm care să grupeze chenarele de text pe linii.
 
 Anexa 1 cuprinde cele două script-uri folosite pentru comparație. Rezultele obținute sunt prezentate în figura ... .
+<!-- TODO: Adaugă figura și anexa -->
 
 De menționat este și efortul necesar pentru a integra Tesseract într-o aplicație mobilă. În același timp, Firebase Vision este disponibilă ca o dependință *gradle*. 
 
@@ -49,4 +50,62 @@ Având textul din imagine organizat în grupuri de cuvinte apropiate (vechile li
 * **Categoria și moneda**: aceste valori sunt citite din setările predefinite și pot fi modificate de utilizator.
 
 Implementarea detaliată a algoritmului de extragere a informațiilor este prezentat în Anexa 3.
+
+### Integrarea în aplicație
+
+![Ecranul de Scanare \label{scanner}](source/figures/Scanner.png){ height=50% }
+
+Figura \ref{scanner} prezintă ecranul de scanare, care este interfața cu utilizatorul a algoritmului de extragere a informațiilor. Acesta permite utilizatorului să obțină o imagine a bonului fiscal folosind camera telefonului sau importând-o din galerie. De asemenea, ecranul permite utilizatorului activarea sau dezactivarea blitz-ului. Odată ce utilizatorul atinge ecranul sau importa o imagine din galerie, este afișat un ecran de incărcare, în timp ce procesarea se face în background. La finalul procesării, utilizatorul este redirecționat către un ecran de unde poate face modificări asupra datelor extrase.
+
+La nivelul domeniului, algoritmul de OCR este ascuns sub interfața `Scannable`, care este implementată la nivelul infrastructurii. Aceasta expune două metode, `ocrElements()` și `image()`, ce furnizează elementele textuale și imaginea sub abstractizarea `Observable` din RxJava.
+
+\lstinputlisting[style=javaCodeStyle, caption=Interfețele Scannable și ExtractUseCase]{source/code/ScannableExtractUseCase.kt}
+
+`ExtractUseCase` modelează și orchestrează funcționalitățile aferente ecranului de scanare: 
+
+* Valoarea `preview` expune un flux de elemente OCR care să fie afișate pe ecran, deasupra camerei, pentru a ajuta utilizatorul în capturarea imaginii. 
+* Funcția `fetchPreview` permite livrarea unui nou cadru surprins de cameră, care să fie procesat asincron, iar rezultatul să fie livrat către `preview`.
+* funcția `extract` declanșează procesarea imaginii bonului și salvarea informațiilor în baza de date, returnând id-ul entității salvate.
+* valoarea `state` marchează daca o imagine este procesată pentru extragerea unui bon sau nu, sau dacă a fost întâmpinată o eroare.
+
+Procesarea unei imagini durează în funcție de performanțele telefonului, timp de câteva secunde. Părăsirea ecranului de scanare este permisă în acest timp deoarece obiectul `ExtractUseCase` nu este distrus odată cu obiectul vizual, ceea ce nu întrerupe procesarea.
+
+## Gestionare Drafturi
+
+![Caption 2 \label{draftList}](source/figures/DraftsList.png){ height=50% }
+
+![Caption 1 \label{draftScreen}](source/figures/DraftScreen.png){ height=50% }
+
+Întrucât extragerea informațiilor nu este un proces robust, datele extrase trebuie validate de utilizator. Odată ce imaginile sunt procesate, datele extrase sunt salvate în baza de date, sub categoria *drafts*. În acest moment, bonurile sunt editabile. Figura \ref{draftList} prezintă ecranul unde utilizatorul vede toate drafturile, iar figura \ref{draftScreen} ilustrează ecranul de editare.
+
+Asupra unui draft, utilizatorul are la dispoziție următoarele opțiuni:
+
+* modificarea categoriei, prin apăsarea pe ilustrația corespunzătoare;
+* modificarea numelui comerciantului;
+* modificarea datei, prin folosirea unui *date picker*;
+* modificarea prețului total și a monedei;
+* modificarea numelui sau prețului unui produs;
+* ștergerea unui produs, prin gestul de *swipe*;
+* adăugarea unui produs, prin apăsarea butonului de adăugare;
+* ștergerea, validarea și vizualizarea imaginii aferente prin butoanele din bara de opțiuni;
+
+Validarea unui draft mută acel bon în lista de bonuri validate și poate fi văzut în ecranul *Receipts*. Totodată, validarea declanșează și trimiterea bonului împreună cu imaginea aferentă către cloud în cazul în care utilizatorul permite colectarea datelor. Această acțiune nu este una de importanță majoră pentru utilizator și este executată în background.
+
+### Implementare
+
+La nivelul modelului, aceste opțiuni sunt reprezentate prin interfața `DraftsUseCase`. Atât funcționalitatea de listare, cât și cea de editare se folosesc de funcționalitatea *Room* prin care atunci când apare o modificare la nivelul bazei de date, o nouă valoare este emisă pentru interogările deja executate. Astfel, este ușoară o implementare reactivă pentru aceste funcționalități.
+
+\lstinputlisting[style=javaCodeStyle, caption=Interfața Drafts Use Case]{source/code/DraftsUseCase.kt}
+
+Editarea câmpurilor text se face în manieră *on the fly*, ceea ce înseamnă că nu este necesar un ecran separat drept formular și apăsarea unui buton de persistare a modificărilor. Aceasta se realizează înregistrând un *callback* pe câmpurile de text, care apelează funcția de update. Această abordare ridică problema unor fluxuri de date mult prea rapide. De aceea, asupra fluxului de modificări este aplicat operatorul RxJava `throttleLast`. Figura \ref{throttle}, din documentația RxJava [@ThrottleLast] ilustrează modul în care acest operator funcționează.
+
+![Caption 1 \label{throttle}](source/figures/throttleLast.png)
+
+În continuare este prezentată utilizarea operatorului `throttleLast`, împreună cu un exemplu de utilizare. Funcția `throttled` primește argumentele pentru aplicarea operatorului și o funcție și returnează o nouă funcție care are aceeași signatură, același comportament, dar executată la o rată de timp specificată. În acest mod sunt exemplificate funcțiile de ordin înalt și abilitatea de a reprezenta funcțiile ca valori în limbajul Kotlin.
+
+\lstinputlisting[style=javaCodeStyle, caption=Funcții throttled]{source/code/ThrottleImplementation.kt}
+
+
+<!-- TODO: Implementarea colectării -->
+
 
