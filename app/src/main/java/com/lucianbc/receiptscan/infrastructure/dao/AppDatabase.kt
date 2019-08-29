@@ -15,7 +15,7 @@ import com.lucianbc.receiptscan.infrastructure.entities.ReceiptEntity
     OcrElementEntity::class,
     ProductEntity::class,
     ExportEntity::class
-], version = 4, exportSchema = true)
+], version = 5, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -31,7 +31,7 @@ abstract class AppDatabase : RoomDatabase() {
                         AppDatabase::class.java,
                         "receiptscan.db"
                     )
-                        .fallbackToDestructiveMigration()
+//                        .fallbackToDestructiveMigration()
                     .build()
                 }
             }

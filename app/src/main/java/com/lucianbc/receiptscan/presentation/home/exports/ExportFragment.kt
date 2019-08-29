@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.presentation.Event
@@ -17,11 +19,14 @@ class ExportFragment
     @Inject
     lateinit var eventBus: EventBus
 
+    private val adapter = ExportsAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        initViewModel()
         return inflater.inflate(R.layout.fragment_export, container, false)
     }
 
@@ -35,5 +40,18 @@ class ExportFragment
                 fragmentManager?.popBackStack()
             })
         }
+        setupAdapter()
+        observe(viewModel)
+    }
+
+    private fun setupAdapter() {
+        exportsList.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = this@ExportFragment.adapter
+        }
+    }
+
+    private fun observe(viewModel: ExportViewModel) {
+        viewModel.exports.observe(viewLifecycleOwner, Observer(adapter::submitList))
     }
 }
