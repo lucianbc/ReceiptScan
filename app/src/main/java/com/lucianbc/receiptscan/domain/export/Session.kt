@@ -44,3 +44,20 @@ data class Session(
         }
     }
 }
+
+enum class Status {
+    PENDING_NETWORK,
+    UPLOADING,
+    WAITING_DOWNLOAD,
+    COMPLETE
+}
+
+data class Export (
+    val id: String,
+    val firstDate: Date,
+    val lastDate: Date,
+    val content: Session.Content,
+    val format: Session.Format,
+    val status: Status,
+    val downloadLink: String
+)

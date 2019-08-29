@@ -5,6 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.lucianbc.receiptscan.domain.drafts.DraftListItem
+import com.lucianbc.receiptscan.domain.export.Export
+import com.lucianbc.receiptscan.domain.export.Status
 import com.lucianbc.receiptscan.domain.extract.DraftId
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.infrastructure.entities.OcrElementEntity
@@ -12,7 +14,8 @@ import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
 import com.lucianbc.receiptscan.infrastructure.entities.ReceiptEntity
 import com.lucianbc.receiptscan.domain.receipts.ReceiptId
 import com.lucianbc.receiptscan.domain.receipts.ReceiptListItem
-import com.lucianbc.receiptscan.presentation.home.exports.ExportUseCase
+import com.lucianbc.receiptscan.infrastructure.entities.ExportEntity
+import com.lucianbc.receiptscan.presentation.home.exports.UploadUseCase
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -57,14 +60,14 @@ interface AppDao {
         from    receipt 
         where   date between :firstDate and :lastDate
     """)
-    fun getTextReceiptsBetween(firstDate: Long, lastDate: Long): Single<List<ExportUseCase.TextReceipt>>
+    fun getTextReceiptsBetween(firstDate: Long, lastDate: Long): Single<List<UploadUseCase.TextReceipt>>
 
     @Query("""
         select  id, merchantName, date, total, currency, category, imagePath 
         from    receipt 
         where   date between :firstDate and :lastDate
     """)
-    fun getImageReceiptsBetween(firstDate: Long, lastDate: Long): Single<List<ExportUseCase.ImageReceipt>>
+    fun getImageReceiptsBetween(firstDate: Long, lastDate: Long): Single<List<UploadUseCase.ImageReceipt>>
 
     @Query(
         """
@@ -105,4 +108,25 @@ interface AppDao {
         category: Category,
         id: DraftId
     ) : Completable
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(exportEntity: ExportEntity): Completable
+
+    @Query("""
+        update  export
+        set     status  = :status
+        where   id      = :id
+    """)
+    fun updateStatus(id: String, status: Status): Completable
+
+    @Query("""
+        update  export
+        set     status          = :status,
+                downloadLink    = :downloadLink
+        where   id      = :id
+    """)
+    fun updateStatusAndLink(id: String, status: Status, downloadLink: String): Completable
+
+    @Query("select * from export")
+    fun selectExports(): Flowable<List<Export>>
 }

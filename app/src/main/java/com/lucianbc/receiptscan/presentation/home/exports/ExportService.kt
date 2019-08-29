@@ -21,7 +21,7 @@ class ExportService : DaggerService() {
     private lateinit var session : Session
 
     @Inject
-    lateinit var useCaseFactory: ExportUseCase.Factory
+    lateinit var useCaseFactory: UploadUseCase.Factory
 
     private val disposables = CompositeDisposable()
 
