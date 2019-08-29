@@ -19,7 +19,7 @@ class ExportFragment
     @Inject
     lateinit var eventBus: EventBus
 
-    private val adapter = ExportsAdapter()
+    private val adapter = ExportsAdapter { i -> activity?.startActivity(i) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
