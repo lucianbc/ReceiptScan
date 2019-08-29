@@ -17,5 +17,6 @@ data class ExportEntity(
     val content: Session.Content,
     val format: Session.Format,
     val status: Status,
-    val downloadLink: String
+    val downloadLink: String,
+    val creationTimestamp: Date
 )

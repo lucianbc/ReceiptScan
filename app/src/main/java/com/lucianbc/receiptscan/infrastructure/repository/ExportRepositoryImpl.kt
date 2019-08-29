@@ -25,7 +25,8 @@ class ExportRepositoryImpl @Inject constructor(
                 content,
                 format,
                 status,
-                ""
+                "",
+                Date()
             )
         }.let(appDao::insert)
 

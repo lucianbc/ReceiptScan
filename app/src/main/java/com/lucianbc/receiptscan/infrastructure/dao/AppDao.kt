@@ -127,6 +127,10 @@ interface AppDao {
     """)
     fun updateStatusAndLink(id: String, status: Status, downloadLink: String): Completable
 
-    @Query("select * from export")
+    @Query("""
+        select  id, firstDate, lastDate, content, format, status, downloadLink
+        from    export
+        order   by creationTimestamp desc
+    """)
     fun selectExports(): Flowable<List<Export>>
 }
