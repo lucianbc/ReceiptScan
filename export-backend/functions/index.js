@@ -64,7 +64,8 @@ exports.exportProcessor = functions
                 .then(result => {
                     return {
                         url: result[0],
-                        expires: expiration.toString()
+                        expires: expiration.toString(),
+                        requestId: manifest.id
                     }
                 })
         };
@@ -78,10 +79,7 @@ exports.exportProcessor = functions
             return admin
                 .messaging()
                 .sendToDevice(myManifest.notificationToken, {
-                    data: payload,
-                    notification: {
-                        title: 'Export Finished'
-                    }
+                    data: payload
                 })
         };
 
