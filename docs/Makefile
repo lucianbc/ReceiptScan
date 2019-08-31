@@ -1,6 +1,6 @@
-STDNO="z0000000"
-LAST="Last"
-FIRST="First"
+STDNO="v01"
+LAST="Boacă"
+FIRST="Lucian"
 
 PY=python
 PANDOC=pandoc

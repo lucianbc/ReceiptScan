@@ -9,7 +9,7 @@ Așa cum am precizat mai devreme, înțelegerea conținutului bonurilor fiscale 
 * Recunoașterea textului;
 * Extragerea informațiilor din textul neprocesat;
 
-Metode mai bune pentru a rezolva această provocare pot ține cont de imagini și pentru a doua sarcină și pot folosi metode mai avansate, de *machine learning*, odată cu colectarea a mai multor date. De aceea am implementat funcționalitatea de colectare de date, care va fi discutată într-o secțiune viitoare. Aceste opțiuni sunt subiectul unor cercetări viitoare.
+Metode mai bune pentru a rezolva această provocare pot ține cont de imagini și pentru a doua sarcină și pot folosi metode mai avansate, de *machine learning*, odată cu colectarea mai multor date. De aceea am implementat funcționalitatea de colectare de date, care va fi discutată într-o secțiune viitoare. Aceste opțiuni sunt subiectul unor cercetări viitoare.
 
 ### Recunoașterea textului
 
@@ -20,7 +20,7 @@ O soluție open source populară pentru rezolvarea problemelor OCR este *Tessera
 * Firebase Vision a fost rulat folosind un test de instrumentare, întrucât această librărie nu poate rula decât pe un dispozitiv mobil;
 * Tesseract a fost rulat pe un computerul personal, folosind python;
 * Imaginea a fost preprocesată doar pentru Tesseract, întrucât această librărie nu oferă o performanță satisfăcătoare pe imagini neprocesate;
-* Preprocesarea a constat în aplicarea unui algoritm care să elimine fundalul, să transforme imaginea în alb-negur și să uniformizeze luminozitatea.
+* Preprocesarea a constat în aplicarea unui algoritm care să elimine fundalul, să transforme imaginea în alb-negru și să uniformizeze luminozitatea.
 * Asupra ambelor rezultate a fost aplicat un algoritm care să grupeze chenarele de text pe linii.
 
 Anexa 1 cuprinde cele două script-uri folosite pentru comparație. Rezultele obținute sunt prezentate în figura ... .
@@ -28,11 +28,11 @@ Anexa 1 cuprinde cele două script-uri folosite pentru comparație. Rezultele ob
 
 De menționat este și efortul necesar pentru a integra Tesseract într-o aplicație mobilă. În același timp, Firebase Vision este disponibilă ca o dependință *gradle*. 
 
-Performanța superioară a Firebase Vision ar fi suficientă pentru a alege această librărie. La aceasta se adaugă și ușurința integrării și lipsa necesității de preprocesare. Dezavantajul major al acestei librării este integrarea unui serviciu extern, care nu este open soruce în codul aplicației, dar acesta nu este unul foarte mare pentru versiunea curentă a aplicației. Așădar, pentru sarcina de OCR am ales soluția Firebase Vision.
+Performanța superioară a Firebase Vision ar fi suficientă pentru a alege această librărie. La aceasta se adaugă și ușurința integrării și lipsa necesității de preprocesare. Dezavantajul major al acestei librării este integrarea unui serviciu extern, care nu este open source în codul aplicației, dar acesta nu este unul foarte mare pentru versiunea curentă a aplicației. Așădar, pentru sarcina de OCR am ales soluția Firebase Vision.
 
 ### Extragerea informațiilor din text
 
-Procesarea textului rezultat în urma procesului de OCR se face pe baza unor reguli observate în majoritatea bonurilor fiscale. Firebase Vision returnează textul și chenarele de text, grupate blocuri, linii și elemente, în funcție de coordonatele geometrice din imagine. Această organizare pe blocuri nu este de folos în procesarea de față, dar organizarea pe linii este, din moment ce informația de pe bonurile fiscale este așezată in format cheie-valoare, pe linii. De aceea, prima etapă în extragerea informațiilor este renunțarea la structura de blocuri și organizarea în linii raportate la întregul document. Această etapă se face după algoritmul:
+Procesarea textului rezultat în urma procesului de OCR se face pe baza unor reguli observate în majoritatea bonurilor fiscale. Firebase Vision returnează textul și chenarele de text, grupate în blocuri, linii și elemente, în funcție de coordonatele geometrice din imagine. Această organizare pe blocuri nu este de folos în procesarea de față, dar organizarea pe linii este, din moment ce informația de pe bonurile fiscale este așezată în format cheie-valoare, pe linii. De aceea, prima etapă în extragerea informațiilor este renunțarea la structura de blocuri și organizarea în linii raportate la întregul document. Această etapă se face după algoritmul:
 
 1. Extrage liniile din blocuri;
 2. Sortează liniile de sus în jos, în funcție de punctul lor de mijloc; Consideră liniile ca fiind elementele OCR
@@ -55,7 +55,7 @@ Implementarea detaliată a algoritmului de extragere a informațiilor este preze
 
 ![Ecranul de Scanare \label{scanner}](source/figures/Scanner.png){ height=50% }
 
-Figura \ref{scanner} prezintă ecranul de scanare, care este interfața cu utilizatorul a algoritmului de extragere a informațiilor. Acesta permite utilizatorului să obțină o imagine a bonului fiscal folosind camera telefonului sau importând-o din galerie. De asemenea, ecranul permite utilizatorului activarea sau dezactivarea blitz-ului. Odată ce utilizatorul atinge ecranul sau importa o imagine din galerie, este afișat un ecran de incărcare, în timp ce procesarea se face în background. La finalul procesării, utilizatorul este redirecționat către un ecran de unde poate face modificări asupra datelor extrase.
+Figura \ref{scanner} prezintă ecranul de scanare, care este interfața cu utilizatorul a algoritmului de extragere a informațiilor. Acesta permite utilizatorului să obțină o imagine a bonului fiscal folosind camera telefonului sau importând-o din galerie. De asemenea, ecranul permite utilizatorului activarea sau dezactivarea blitz-ului. Odată ce utilizatorul atinge ecranul sau importă o imagine din galerie, este afișat un ecran de incărcare, în timp ce procesarea se face în background. La finalul procesării, utilizatorul este redirecționat către un ecran de unde poate face modificări asupra datelor extrase.
 
 La nivelul domeniului, algoritmul de OCR este ascuns sub interfața `Scannable`, care este implementată la nivelul infrastructurii. Aceasta expune două metode, `ocrElements()` și `image()`, ce furnizează elementele textuale și imaginea sub abstractizarea `Observable` din RxJava.
 
@@ -65,8 +65,8 @@ La nivelul domeniului, algoritmul de OCR este ascuns sub interfața `Scannable`,
 
 * Valoarea `preview` expune un flux de elemente OCR care să fie afișate pe ecran, deasupra camerei, pentru a ajuta utilizatorul în capturarea imaginii. 
 * Funcția `fetchPreview` permite livrarea unui nou cadru surprins de cameră, care să fie procesat asincron, iar rezultatul să fie livrat către `preview`.
-* funcția `extract` declanșează procesarea imaginii bonului și salvarea informațiilor în baza de date, returnând id-ul entității salvate.
-* valoarea `state` marchează daca o imagine este procesată pentru extragerea unui bon sau nu, sau dacă a fost întâmpinată o eroare.
+* Funcția `extract` declanșează procesarea imaginii bonului și salvarea informațiilor în baza de date, returnând id-ul entității salvate.
+* Valoarea `state` marchează daca o imagine este procesată pentru extragerea unui bon sau nu, sau dacă a fost întâmpinată o eroare.
 
 Procesarea unei imagini durează în funcție de performanțele telefonului, timp de câteva secunde. Părăsirea ecranului de scanare este permisă în acest timp deoarece obiectul `ExtractUseCase` nu este distrus odată cu obiectul vizual, ceea ce nu întrerupe procesarea.
 

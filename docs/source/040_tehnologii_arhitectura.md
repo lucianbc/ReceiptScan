@@ -1,4 +1,4 @@
-# Tehnologii. Arhitectura. Persistență
+# Tehnologii. Arhitectură. Persistență
 
 Un scop secundar al acesui proiect este explorarea unor metode moderne pentru dezvoltarea aplicațiilor Android. Menținerea unor reguli și structuri clare în organizarea codului aplicației aduce o serie de beneficii, printre care reducerea numărului de bug-uri și ușurința în menținerea și extinderea aplicației pe termen lung și este crucială pentru succesul proiectelor de dimensiuni medii și mari sau la care lucrează mai multe persoane. Dezavantajul acestora este timpul ce trebuie investit la începutul proiectului și o continuă disciplină și atenție din partea programatorilor. 
 
@@ -24,7 +24,7 @@ Principalele caracteristici ale acestui limbaj sunt sistemul de tipuri superior,
 
 *Programare reactivă* [@ReactiveProgramming] este o paradigmă concentrată în jurul reacționării la modificări în starea unui obiect și a devenit populară în ultimii ani, atât pentru dezvoltarea aplicațiilor grafice, cât și pentru aplicațiile de server care procesează fluxuri de date. Avantajele acesteia sunt facilitarea procesării pe mai multe *thread-uri* și abstractizarea componentelor aplicației (*separation of concerns*).
 
-RxJava implementează o serie de abstractizări ce extind ideea de *Observer*[@ObseverPattern] și operatori asupra acestor abstractizări pentru a executa computații asupra valorilor reprezentate. Această aplicație folosește RxJava pentru a reprezenta fiecare operație sau unitate computațională și pentru a orchestra aceste computații pe diferite thread-uri, cu scopul de a nu bloca interfața grafică. De exemplu, surprinderea și extragerea informațiilor dintr-o poză este reprezentată folosint abstractizarea `Single` și este executată pe un thread secundar, în timp ce thread-ul principal afișează un mesaj și răspunde acțiunilor utilizatorului,
+RxJava implementează o serie de abstractizări ce extind ideea de *Observer*[@ObseverPattern] și operatori asupra acestor abstractizări pentru a executa computații asupra valorilor reprezentate. Această aplicație folosește RxJava pentru a reprezenta fiecare operație sau unitate computațională și pentru a orchestra aceste computații pe diferite thread-uri, cu scopul de a nu bloca interfața grafică. De exemplu, surprinderea și extragerea informațiilor dintr-o poză este reprezentată folosind abstractizarea `Single` și este executată pe un thread secundar, în timp ce thread-ul principal afișează un mesaj și răspunde acțiunilor utilizatorului.
 
 ### Android Architecture Components
 
@@ -51,29 +51,29 @@ Firebase este o suită de servicii cloud oferită de Google dezvoltatorilor de a
 
 ## Arhitectura aplicației
 
-Robert C. Martin definește arhitectura unui sistem software ca fiind forma care i se dă de către cei care îl construies. Această formă este dată de diviziunea sistemului în componente, de aranjamentul acestor componente și de modul în care aceste componente comunică între ele. Scopul acestei forme este de a facilita dezvoltarea, lansarea și întreținerea sistemului software. [@ArchitectureDef]
+Robert C. Martin definește arhitectura unui sistem software ca fiind forma care i se dă de către cei care îl construiesc. Această formă este dată de diviziunea sistemului în componente, de aranjamentul acestor componente și de modul în care aceste componente comunică între ele. Scopul acestei forme este de a facilita dezvoltarea, lansarea și întreținerea sistemului software. [@ArchitectureDef]
 
-Arhitectura dezvoltată pentru această aplicație este inspirată de cea prezentată de Robert C. Martin în cartea *Clean Architecture*, dar simplificată și adaptată pentru acest caz. Figura \ref{arhitectura} prezintă nivelurile conceptuale în care este împărțită aplicația. Primele două nivele și ultimele două nivele sunt grupate la nivelul codului după rolul pe care acestea îl îndeplinesc în *domain* și *presentation*. 
+Arhitectura dezvoltată pentru această aplicație este inspirată de cea prezentată de Robert C. Martin în cartea *Clean Architecture*, dar simplificată și adaptată pentru acest caz. Figura \ref{arhitectura} prezintă nivelurile conceptuale în care este împărțită aplicația. Primele două niveluri și ultimele două niveluri sunt grupate la nivelul codului după rolul pe care acestea îl îndeplinesc în *domain* și *presentation*.
 
 ![Nivelurile conceptuale ale arhitecturii aplicației \label{arhitectura}](source/figures/Architecture.png){ width=60% }
 
-O caracteristică importantă a arhitecturii este aceea că abstractizarea descrește din centru înspre margini. Dependințele în cadrul acesteia sunt orientate către centru. Astfel, un nivel mai abstract nu depinde de un detaliu, ci invers, detaliile depind de abstractizări. Această caracteristică se realizează urmând principiul inversării dependințelor. Pentru a inversa dependințele, un nivel mai înalt definește o interfață care este implementată la un nivel inferior. 
+O caracteristică importantă a arhitecturii este aceea că abstractizarea descrește din centru înspre margini. Dependințele în cadrul acesteia sunt orientate către centru. Astfel, un nivel mai abstract nu depinde de un detaliu, ci invers, detaliile depind de abstractizări. Această caracteristică se realizează urmând principiul inversării dependințelor. Pentru a inversa dependințele, un nivel mai înalt definește o interfață care este implementată la un nivel inferior.
 
 Tehnica de injectare a dependințelor este utilizată pentru a realiza inversarea dependințelor. Aceasta este exemplificată în exemplul următor:
 
 \lstinputlisting[style=javaCodeStyle, caption=ReceiptsUseCaseImpl.kt]{source/code/DiExample.kt}
 
-La nivelul unui *usecase* este necesar accesul la baza de date. Dar la acest nivel detaliul implementării bazei de date nu este relevant. Pentru acest nivel, baza de date poate fi *SQL* sau o simplă colecție în memorie. De aceea este definită interfața `ReceiptsRepository` care apoi este implementată la nivelul *infrastructure*.
+La nivelul unui *usecase* este necesar accesul la baza de date. Dar la acest nivel detaliul implementării bazei de date nu este relevant. Aceasta poate fi *SQL* sau o simplă colecție în memorie. De aceea este definită interfața `ReceiptsRepository` care apoi este implementată la nivelul *infrastructure*.
 
 Metoda recomandată pentru injectarea dependințelor în Android este librăria *Dagger 2*. Dacă majoritatea librăriilor pentru injectarea dependințelor utilizează reflexia la *run-time*, Dagger folosește anotările definite în pachetul `javax.inject` pentru a genera cod la *compile-time*. Avantajul acestei abordări este performanța sporită, dar are dezavantajul necesității de configurare din partea programatorului. 
 
 ### Nivelul Domeniu
 
-La acest nivel sunt definite obiectele care modelează spațiul funcționalităților,cazurile de utilizare ale acelor funcționalități și interfețele către resurse externe necesare. Modelul este alcătuit din clase de date și interfețe imutabile (proprietățile lor sunt imutabile). Cazurile de utilizare implementează specificațiile aplicației și expun date folosind termeni din RxJava: `Single`, `Flowable`, `Observable`, `Completable`. Organizarea în pachete se face pe bază de funcționalități. Menținerea și modificarea stării se face la nivel de *UseCase*.
+La acest nivel sunt definite obiectele care modelează spațiul funcționalităților, cazurile de utilizare ale acelor funcționalități și interfețele către resurse externe necesare. Modelul este alcătuit din clase de date și interfețe imutabile (proprietățile lor sunt imutabile). Cazurile de utilizare implementează specificațiile aplicației și expun date folosind termeni din RxJava: `Single`, `Flowable`, `Observable`, `Completable`. Organizarea în pachete se face pe bază de funcționalități. Menținerea și modificarea stării se face la nivel de *UseCase*.
 
 ### Nivelul Infrastructură
 
-La acest nivel este implementat accesul mediile de stocare: baza de date *sqlite*, memoria internă și *shared preferences*. Tot la acest nivel sunt implementate funcționalitățile ce necesită API-uri externe: OCR, accesul la serviciile cloud și computațiile de background: *WorkManager* și *Foreground Services*.
+La acest nivel este implementat accesul la mediile de stocare: baza de date *sqlite*, memoria internă și *shared preferences*. Tot la acest nivel sunt implementate funcționalitățile ce necesită API-uri externe: OCR, accesul la serviciile cloud și computațiile de background: *WorkManager* și *Foreground Services*.
 
 ### Nivelul de prezentare
 
@@ -100,7 +100,7 @@ Aceasta este o bază de date relațională ce este preinstalată pe sistemul de 
 
 ### Spațiul de stocare intern
 
-Pe spațiul de stocare intern sunt salvate imaginile aferente bonurilor, fiind inaccesibile altor aplicații, Acestea sunt salvate sub un nume aleatoriu, care este salvat în tabela sql (proprietatea imagePath din tabela Receipt).
+Pe spațiul de stocare intern sunt salvate imaginile aferente bonurilor, fiind inaccesibile altor aplicații. Acestea sunt salvate sub un nume aleatoriu, care este salvat în tabela sql (proprietatea imagePath din tabela Receipt).
 
 ### Shared preferences
 

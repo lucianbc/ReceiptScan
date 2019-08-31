@@ -2,7 +2,7 @@
 
 În cadrul dezvoltării unui produs software, definirea specificațiilor are un rol crucial în succesul proiectului. Această etapă poate implica studii laborioase de piață, iar specificațiile pot trece prin mai multe etape, de la discuții cu utilizatorii până la documente formale ce ajung la programatori. În cazul de față, specificațiile sunt dictate de nevoile personale și pot fi formulate într-un limbaj mai apropiat de cel tehnic, gata de implementare.
 
-Soecificațiile sunt definite în jurul noțiunii de *usecase* (caz de utilizare), așa cum acestea sunt definite în lucrarea *Structuring use cases with goals* [@cockburn1997structuring] și inspirate din exemplul prezentat în *The Pragmatic Programmer* [@Hunt:2000:PPJ:320326]. Așadar, **scopul** acestor *usecases* este de a defini specificațiile, **conținutul** este proza consistentă (descriere în cuvinte astfel încat să nu apară contradicții), **pluralitatea** este de unul sau mai multe scenarii per *usecase*, iar **structura** este semi-formală.
+Specificațiile sunt definite în jurul noțiunii de *usecase* (caz de utilizare), așa cum acestea sunt definite în lucrarea *Structuring use cases with goals* [@cockburn1997structuring] și inspirate din exemplul prezentat în *The Pragmatic Programmer* [@Hunt:2000:PPJ:320326]. Așadar, **scopul** acestor *usecases* este de a defini specificațiile, **conținutul** este proza consistentă (descriere în cuvinte astfel încat să nu apară contradicții), **pluralitatea** este de unul sau mai multe scenarii per *usecase*, iar **structura** este semi-formală.
 
 ## Înțelegerea imaginilor
 
@@ -46,7 +46,7 @@ Imaginile se salvează astfel încât să nu fie accesibile din galerie.
 * Pentru a ajuta utilizatorul atunci când folosește camera, procesarea imaginilor venite de la cameră se face continuu, la o rată maximă configurabilă;
 * Nu pot fi procesate mai multe imagini în același timp. Starea ultimei procesări este accesibilă permanent. Dacă se primește o cerere de procesare înainte ca ultima să se fi încheiat este semnalată o eroare.
 
-## Editere draft
+## Editare draft
 
 * **Scop**: Validarea informațiilor extrase din imagine de către utilizator;
 * **Condiție de succes**: Modificările făcute de utilizator se reflectă în baza de date; Bonul este validat și marcat ca final;
@@ -107,11 +107,11 @@ Acțiunea de sincronizare se face în background, fără ca atenția utilizatoru
 
 Se sincronizează toate informațiile aferente bonului, inclusiv imaginea și elementele OCR.
 
-### Prinipalul scenariu
+### Principalul scenariu
 
 1. Utilizatorul finalizează salvarea unui bon cu succes;
 2. În consecința acțiunii de salvare, precondiția este interogată;
-3. Dacă este perisă colectarea, bonul este sincronizat în cloud;
+3. Dacă este permisă colectarea, bonul este sincronizat în cloud;
 
 ## Export
 
