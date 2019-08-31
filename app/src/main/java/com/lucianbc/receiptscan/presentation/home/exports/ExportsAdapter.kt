@@ -52,6 +52,8 @@ class ExportsAdapter(private val activityStarter: (Intent) -> Unit)
             }
 
         private fun setupButtons(value: Export, view: View) {
+            view.copyToClipboardBtn.visibility = View.VISIBLE
+            view.downloadBtn.visibility = View.VISIBLE
             view.copyToClipboardBtn.setOnClickListener {
                 val clipService = view.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("download url", value.downloadLink)
