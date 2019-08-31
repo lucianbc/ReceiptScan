@@ -7,11 +7,12 @@ import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.domain.export.FinishedNotification
 import com.lucianbc.receiptscan.infrastructure.dao.PreferencesDao
 import com.lucianbc.receiptscan.presentation.home.HomePagerAdapter
 import com.lucianbc.receiptscan.presentation.home.MainActivity
 import com.lucianbc.receiptscan.presentation.home.exports.CHANNEL_ID
-import com.lucianbc.receiptscan.presentation.home.exports.ExportUseCase
+import com.lucianbc.receiptscan.presentation.home.exports.ExportUseCaseImpl
 import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.util.loge
 import com.lucianbc.receiptscan.util.logi
@@ -28,7 +29,7 @@ class NotificationService : FirebaseMessagingService() {
     lateinit var preferencesDao: PreferencesDao
 
     @Inject
-    lateinit var exportUseCase: ExportUseCase
+    lateinit var exportUseCase: ExportUseCaseImpl
 
     override fun onCreate() {
         super.onCreate()
@@ -51,19 +52,11 @@ class NotificationService : FirebaseMessagingService() {
 
     @SuppressLint("CheckResult")
     private fun handleMessage(message: RemoteMessage) {
-        val exportId = Single.fromCallable {
-            message.data["requestId"] ?: throw IllegalArgumentException("RequestId was null")
-        }
-        val downloadUrl = Single.fromCallable {
-            message.data["url"] ?: throw IllegalArgumentException("Download Url was null")
-        }
 
-        exportId
-            .zipWith(downloadUrl)
+        message
+            .parseNotification()
             .observeOn(Schedulers.io())
-            .flatMapCompletable { (exportId, downloadUrl) ->
-                exportUseCase.markAsFinished(exportId, downloadUrl)
-            }
+            .flatMapCompletable(exportUseCase::markAsFinished)
             .andThen(showNotification())
             .doOnComplete {
                 logi("Message successfuly handled")
@@ -72,6 +65,21 @@ class NotificationService : FirebaseMessagingService() {
                 loge("Error handling message", it)
             }
             .subscribe()
+    }
+
+    private fun RemoteMessage.parseNotification(): Single<FinishedNotification> {
+        val exportId = Single.fromCallable {
+            data["requestId"] ?: throw IllegalArgumentException("RequestId was null")
+        }
+        val downloadUrl = Single.fromCallable {
+            data["url"] ?: throw IllegalArgumentException("Download Url was null")
+        }
+
+        return exportId
+            .zipWith(downloadUrl)
+            .map { (id: String, url: String) ->
+                FinishedNotification(id, url)
+            }
     }
 
     private fun showNotification(): Completable {

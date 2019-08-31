@@ -6,16 +6,17 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.lucianbc.receiptscan.domain.drafts.DraftListItem
 import com.lucianbc.receiptscan.domain.export.Export
+import com.lucianbc.receiptscan.domain.export.ImageReceipt
 import com.lucianbc.receiptscan.domain.export.Status
+import com.lucianbc.receiptscan.domain.export.TextReceipt
 import com.lucianbc.receiptscan.domain.extract.DraftId
 import com.lucianbc.receiptscan.domain.model.Category
-import com.lucianbc.receiptscan.infrastructure.entities.OcrElementEntity
-import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
-import com.lucianbc.receiptscan.infrastructure.entities.ReceiptEntity
 import com.lucianbc.receiptscan.domain.receipts.ReceiptId
 import com.lucianbc.receiptscan.domain.receipts.ReceiptListItem
 import com.lucianbc.receiptscan.infrastructure.entities.ExportEntity
-import com.lucianbc.receiptscan.presentation.home.exports.UploadUseCase
+import com.lucianbc.receiptscan.infrastructure.entities.OcrElementEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
+import com.lucianbc.receiptscan.infrastructure.entities.ReceiptEntity
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -60,14 +61,14 @@ interface AppDao {
         from    receipt 
         where   date between :firstDate and :lastDate
     """)
-    fun getTextReceiptsBetween(firstDate: Long, lastDate: Long): Single<List<UploadUseCase.TextReceipt>>
+    fun getTextReceiptsBetween(firstDate: Long, lastDate: Long): Single<List<TextReceipt>>
 
     @Query("""
         select  id, merchantName, date, total, currency, category, imagePath 
         from    receipt 
         where   date between :firstDate and :lastDate
     """)
-    fun getImageReceiptsBetween(firstDate: Long, lastDate: Long): Single<List<UploadUseCase.ImageReceipt>>
+    fun getImageReceiptsBetween(firstDate: Long, lastDate: Long): Single<List<ImageReceipt>>
 
     @Query(
         """

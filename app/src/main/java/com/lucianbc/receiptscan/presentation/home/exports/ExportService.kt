@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.domain.export.ExportUseCase
 import com.lucianbc.receiptscan.domain.export.Session
 import com.lucianbc.receiptscan.presentation.home.HomePagerAdapter
 import com.lucianbc.receiptscan.presentation.home.MainActivity
@@ -21,7 +22,7 @@ class ExportService : DaggerService() {
     private lateinit var session : Session
 
     @Inject
-    lateinit var useCaseFactory: UploadUseCase.Factory
+    lateinit var useCase: ExportUseCase
 
     private val disposables = CompositeDisposable()
 
@@ -34,7 +35,7 @@ class ExportService : DaggerService() {
 
         startForeground(1, notification())
 
-        useCaseFactory.create(session)()
+        useCase.upload(session)
             .subscribeOn(Schedulers.io())
             .subscribe {
                 stopSelf()

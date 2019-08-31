@@ -1,28 +1,22 @@
 package com.lucianbc.receiptscan.presentation.home.exports
 
-import androidx.room.Relation
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
-import com.lucianbc.receiptscan.domain.export.ExportRepository
-import com.lucianbc.receiptscan.domain.export.Session
-import com.lucianbc.receiptscan.domain.export.Status
-import com.lucianbc.receiptscan.domain.model.Category
+import com.lucianbc.receiptscan.domain.export.*
 import com.lucianbc.receiptscan.domain.model.ImagePath
 import com.lucianbc.receiptscan.infrastructure.dao.ImagesDao
 import com.lucianbc.receiptscan.infrastructure.dao.PreferencesDao
-import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.Completable
-import java.util.*
 
 class UploadUseCase @AssistedInject constructor(
     private val repo: ExportRepository,
     private val imagesDao: ImagesDao,
     private val prefs: PreferencesDao,
-    private val storage: FirebaseStorage,
+    storage: FirebaseStorage,
     private val firestore: FirebaseFirestore,
     @Assisted private val manifest: Session
 ) {
@@ -35,7 +29,7 @@ class UploadUseCase @AssistedInject constructor(
     }
 
     private fun sendContent(): Completable {
-        return when(manifest.content) {
+        return when (manifest.content) {
             Session.Content.TextOnly ->
                 repo.getTextReceiptsBeteewn(manifest.firstDate, manifest.lastDate)
                     .flatMapCompletable { Completable.concat(it.map(this::send)) }
@@ -85,53 +79,6 @@ class UploadUseCase @AssistedInject constructor(
     private val gson = Gson()
 
     operator fun invoke() = execute()
-
-    data class TextReceipt(
-        val id: Long,
-        val merchantName: String,
-        val date: Date,
-        val total: Float,
-        val currency: Currency,
-        val category: Category,
-        @Relation(parentColumn = "id", entityColumn = "receiptId")
-        val productEntities: List<ProductEntity>
-    )
-
-    data class ImageReceipt(
-        val id: Long,
-        val merchantName: String,
-        val date: Date,
-        val total: Float,
-        val currency: Currency,
-        val category: Category,
-        val imagePath: String,
-        @Relation(parentColumn = "id", entityColumn = "receiptId")
-        val productEntities: List<ProductEntity>
-    )
-
-    data class Manifest (
-        val firstDate: Date,
-        val lastDate: Date,
-        val content: Session.Content,
-        val format: Session.Format,
-        val id: String,
-        val notificationToken: String
-    ) {
-        companion object {
-            operator fun invoke(session: Session, notificationToken: String): Manifest {
-                return session.run {
-                    Manifest (
-                        firstDate,
-                        lastDate,
-                        content,
-                        format,
-                        id,
-                        notificationToken
-                    )
-                }
-            }
-        }
-    }
 
     @AssistedInject.Factory
     interface Factory {

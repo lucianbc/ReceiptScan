@@ -5,7 +5,7 @@ import androidx.lifecycle.toLiveData
 import javax.inject.Inject
 
 class ExportViewModel @Inject constructor(
-    exportUseCase: ExportUseCase
+    exportUseCase: ExportUseCaseImpl
 ) : ViewModel() {
     val exports = exportUseCase.list().toLiveData()
 }

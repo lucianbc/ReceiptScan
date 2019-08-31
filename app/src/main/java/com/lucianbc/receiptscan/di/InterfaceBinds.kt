@@ -1,17 +1,19 @@
 package com.lucianbc.receiptscan.di
 
 import com.lucianbc.receiptscan.domain.collect.CollectRepository
+import com.lucianbc.receiptscan.domain.collect.ReceiptCollector
 import com.lucianbc.receiptscan.domain.drafts.DraftsRepository
 import com.lucianbc.receiptscan.domain.drafts.DraftsUseCase
 import com.lucianbc.receiptscan.domain.drafts.DraftsUseCaseImpl
+import com.lucianbc.receiptscan.domain.export.ExportRepository
+import com.lucianbc.receiptscan.domain.export.ExportUseCase
 import com.lucianbc.receiptscan.domain.extract.ExtractRepository
 import com.lucianbc.receiptscan.domain.receipts.ReceiptsRepository
 import com.lucianbc.receiptscan.domain.receipts.ReceiptsUseCase
 import com.lucianbc.receiptscan.domain.receipts.ReceiptsUseCaseImpl
-import com.lucianbc.receiptscan.domain.export.ExportRepository
-import com.lucianbc.receiptscan.domain.collect.ReceiptCollector
 import com.lucianbc.receiptscan.infrastructure.repository.*
 import com.lucianbc.receiptscan.infrastructure.workers.ReceiptSenderWorker
+import com.lucianbc.receiptscan.presentation.home.exports.ExportUseCaseImpl
 import dagger.Binds
 import dagger.Module
 
@@ -40,4 +42,7 @@ abstract class InterfaceBinds {
 
     @Binds
     abstract fun bindCollectRepository(obj: CollectRepositoryImpl): CollectRepository
+
+    @Binds
+    abstract fun bindExportUseCase(obj: ExportUseCaseImpl): ExportUseCase
 }
