@@ -35,7 +35,7 @@ class ExportService : DaggerService() {
 
         startForeground(1, notification())
 
-        useCase.upload(session)
+        useCase.newExport(session)
             .subscribeOn(Schedulers.io())
             .subscribe {
                 stopSelf()

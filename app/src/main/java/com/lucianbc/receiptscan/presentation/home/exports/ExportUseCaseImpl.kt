@@ -20,7 +20,7 @@ class ExportUseCaseImpl @Inject constructor(
             )
             .subscribeOn(Schedulers.io())
 
-    override fun upload(manifest: Session): Completable {
+    override fun newExport(manifest: Session): Completable {
         return uploadFactory.create(manifest)()
     }
 }
