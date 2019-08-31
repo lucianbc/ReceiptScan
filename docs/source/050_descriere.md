@@ -89,6 +89,8 @@ Asupra unui draft, utilizatorul are la dispoziție următoarele opțiuni:
 * adăugarea unui produs, prin apăsarea butonului de adăugare;
 * ștergerea, validarea și vizualizarea imaginii aferente prin butoanele din bara de opțiuni;
 
+### Implementare
+
 La nivelul modelului, aceste opțiuni sunt reprezentate prin interfața `DraftsUseCase`. Atât funcționalitatea de listare, cât și cea de editare se folosesc de funcționalitatea *Room* prin care atunci când apare o modificare la nivelul bazei de date, o nouă valoare este emisă pentru interogările deja executate. Astfel, este ușoară o implementare reactivă pentru aceste funcționalități.
 
 \lstinputlisting[style=javaCodeStyle, caption=Interfața Drafts Use Case]{source/code/DraftsUseCase.kt}
@@ -111,3 +113,46 @@ Ecranul de setări controlează valorile predefinite utilizate în extragerea da
 ## Colectarea datelor
 
 Motivația colectării datelor a fost prezentată anterior. Totuși, această aplicație este bazată pe ideea de a pune utilizatorii în posesia propriilor date și de a face asta într-un mod transparent. De aceea colectarea datelor se face numai cu acordul utilizatorului și este dezactivată la instalare. În cazul în care aceasta este activată, datele sunt colectate în mod anonim. Acestea sunt trimise având un ID unic generat prima dată când funcționalitatea este folosită și nu supraviețuiește la reinstalarea aplicației. 
+
+
+## Export
+
+Funcționalitatea de export a datelor dă utilizatorului ocazia de a scoate datele sale din aplicație și de a le valorifica în alte moduri mai complexe. La finalul procesului de export, utilizatorul are acces la un link de descărcare a bonurilor fiscale, arhivate în format *zip*. Figura \ref{exportForm} prezintă formularul pentru exportarea bonurilor. Opțiunile disponibile sunt:
+
+* **Conținut**: doar text sau text și imagine. Exportarea atât a datelor textuale, cât și a imaginilor conduce la un consum mai mare de date, de aceea este implementată și opțiunea *doar text*. În cazul exportului imaginilor, fiecare obiect va conține un câmp cu numele imaginii aferente.
+* **Format**: CSV sau JSON. Această opțiune oferă flexibilitate în disponibilitatea datelor. Formatul CSV exportă datele într-o manieră relațională, în două fișiere: *transactions.csv* și *products.csv*. Formatul JSON exportă un fișier pentru fiecare bon, ce conține datele tranzacției și o listă imbricată de produse.
+* **Intervalul calendaristic**: Intervalul în care bonurule trebuie să se afle pentru a fi exportate.
+
+![Formularul de export \label{exportForm}](source/figures/ExportForm.png)
+
+Procesul de export funcționează în felul următor:
+
+1. Utilizatorul completează formularul prezentat mai sus și datele exportului sunt salvate în baza de date locală cu statusul *uploading*.
+2. Aplicația afișează o notificare și trimite bonurile în cloud. La final, sesiunea de export este salvată cu statusul *waiting download link*.
+3. Bonurile sunt procesate în cloud pentru a fi trnsformate (în cazul în care  formatul selectat a fost CSV) și arhivate.
+4. Serviciul cloud trimite o notificare către dispozitiv ce conține *link-ul* de descărcare a datelor. Acesta este salvat în baza de date locală, împreună cu statusul *complete*.
+
+Figura \ref{exportsScreen} prezintă ecranul ce afișează export-urile utilizatorului. Un element conține intervalul calendaristic aferent exportului și statusul acestuia. Atunci când sesiunea de export este finalizată, două butoane sunt afișate, cu funcționalitatea de a copia link-ul de descărcare pe clipboard sau de a descărca datele arhivate pe dispozitiv.
+
+![Lista de export-uri \label{exportsScreen}](source/figures/ExportsScreen.png)
+
+### Implementare
+
+La nivelul domeniului, funcționalitatea de export este modelată de interfața `ExportUseCase`. Aceasta definește funcțiile de listare a tuturor exporturilor de pe dispozitiv, creeare a unui nou export și marcarea unui export ca finalizat la primirea unei notificări. 
+
+\lstinputlisting[style=javaCodeStyle, caption=Interfața ExportUseCase]{source/code/ExportUseCase.kt}
+
+Trimiterea datelor către cloud se face printr-un serviciu de tipul *foreground*. Pe sistemul Android, *serviciile foreground* sunt servicii care interacționează cu utilizatorul prin intermediul unei notificări și au șanse foarte mici de a fi oprite de către sistem pentru a recupera resurse. Acestea sunt recomandate pentru a executa activități de lungă durată care nu blochează interfața și care sunt declanșate de o acțiune a utilizatorului. Funcția `upload` este apelată într-un astfel de serviciu cu argumentul obținut pe baza formularului prezentat mai sus. La creearea argumentului `Session` este generat un id unic ce va fi folosit pentru identificarea exportului pe durata funcționării acestuia.
+
+Interacțiunea aplicației cu serviciile cloud Firebase pentru această funcționalitate este ilustrată în diagrama din figura \ref{exportProcess}.
+
+![Procesul de trimitere \label{exportProcess}](source/figures/ExportSequence.png)
+
+Serviciul de *foreground* încarcă bonurile aferente exportului într-un spațiu de stocare *Firebase Cloud Storage*, sub un folder ce are numele id-ului unic generat, în format JSON (opțional și imaginile JPEG respective). La încărcarea cu succes a acestor fișiere, obiectul `Session` este trimis ca manifest în colecția *manifests* din serviciul *Firebase Firestore*. 
+
+O funcție *Firebase Cloud Functions* este configurată pentru a asculta modificări ale colecției *manifests* și a se declanșa la creearea unui nou obiect. Aceasta citește id-ul manifestului și opțiunea de format (JSON sau CSV) și procesează fișierele din folder-ul corespunzător din *Cloud Storage*. Apoi încarcă o arhivă *zip* a acestui folder în folder-ul *downloads* din Cloud Sotrage și generează un link de descărcare, pe care îl trimite către serviciul *Firebase Cloud Messaging* pentru a fi trimis mai departe ca notificare către dispozitiv.
+
+Pentru ca notificarea să ajungă doar la dispozitivul care a creeat exportul, aplicația folosește clientul Android al *Firebase Cloud Messaging*. Acesta presupune implementarea unui serviciu ce extinde `FirebaseMessagingService`. Acest serviciu generează un *token* folosit pentru a primi notificări și îl face disponibil în metoda `onNewToken(token: String)`. Aplicația salvează acest token în *shared preferences* și îl trimite în obiectul manifest. Astfel, acest token ajunge pe cloud, de unde este transmis către *Firebase Cloud Messaging*.
+
+*Firebase Cloud Messaging* suportă două tipuri de mesaje: *notification messages* și *data messages*, sau o combinație dintre cele două. [@FirebaseCloudMessaging] Pentru ca notificarea să fie gestionată imediat ce a fost primită în metoda `onMessageReceived(message: RemoteMessage)` a serviciului `FirebaseMessagingService` este folosită doar funcționalitatea de *data message*. Odată ce notificarea este recepționată de către dispozitiv, metoda `markAsFinished(notification: FinishedNotification)` este apelată pentru a actualiza baza de date și o notificare este afișată. 
+
