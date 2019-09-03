@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.presentation.draft
+package com.lucianbc.receiptscan.presentation
 
 
 import android.os.Bundle
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.domain.model.Category
-import com.lucianbc.receiptscan.presentation.icon
 import kotlinx.android.synthetic.main.category_item_layout.view.*
 import kotlinx.android.synthetic.main.fragment_category.*
 
@@ -95,7 +94,9 @@ private class CategoryAdapter(
 
     override fun getFilter() = object: Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            return FilterResults().apply { values = filterCategories(constraint, allItems) }
+            return FilterResults().apply { values =
+                filterCategories(constraint, allItems)
+            }
         }
 
         @Suppress("UNCHECKED_CAST")

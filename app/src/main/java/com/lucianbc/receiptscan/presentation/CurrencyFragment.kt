@@ -1,4 +1,4 @@
-package com.lucianbc.receiptscan.presentation.draft
+package com.lucianbc.receiptscan.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -112,7 +112,9 @@ private class CurrencyAdapter(private val callback: ((Currency) -> Unit))
 
     override fun getFilter() = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            return FilterResults().apply { values = filterCurrencies(constraint, allItems) }
+            return FilterResults().apply { values =
+                filterCurrencies(constraint, allItems)
+            }
         }
 
         @Suppress("UNCHECKED_CAST")

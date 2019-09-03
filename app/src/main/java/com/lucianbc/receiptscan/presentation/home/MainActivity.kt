@@ -7,8 +7,8 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.presentation.Event
-import com.lucianbc.receiptscan.presentation.draft.CategoryFragment
-import com.lucianbc.receiptscan.presentation.draft.CurrencyFragment
+import com.lucianbc.receiptscan.presentation.CategoryFragment
+import com.lucianbc.receiptscan.presentation.CurrencyFragment
 import com.lucianbc.receiptscan.presentation.home.exports.form.FormContainerFragment
 import com.lucianbc.receiptscan.presentation.scanner.ScannerActivity
 import dagger.android.support.DaggerAppCompatActivity
