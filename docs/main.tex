@@ -1,0 +1,123 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+% \usepackage{csquotes}
+
+\usepackage{lmodern}
+
+\usepackage[romanian]{babel}
+\addto\captionsromanian{%
+  \renewcommand{\bibname}{Bibliografie}%
+  \renewcommand{\appendixpagename}{Anexe}%
+  \renewcommand{\lstlistingname}{Programul}%
+}
+
+
+% Dimensiunile paginii și margini
+\usepackage{geometry}           
+\geometry{
+    a4paper,
+    left=2.5cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=2.5cm,
+}
+
+\usepackage{setspace}
+\onehalfspacing
+
+\usepackage{parskip}
+
+\usepackage[unicode]{hyperref}
+
+\usepackage{biblatex}
+\addbibresource{references.bib}
+
+\usepackage{graphicx}
+\graphicspath{ {./figures/} }
+
+% Remove chapter numbering
+% \makeatletter
+% \def\@makechapterhead#1{%
+%   \vspace*{50\p@}%
+%   {\parindent \z@ \raggedright \normalfont
+%     \interlinepenalty\@M
+%     \Huge \bfseries #1\par\nobreak
+%     \vskip 40\p@
+%   }}
+% \def\@makeschapterhead#1{%
+%   \vspace*{50\p@}%
+%   {\parindent \z@ \raggedright
+%     \normalfont
+%     \interlinepenalty\@M
+%     \Huge \bfseries  #1\par\nobreak
+%     \vskip 40\p@
+%   }}
+% \makeatother
+
+% Code Blocks
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{backcolour}{RGB}{242,242,242}
+\definecolor{javared}{rgb}{0.6,0,0}
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35}
+\definecolor{javapurple}{rgb}{0.5,0,0.35}
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75}
+
+\lstdefinestyle{javaCodeStyle}{
+  language=Java,                         % the language of the code
+  backgroundcolor=\color{backcolour},    % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\fontsize{10}{8}\sffamily,
+  breakatwhitespace=false,
+  breaklines=true,
+  keywordstyle=\color{javapurple}\bfseries,
+  stringstyle=\color{javared},
+  commentstyle=\color{javagreen},
+  morecomment=[s][\color{javadocblue}]{/**}{*/},
+  captionpos=t,                          % sets the caption-position to bottom
+  frame=single,                          % adds a frame around the code
+  numbers=left,
+  numbersep=10pt,                         % margin between number and code block
+  keepspaces=true,                       % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  columns=fullflexible,
+  showspaces=false,                      % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,                % underline spaces within strings only
+  showtabs=false,                        % show tabs within strings adding particular underscores
+  tabsize=2                              % sets default tabsize to 2 spaces
+}
+
+
+\usepackage[toc,page]{appendix}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\begin{document}
+
+    \input{front/macros.tex}
+
+    \input{front/cover.tex}
+
+    \pagenumbering{gobble}
+
+    \tableofcontents
+
+    \setcounter{page}{1}
+    \pagenumbering{arabic}
+    
+    \input{chapters/020_introducere.tex}
+    \input{chapters/030_specificatii.tex}
+    \input{chapters/040_tehnologii_arhitectura.tex}
+    \input{chapters/050_descriere.tex}
+    \input{chapters/060_concluzie.tex}
+    
+    \begin{appendices}
+    \input{chapters/081_appendix1.tex}
+    \input{chapters/082_appendix2.tex}
+    \input{chapters/083_appendix3.tex}
+    \end{appendices}
+    
+    \printbibliography[title=Bibliografie]
+
+\end{document}

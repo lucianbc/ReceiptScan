@@ -1,0 +1,243 @@
+\chapter{Specificațiile aplicației}\label{specs}
+
+În cadrul dezvoltării unui produs software, definirea specificațiilor are un rol crucial în succesul proiectului. Această etapă poate implica studii laborioase de piață, iar specificațiile pot trece prin mai multe etape, de la discuții cu utilizatorii până la documente formale ce ajung la programatori. În cazul de față, specificațiile sunt dictate de nevoile personale și pot fi formulate într-un limbaj mai apropiat de cel tehnic, gata de implementare.
+
+Specificațiile sunt definite în jurul noțiunii de \emph{usecase} (caz de utilizare), așa cum acestea sunt definite în lucrarea \emph{Structuring use cases with goals} \cite{cockburn1997structuring} și inspirate din exemplul prezentat în \emph{The Pragmatic Programmer} \cite{Hunt:2000:PPJ:320326}. Așadar, \textbf{scopul} acestor \emph{usecases} este de a defini specificațiile, \textbf{conținutul} este proza consistentă (descriere în cuvinte astfel încât să nu apară contradicții), \textbf{pluralitatea} este de unul sau mai multe scenarii per \emph{usecase}, iar \textbf{structura} este semi-formală.
+
+\section{Înțelegerea imaginilor}\label{understanding_spec}
+
+\begin{itemize}
+\item
+  \textbf{Scop}: Capturarea unei imagini și extragerea informațiilor relevante din aceasta;
+\item
+  \textbf{Condiție de succes}: Prezența unei înregistrări în baza de date ce modelează bonul fiscal în starea de \emph{draft};
+\item
+  \textbf{Condiții de eșec}: Imaginea nu poate fi capturată; modulul OCR nu funcționează; o imagine este deja în curs de procesare;
+\item
+  \textbf{Precondiții}: Valorile predefinite pentru categorie și monedă;
+\end{itemize}
+
+\subsection{Mențiuni}
+
+Informațiile relevante de extras dintr-o imagine sunt:
+
+\begin{itemize}
+\item
+  numele comerciantului;
+\item
+  data tranzacției;
+\item
+  suma totală;
+\item
+  moneda;
+\item
+  categoria tranzacției;
+\item
+  produse:
+
+  \begin{itemize}
+  \item
+    numele produsului;
+  \item
+    prețul aferent;
+  \end{itemize}
+\item
+  elementele OCR:
+  \begin{itemize}
+  \item
+    coordonatele casetelor ce înconjoară o unitate de text;
+  \item
+    textul aferent;
+  \end{itemize}
+\end{itemize}
+
+Imaginile se salvează astfel încât să nu fie accesibile din galerie.
+
+\subsection{Principalul scenariu}\label{principalul-scenariu}
+
+\begin{enumerate}
+\item
+  Utilizatorul capturează o imagine;
+\item
+  Modulul OCR este apelat; Textul și chenarele aferente sunt extrase;
+\item
+  Rezultatul OCR este procesat pentru a obține conținutul bonului;
+\item
+  Bonul fiscal este salvat în stadiu de draft pentru a fi editat;
+  (Editare draft)
+\end{enumerate}
+
+\subsection{Variații}\label{variaux21bii}
+
+\begin{itemize}
+\item
+  Imaginea poate fi capturată utilizând camera telefonului sau importată
+  din galerie;
+\item
+  Moneda și categoria pot avea valori prestabilite, ce se stabilesc din
+  setări; (Editare setări)
+\end{itemize}
+
+\subsection{Extensii}\label{extensii}
+
+\begin{itemize}
+\item
+  Pentru a ajuta utilizatorul atunci când folosește camera, procesarea
+  imaginilor venite de la cameră se face continuu, la o rată maximă
+  configurabilă;
+\item
+  Nu pot fi procesate mai multe imagini în același timp. Starea ultimei
+  procesări este accesibilă permanent. Dacă se primește o cerere de
+  procesare înainte ca ultima să se fi încheiat este semnalată o eroare.
+\end{itemize}
+
+
+\section{Editare draft}\label{editare-draft}
+
+\begin{itemize}
+\item
+  \textbf{Scop}: Validarea informațiilor extrase din imagine de către utilizator;
+\item
+  \textbf{Condiție de succes}: Modificările făcute de utilizator se reflectă în baza de date; Bonul este validat și marcat ca final;
+\item
+  \textbf{Condiții de eșec}: Modificările nu pot fi persistate; Modificările sunt invalide;
+\end{itemize}
+
+\subsection{Mențiuni}\label{menux21biuni-1}
+
+Algoritmul de validare poate fi subiectul unor modificări ulterioare și trebuie să fie ușor de înlocuit.
+
+Validarea considerată la momentul scrierii presupune ca niciun câmp să nu fie null sau fără conținut.
+
+\subsection{Principalul scenariu}\label{principalul-scenariu-1}
+
+\begin{enumerate}
+\item
+  Utilizatorul accesează un bon;
+\item
+  Utilizatorul modifică câmpurile dorite;
+\item
+  Utilizatorul cere validarea bonului; Validarea se efectuează cu succes;
+\item
+  Bonul este scos din lista \emph{drafts} și pus în lista bonurilor validate;
+\end{enumerate}
+
+\subsection{Variații}\label{variaux21bii-1}
+
+\begin{itemize}
+\item
+  Utilizatorul poate modifica valori, dar fără a valida bonul;
+\item
+  Utilizatorul poate valida bonul, ceea ce îl scoate din lista de \emph{drafts} și îl pune în lista de bonuri valide;
+\item
+  Accesarea unui bon se face fie prin alegerea acestuia din listă, fie în urma scanării unei imagini; (Înțelegerea imaginilor)
+\end{itemize}
+
+\subsection{Extensii}\label{extensii-1}
+
+\begin{itemize}
+\item
+  Utilizatorul poate vedea imaginea capturată, cu și fără elementele OCR;
+\item
+  Utilizatorul poate vedea toate bonurile din lista \emph{drafts} și poate naviga către unul din ele;
+\end{itemize}
+
+\section{Gestionare setări}\label{gestionare-setux103ri}
+
+\begin{itemize}
+\item
+  \textbf{Scop}: Modificarea și accesarea unor valori folosite în diferite puncte ale aplicației;
+\item
+  \textbf{Scenariu de succes}: Modificările făcute de utilizator sunt persistate și pot fi accesate;
+\item
+  \textbf{Scenarii de eșec}: Modificările nu pot fi persistate; Valorile nu pot fi accesate;
+\end{itemize}
+
+Setările considerate sunt:
+
+\begin{itemize}
+\item
+  Valoarea predefinită pentru categorie;
+\item
+  Valoarea predefinită pentru monedă;
+\item
+  Activarea sau dezactivarea colectării anonime de date;
+\end{itemize}
+
+\subsection{Principalul scenariu}\label{principalul-scenariu-2}
+
+\begin{enumerate}
+\item
+  Utilizatorul accesează setările
+\item
+  Utilizatorul modifică valoarea unei setări;
+\item
+  Noua valoare este persitată și accesibilă;
+\end{enumerate}
+
+\section{Colectare bonuri fiscale}\label{colectare-bonuri-fiscale}
+
+\begin{itemize}
+\item
+  \textbf{Scop}: Utilizatorul salvează un bon, acesta este sincronizat în cloud numai dacă utilizatorul permite colectarea de date;
+\item
+  \textbf{Condiție de succes}: Bonul este trimis cu succes către server;
+\item
+  \textbf{Condiții de eșec}: Colectarea este permisă, utilizatorul salvează un bon, acesta nu este sincronizat în cloud; Datele nu pot fi accesate la momentul sincronizării;
+\item
+  \textbf{Precondiții}: Colectarea este permisă sau nu
+\end{itemize}
+
+\subsection{Mențiuni}\label{menux21biuni-2}
+
+Acțiunea de sincronizare se face în background, fără ca atenția utilizatorului să fie atrasă. Sincronizarea se face numai pe conexiune Wi-Fi și poate fi amânată până când conexiunea este disponibilă.
+
+Se sincronizează toate informațiile aferente bonului, inclusiv imaginea și elementele OCR.
+
+\subsection{Principalul scenariu}\label{principalul-scenariu-3}
+
+\begin{enumerate}
+\item
+  Utilizatorul finalizează salvarea unui bon cu succes;
+\item
+  În consecința acțiunii de salvare, precondiția este interogată;
+\item
+  Dacă este permisă colectarea, bonul este sincronizat în cloud;
+\end{enumerate}
+
+\section{Export}\label{export}
+
+\begin{itemize}
+\item
+  \textbf{Scop}: Accesarea datelor în afara aplicației și a dispozitivului;
+\item
+  \textbf{Condiție de succes}: Utilizatorul selectează formatul, conținutul și perioada pentru export și primește un link la care poate accesa datele;
+\item
+  \textbf{Condiție de eșec}: Nu există date înregistrate în perioada selectată; Datele nu sunt trimise cu succes; Utilizatorul nu primește link-ul aferent;
+\end{itemize}
+
+\subsection{Mențiuni}\label{menux21biuni-3}
+
+Pentru a consuma cât mai puține resurse (timp, baterie), exportul se face cu minim de procesare pe dispozitiv;
+
+Datele salvate pe cloud au o dată de expirare, după care sunt șterse;
+
+Odată ce datele sunt încărcate și procesate în cloud, aplicația primește o notificare ce conține link-ul de descărcare;
+
+Datele pot fi descărcate într-o arhivă zip;
+
+\subsection{Variații}\label{variaux21bii-2}
+
+\begin{itemize}
+\item
+  Pentru a oferi maximum de flexibilitate utilizatorilor, datele pot fi accesate in format JSON sau CSV și pot conține fie doar text, fie text și imagini;
+\end{itemize}
+
+\subsection{Extensii}\label{extensii-2}
+
+\begin{itemize}
+\item
+  În cazul lipsei de conectivitate, acțiunea de export este programată pentru o dată ulterioară, odată ce telefonul are conexiune;
+\item
+  Toate sesiunile de export sunt înregistrare într-o listă și sunt eliminate odată ce datele aferente sunt șterse din cloud;
+\end{itemize}
