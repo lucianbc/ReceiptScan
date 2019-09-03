@@ -28,7 +28,7 @@
             </intent-filter>
         </service>
         <service
-                android:name=".presentation.home.exports.ExportService"
+                android:name=".infrastructure.services.ExportService"
                 android:enabled="true"
                 android:exported="false" />
 

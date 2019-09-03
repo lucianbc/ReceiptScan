@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
+import com.lucianbc.receiptscan.infrastructure.services.ExportService
 import com.lucianbc.receiptscan.presentation.Event
 import kotlinx.android.synthetic.main.fragment_export.*
 import org.greenrobot.eventbus.EventBus

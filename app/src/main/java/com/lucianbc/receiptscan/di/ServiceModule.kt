@@ -1,7 +1,7 @@
 package com.lucianbc.receiptscan.di
 
 import com.lucianbc.receiptscan.infrastructure.services.NotificationService
-import com.lucianbc.receiptscan.presentation.home.exports.ExportService
+import com.lucianbc.receiptscan.infrastructure.services.ExportService
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
