@@ -41,7 +41,13 @@ class CurrencyFragment(
             adapter = currenciesAdapter
             layoutManager = LinearLayoutManager(activity)
         }
-        (toolbar.menu.getItem(0).actionView as SearchView).apply(::initSearch)
+        (currencyToolbar.menu.getItem(0).actionView as SearchView).apply(::initSearch)
+        currencyToolbar.apply {
+            setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
+            setNavigationOnClickListener {
+                activity?.onBackPressed()
+            }
+        }
     }
 
     private fun initSearch(view: SearchView) {

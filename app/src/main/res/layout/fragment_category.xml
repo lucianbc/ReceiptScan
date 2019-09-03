@@ -19,7 +19,7 @@
         <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/currencyToolbar"
+                android:id="@+id/categoryToolbar"
                 app:menu="@menu/currency_search"
                 app:title="@string/category_search_title"
         />

@@ -18,7 +18,7 @@
         <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/toolbar"
+                android:id="@+id/currencyToolbar"
                 app:title="@string/search_currency"
                 app:menu="@menu/currency_search"
         />
