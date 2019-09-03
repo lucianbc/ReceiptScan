@@ -115,7 +115,7 @@ class PreferencesDao (
 
         private const val NOTIFICATION_TOKEN_KEY = "NOTIFICATION_TOKEN"
 
-        private val DEFAULT_CATEGORY = Category.Grocery
+        private val DEFAULT_CATEGORY = Category.NotAssigned
         private val DEFAULT_CURRENCY = Currency.getInstance("RON")!!
         private const val DEFAULT_SEND_RECEIPT = false
     }

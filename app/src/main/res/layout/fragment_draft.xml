@@ -34,7 +34,7 @@
 
                 <TextView
                         style="@style/Receipt.Secondary"
-                        android:text="@{viewModel.category.name}"
+                        app:draftText="@{viewModel.category}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="Grocery"

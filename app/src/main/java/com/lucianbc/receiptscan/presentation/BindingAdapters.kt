@@ -19,7 +19,17 @@ fun setIcon(view: ImageView, value: Category?) {
 
 @BindingAdapter("android:text")
 fun setCategory(view: TextView, value: Category?) {
-    value?.let { view.text = value.name }
+    value?.let { view.text = value.displayName }
+}
+
+@BindingAdapter("app:draftText")
+fun setDraftCategory(view: TextView, value: Category?) {
+    value?.let {
+        when(it) {
+            Category.NotAssigned -> "Tap to set category"
+            else -> it.name
+        }
+    }?.let { view.text = it }
 }
 
 @BindingAdapter("android:text")

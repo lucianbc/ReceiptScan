@@ -89,7 +89,6 @@ private class CategoryAdapter(
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val element = getItem(position)
         holder.item = element
-
     }
 
     override fun getFilter() = object: Filter() {
@@ -113,7 +112,7 @@ private class CategoryAdapter(
                     view.setOnClickListener {
                         value.let(callback)
                     }
-                    view.categoryName.text = value.name
+                    view.categoryName.text = value.displayName
                     view.categoryIc.setImageResource(value.icon)
                 }
             }
