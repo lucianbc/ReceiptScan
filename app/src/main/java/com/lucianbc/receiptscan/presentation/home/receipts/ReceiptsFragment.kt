@@ -12,6 +12,7 @@ import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentReceiptsBinding
 import com.lucianbc.receiptscan.presentation.receipt.ReceiptActivity
 import kotlinx.android.synthetic.main.fragment_receipts.*
+import java.util.*
 
 class ReceiptsFragment :
     BaseFragment<ReceiptsViewModel>(ReceiptsViewModel::class.java) {
@@ -32,6 +33,7 @@ class ReceiptsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
+        setup()
         observe(viewModel)
     }
 
@@ -53,6 +55,15 @@ class ReceiptsFragment :
             layoutManager = LinearLayoutManager(activity)
             adapter = receiptsAdapter
         }
+    }
+
+    private fun setup() {
+        currenciesCarousel.initialize(CurrenciesAdapter().apply {
+            submitList(
+                listOf("RON", "EUR", "GBP", "USD")
+                    .map { Currency.getInstance(it) }
+            )
+        })
     }
 
     private fun observe(viewModel: ReceiptsViewModel) {

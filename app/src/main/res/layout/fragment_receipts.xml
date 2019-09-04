@@ -10,6 +10,16 @@
             android:layout_height="match_parent"
             tools:context=".presentation.home.receipts.ReceiptsFragment"
     >
+
+        <com.lucianbc.receiptscan.presentation.components.HorizontalCarousel
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_height="100dp"
+                android:id="@+id/currenciesCarousel"
+                />
+
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
