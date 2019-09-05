@@ -1,11 +1,12 @@
 package com.lucianbc.receiptscan.presentation.home.receipts
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.receipts.Group
+import com.lucianbc.receiptscan.domain.receipts.ReceiptListItem
 import com.lucianbc.receiptscan.domain.receipts.ReceiptsUseCase
 import com.lucianbc.receiptscan.domain.receipts.SpendingGroup
+import com.lucianbc.receiptscan.presentation.displayName
 import com.lucianbc.receiptscan.util.logd
 import com.lucianbc.receiptscan.util.mld
 import java.util.*
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class ReceiptsViewModel @Inject constructor(
     receiptsUseCase: ReceiptsUseCase
 ) : ViewModel() {
-    val receipts = receiptsUseCase.list().toLiveData()
+    val receipts = mld(dummyReceipts())//receiptsUseCase.list().toLiveData()
 
     val availableCurrencies = mld(dummyCurrencies())
 
@@ -34,6 +35,7 @@ class ReceiptsViewModel @Inject constructor(
 
     fun fetchForSpendingGroup(spendingGroup: SpendingGroup) {
         logd("New spending group displayed")
+        spendingGroup.displayName
         selectedCategory.postValue(spendingGroup)
     }
 
@@ -61,4 +63,14 @@ class ReceiptsViewModel @Inject constructor(
     private fun dummyCurrencies(): List<Currency> =
         listOf("RON", "EUR", "GBP", "USD")
             .map { Currency.getInstance(it) }
+
+    private fun dummyReceipts(): List<ReceiptListItem> {
+        return listOf(
+            ReceiptListItem(1, "US. FOOD NETWORK SA", 19.4F),
+            ReceiptListItem(1, "JERRY'S PIZZA EST SRL", 32.75F),
+            ReceiptListItem(1, "TUESDAY EXPRESS SRL", 14.00F),
+            ReceiptListItem(1, "DODO PIZZA", 23.90F),
+            ReceiptListItem(1, "KAUFLAND ROMANIA SCS", 106F)
+        )
+    }
 }

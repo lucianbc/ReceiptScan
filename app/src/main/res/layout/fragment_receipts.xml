@@ -33,11 +33,13 @@
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/receiptsList"
+                android:overScrollMode="never"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:paddingBottom="50dp"
                 tools:listitem="@layout/receipt_list_item_layout"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -64,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                app:displayPrice="@{viewModel.selectedCategory}"
                 app:layout_constraintEnd_toStartOf="@+id/currencyHomeText"
                 app:layout_constraintTop_toBottomOf="@+id/currenciesCarousel"
                 tools:text="130.0" />
@@ -74,19 +77,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                app:displayCurrency="@{viewModel.selectedCategory}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/totalHomeText"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="Ron" />
 
         <TextView
-                style="@style/Receipt.Secondary"
                 android:id="@+id/textView25"
+                style="@style/Receipt.Secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                tools:text="Total"
+                android:layout_marginStart="24dp"
+                app:displayCategory="@{viewModel.selectedCategory}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/totalHomeText"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Total" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
