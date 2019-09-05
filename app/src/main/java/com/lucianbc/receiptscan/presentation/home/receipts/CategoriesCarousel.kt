@@ -1,6 +1,7 @@
 package com.lucianbc.receiptscan.presentation.home.receipts
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -37,14 +38,26 @@ class CategoriesCarousel(
 }
 
 class CategoriesPositioning : HorizontalCarousel.PositioningStrategy {
-    override val snap: SnapHelper
-        get() = LinearSnapHelper()
+    override val snap = null
 
     override fun setPadding(recyclerView: RecyclerView) {
-        val sidePadding = (recyclerView.width / 2) - recyclerView.getChildAt(0).width / 2
-        recyclerView.setPadding(sidePadding, 0, sidePadding, 0)
+        val ratio = 0.1
+        val fullWidth = recyclerView.width
+        val left = (ratio * fullWidth).toInt()
+        val childWidth = recyclerView.getChildAt(0)?.width ?: 0
+        val right = fullWidth - left - childWidth
+        recyclerView.setPadding(left, 0, right, 0)
     }
 
-    override val decorator: RecyclerView.ItemDecoration?
-        get() = null
+    override val decorator = object : RecyclerView.ItemDecoration() {
+        private val spacing = 40
+
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            super.getItemOffsets(outRect, view, parent, state)
+            if (parent.getChildAdapterPosition(view) != 0)
+                outRect.left = spacing
+            if (parent.getChildAdapterPosition(view) != parent.adapter?.itemCount?.minus(1) ?: -1)
+                outRect.right = spacing
+        }
+    }
 }

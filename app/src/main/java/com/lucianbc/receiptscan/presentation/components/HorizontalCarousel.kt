@@ -33,7 +33,7 @@ abstract class HorizontalCarousel(
         clipToPadding = false
         overScrollMode = View.OVER_SCROLL_NEVER
         positioningStrategy.decorator?.let(::addItemDecoration)
-        snapHelper.attachToRecyclerView(this)
+        snapHelper?.attachToRecyclerView(this)
         layoutManager = LinearLayoutManager(context, HORIZONTAL, reversed)
         newAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
             override fun onChanged() {
@@ -41,7 +41,7 @@ abstract class HorizontalCarousel(
                 post {
                     positioningStrategy.setPadding(this@HorizontalCarousel)
                     smoothScrollToPosition(0)
-                    snapHelper.getSnapPosition().let(::updateSnapPosition)
+                    snapHelper?.getSnapPosition()?.let(::updateSnapPosition)
                     addOnScrollListener(object : OnScrollListener() {
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                             super.onScrolled(recyclerView, dx, dy)
@@ -79,9 +79,10 @@ abstract class HorizontalCarousel(
 
     private fun maybeSnapChanged() {
         onSnapChanged?.let {
-            val snapPosition = snapHelper.getSnapPosition()
-            if (updateSnapPosition(snapPosition)) {
-                it(snapPosition)
+            snapHelper?.getSnapPosition()?.let { pos ->
+                if (updateSnapPosition(pos)) {
+                    it(pos)
+                }
             }
         }
     }
@@ -106,7 +107,7 @@ abstract class HorizontalCarousel(
     private fun Int.pow(p: Int) = toDouble().pow(p)
 
     interface PositioningStrategy {
-        val snap: SnapHelper
+        val snap: SnapHelper?
         fun setPadding(recyclerView: RecyclerView)
         val decorator : ItemDecoration?
     }
