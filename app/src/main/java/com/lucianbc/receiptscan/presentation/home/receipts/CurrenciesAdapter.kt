@@ -11,6 +11,10 @@ import kotlinx.android.synthetic.main.home_currency_layout.view.*
 import java.util.*
 
 class CurrenciesAdapter : ListAdapter<Currency, CurrenciesAdapter.Holder>(Diff()) {
+    fun getItemAt(position: Int): Currency? {
+        return getItem(position)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         LayoutInflater
             .from(parent.context)
