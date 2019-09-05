@@ -1,10 +1,7 @@
 package com.lucianbc.receiptscan.domain.receipts
 
 import io.reactivex.Flowable
-import io.reactivex.processors.BehaviorProcessor
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
-import java.util.*
 import javax.inject.Inject
 
 class ReceiptsUseCaseImpl @Inject constructor(

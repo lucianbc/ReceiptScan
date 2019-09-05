@@ -7,22 +7,30 @@ import com.lucianbc.receiptscan.infrastructure.entities.ReceiptEntity
 import com.lucianbc.receiptscan.infrastructure.dao.AppDao
 import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
+import io.reactivex.rxkotlin.zipWith
 import java.util.*
 import javax.inject.Inject
 
 class ReceiptsRepositoryImpl @Inject constructor(
     private val appDao: AppDao
 ) : ReceiptsRepository {
-    override fun getAvailableCurrencies(): Flowable<List<Currency>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getAvailableCurrencies() =
+        appDao.selectCurrencies()
 
-    override fun getAvailableMonths(currency: Currency): Flowable<List<Date>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getAvailableMonths(currency: Currency) =
+        appDao.selectMonths(currency)
 
     override fun getAllSpendings(currency: Currency, month: Date): Flowable<List<SpendingGroup>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val categorized = appDao.selectSpendingsByCategory(currency, month)
+        val total = appDao.selectAllSpendingTotal(currency, month)
+        return categorized.zipWith(total)
+            .map {
+                val totalsc = SpendingGroup(Group.Total, it.second, currency)
+                val categorizedsc = it.first.map { sc ->
+                    SpendingGroup(Group.Categorized(sc.category), sc.total, sc.currency)
+                }
+                listOf(totalsc) + categorizedsc
+            }
     }
 
     override fun getTransactions(
@@ -30,14 +38,14 @@ class ReceiptsRepositoryImpl @Inject constructor(
         month: Date,
         category: Category
     ): Flowable<List<ReceiptListItem>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return appDao.getTransactionsForCategory(currency, month, category)
     }
 
     override fun getAllTransactions(
         currency: Currency,
         month: Date
     ): Flowable<List<ReceiptListItem>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return appDao.getAllTransactions(currency, month)
     }
 
     override fun listReceipts() =
@@ -53,6 +61,12 @@ class ReceiptsRepositoryImpl @Inject constructor(
         }
     }
 }
+
+data class SpendingsCategory (
+    val category: Category,
+    val total: Float,
+    val currency: Currency
+)
 
 private fun create(
     receiptEntity: ReceiptEntity,

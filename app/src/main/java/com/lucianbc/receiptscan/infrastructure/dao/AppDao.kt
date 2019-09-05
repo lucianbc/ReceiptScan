@@ -13,13 +13,16 @@ import com.lucianbc.receiptscan.domain.extract.DraftId
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.receipts.ReceiptId
 import com.lucianbc.receiptscan.domain.receipts.ReceiptListItem
+import com.lucianbc.receiptscan.domain.receipts.SpendingGroup
 import com.lucianbc.receiptscan.infrastructure.entities.ExportEntity
 import com.lucianbc.receiptscan.infrastructure.entities.OcrElementEntity
 import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
 import com.lucianbc.receiptscan.infrastructure.entities.ReceiptEntity
+import com.lucianbc.receiptscan.infrastructure.repository.SpendingsCategory
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import org.intellij.lang.annotations.Flow
 import java.util.*
 
 @Dao
@@ -134,4 +137,54 @@ interface AppDao {
         order   by creationTimestamp desc
     """)
     fun selectExports(): Flowable<List<Export>>
+
+    @Query("select currency from receipt where isDraft == 0")
+    fun selectCurrencies(): Flowable<List<Currency>>
+
+    @Query("""
+        select  distinct(date(date, '%Y-%m')) 
+        from    receipt 
+        where   isDraft == 0 and currency == :currency
+    """)
+    fun selectMonths(currency: Currency): Flowable<List<Date>>
+
+    @Query("""
+        select  category, sum(total) as total, currency
+        from    receipt
+        where   isDraft == 0 
+        and     currency == :currency
+        and     date(date, '%Y-%m') == date(:month, '%Y-%m')
+        group   by category, currency
+    """)
+    fun selectSpendingsByCategory(currency: Currency, month: Date): Flowable<List<SpendingsCategory>>
+
+    @Query("""
+        select  sum(total)
+        from    receipt
+        where   isDraft == 0
+        and     currency == :currency
+        and     date(date, '%Y-%m') == date(:month, '%Y-%m')
+    """)
+    fun selectAllSpendingTotal(currency: Currency, month: Date): Flowable<Float>
+
+    @Query("""
+        select  id, merchantName, total 
+        from    receipt 
+        where   isDraft == 0 
+        and     currency == :currency
+        and     category == :category
+        and     date(date, '%Y-%m') == date(:month, '%Y-%m')
+        order   by creationTimestamp desc
+    """)
+    fun getTransactionsForCategory(currency: Currency, month: Date, category: Category): Flowable<List<ReceiptListItem>>
+
+    @Query("""
+        select  id, merchantName, total 
+        from    receipt 
+        where   isDraft == 0 
+        and     currency == :currency
+        and     date(date, '%Y-%m') == date(:month, '%Y-%m')
+        order   by creationTimestamp desc
+    """)
+    fun getAllTransactions(currency: Currency, month: Date): Flowable<List<ReceiptListItem>>
 }
