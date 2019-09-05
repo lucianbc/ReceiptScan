@@ -2,7 +2,7 @@ package com.lucianbc.receiptscan.domain.receipts
 
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
-import io.reactivex.rxkotlin.zipWith
+import io.reactivex.rxkotlin.combineLatest
 import java.util.*
 import javax.inject.Inject
 
@@ -45,8 +45,7 @@ class SourcesManager @Inject constructor(
         .doOnNext {
             println("Stuck Here")
         }
-//        .withLatestFrom(queryMonth)
-        .zipWith(queryMonth)
+        .combineLatest(queryMonth)
         .flatMap {
             repository.getAllSpendings(it.first, it.second)
         }
@@ -64,8 +63,7 @@ class SourcesManager @Inject constructor(
         .doOnNext {
             println("Stuck here I guess")
         }
-        .zipWith(queryMonth)
-        .zipWith(currentSpending) { t1, t2 -> Triple(t1.first, t1.second, t2) }
+        .combineLatest(queryMonth, currentSpending)
         .flatMap {
             when(val type = it.third.group) {
                 is Group.Categorized -> repository.getTransactions(it.first, it.second, type.value)
