@@ -19,7 +19,22 @@ class ReceiptsViewModel @Inject constructor(
                 .map { Currency.getInstance(it) }
         )
 
+    val months = mld(dummyMonths())
+
     fun fetchForCurrency(newCurrency: Currency) {
         logd("New currency fetched: ${newCurrency.currencyCode}")
+    }
+
+    private fun dummyMonths(): List<Date> {
+        val now = Date()
+        val calendar = Calendar.getInstance().apply { time = now }
+        return (0 until 24).map {
+            calendar.add(Calendar.MONTH, -1)
+            calendar.time
+        }
+    }
+
+    fun fetchForMonth(newMonth: Date) {
+        logd("New month fetched $newMonth")
     }
 }

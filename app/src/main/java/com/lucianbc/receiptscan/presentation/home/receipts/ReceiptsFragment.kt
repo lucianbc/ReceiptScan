@@ -32,7 +32,7 @@ class ReceiptsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
-        setupCurrenciesCarousel()
+        setupViews()
         observe(viewModel)
     }
 
@@ -56,10 +56,14 @@ class ReceiptsFragment :
         }
     }
 
-    private fun setupCurrenciesCarousel() {
+    private fun setupViews() {
         currenciesCarousel.initialize()
         currenciesCarousel.onCurrencyChanged = {
             viewModel.fetchForCurrency(it)
+        }
+        monthsCarousel.initialize()
+        monthsCarousel.onMonthChanged = {
+            viewModel.fetchForMonth(it)
         }
     }
 
@@ -69,6 +73,9 @@ class ReceiptsFragment :
         })
         viewModel.currencies.observe(viewLifecycleOwner, Observer {
             currenciesCarousel.submitList(it)
+        })
+        viewModel.months.observe(viewLifecycleOwner, Observer {
+            monthsCarousel.submitList(it)
         })
     }
 }

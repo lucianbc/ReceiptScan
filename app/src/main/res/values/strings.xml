@@ -54,4 +54,5 @@
     <string name="content_text_and_image">Text and Image</string>
     <string name="content_csv">CSV</string>
     <string name="content_json">JSON</string>
+    <string name="receipts_title">Receipts</string>
 </resources>

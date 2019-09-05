@@ -6,35 +6,35 @@ import android.view.View
 import com.lucianbc.receiptscan.presentation.components.Centering
 import com.lucianbc.receiptscan.presentation.components.HorizontalCarousel
 import com.lucianbc.receiptscan.presentation.components.washedToBlackTextTransform
-import kotlinx.android.synthetic.main.home_currency_layout.view.*
+import kotlinx.android.synthetic.main.home_month_layout.view.*
 import java.util.*
 
-class CurrenciesCarousel(
+class MonthsCarousel (
     context: Context,
     attrs: AttributeSet
 ) : HorizontalCarousel(context, attrs) {
 
     override val positioningStrategy = Centering()
 
-    var onCurrencyChanged : ((Currency) -> Unit)? = null
+    var onMonthChanged : ((Date) -> Unit)? = null
 
-    lateinit var adapter : CurrenciesAdapter
+    lateinit var adapter : MonthsAdapter
 
     fun initialize() {
-        adapter = CurrenciesAdapter()
+        adapter = MonthsAdapter()
         initialize(adapter)
         this.onSnapChanged = { p ->
-            onCurrencyChanged?.let {
+            onMonthChanged?.let {
                 adapter.getItemAt(p)?.let(it)
             }
         }
     }
 
-    fun submitList(list: List<Currency>) = adapter.submitList(list)
+    fun submitList(list: List<Date>) = adapter.submitList(list)
 
     override fun applyTransform(child: View, gaussianFactor: Double) {
         washedToBlackTextTransform(
-            child.currencyItemText,
+            child.monthItemText,
             gaussianFactor.toFloat(),
             context
         )

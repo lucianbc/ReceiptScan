@@ -1,11 +1,9 @@
 package com.lucianbc.receiptscan.presentation.components
 
 import android.content.Context
-import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import kotlin.math.pow
@@ -15,33 +13,32 @@ abstract class HorizontalCarousel(
     attrs: AttributeSet
 ) : RecyclerView(context, attrs) {
 
-    protected val magnitude = 1f
+    abstract val positioningStrategy: PositioningStrategy
 
-    protected val spread
+    open protected val magnitude = 1f
+
+    open protected val spread
         get() = width / 4
-
-    protected val spacing = 150
 
     private val center
         get() = (left + right) / 2
 
     var onSnapChanged : ((Int) -> Unit)? = null
 
-    protected val snapHelper = LinearSnapHelper()
+    private val snapHelper by lazy { positioningStrategy.snap }
 
-    protected val reversed = false
+    open protected val reversed = false
 
     protected fun <T : ViewHolder> initialize(newAdapter: Adapter<T>) {
         clipToPadding = false
-        addItemDecoration(SpaceDecorator())
+        positioningStrategy.decorator?.let(::addItemDecoration)
         snapHelper.attachToRecyclerView(this)
         layoutManager = LinearLayoutManager(context, HORIZONTAL, reversed)
         newAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
                 post {
-                    val sidePadding = (width / 2) - getChildAt(0).width / 2
-                    setPadding(sidePadding, 0, sidePadding, 0)
+                    positioningStrategy.setPadding(this@HorizontalCarousel)
                     smoothScrollToPosition(0)
                     snapHelper.getSnapPosition().let(::updateSnapPosition)
                     addOnScrollListener(object : OnScrollListener() {
@@ -107,11 +104,9 @@ abstract class HorizontalCarousel(
 
     private fun Int.pow(p: Int) = toDouble().pow(p)
 
-    inner class SpaceDecorator : RecyclerView.ItemDecoration() {
-        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
-            super.getItemOffsets(outRect, view, parent, state)
-            outRect.right = spacing
-            outRect.left = spacing
-        }
+    interface PositioningStrategy {
+        val snap: SnapHelper
+        fun setPadding(recyclerView: RecyclerView)
+        val decorator : ItemDecoration?
     }
 }
