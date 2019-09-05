@@ -3,7 +3,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:layout_marginLeft="70dp"
+        tools:layout_marginRight="70dp">
 
     <TextView
             style="@style/TextSecondary"

@@ -6,6 +6,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/very_rounded_bg"
         android:backgroundTint="#c8d4eb"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         >
 
     <ImageView
