@@ -5,6 +5,7 @@ import com.lucianbc.receiptscan.domain.receipts.*
 import com.lucianbc.receiptscan.infrastructure.entities.ProductEntity
 import com.lucianbc.receiptscan.infrastructure.entities.ReceiptEntity
 import com.lucianbc.receiptscan.infrastructure.dao.AppDao
+import com.lucianbc.receiptscan.infrastructure.dao.Converters
 import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.zipWith
@@ -27,7 +28,7 @@ class ReceiptsRepositoryImpl @Inject constructor(
 
     override fun getAllSpendings(currency: Currency, month: Date): Flowable<List<SpendingGroup>> {
         val categorized = appDao.selectSpendingsByCategory(currency, month)
-        val total = appDao.selectAllSpendingTotal(currency, month)
+        val total = appDao.selectAllSpendingTotal(currency, Converters.toTimestamp(month)!!).map { it.sum() }
         return categorized.zipWith(total)
             .map {
                 val totalsc = SpendingGroup(Group.Total, it.second, currency)

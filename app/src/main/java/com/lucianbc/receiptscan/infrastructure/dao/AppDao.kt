@@ -153,19 +153,19 @@ interface AppDao {
         from    receipt
         where   isDraft == 0 
         and     currency == :currency
-        and     strftime('%m-%Y', date, 'unixepoch') == strftime('%m-%Y', :month, 'unixepoch')
+        and     strftime('%m-%Y', date, 'unixepoch', 'localtime') == strftime('%m-%Y', :month, 'unixepoch', 'localtime')
         group   by category, currency
     """)
     fun selectSpendingsByCategory(currency: Currency, month: Date): Flowable<List<SpendingsCategory>>
 
     @Query("""
-        select  sum(total)
+        select  total
         from    receipt
         where   isDraft == 0
         and     currency == :currency
-        and     strftime('%m-%Y', date, 'unixepoch') == strftime('%m-%Y', :month, 'unixepoch')
+        and     strftime('%m-%Y', date, 'unixepoch', 'localtime') == strftime('%m-%Y', :month, 'unixepoch', 'localtime')
     """)
-    fun selectAllSpendingTotal(currency: Currency, month: Date): Flowable<Float>
+    fun selectAllSpendingTotal(currency: Currency, month: Long): Flowable<List<Float>>
 
     @Query("""
         select  id, merchantName, total 
@@ -173,7 +173,7 @@ interface AppDao {
         where   isDraft == 0 
         and     currency == :currency
         and     category == :category
-        and     strftime('%m-%Y', date, 'unixepoch') == strftime('%m-%Y', :month, 'unixepoch')
+        and     strftime('%m-%Y', date, 'unixepoch', 'localtime') == strftime('%m-%Y', :month, 'unixepoch', 'localtime')
         order   by creationTimestamp desc
     """)
     fun getTransactionsForCategory(currency: Currency, month: Date, category: Category): Flowable<List<ReceiptListItem>>
@@ -183,7 +183,7 @@ interface AppDao {
         from    receipt 
         where   isDraft == 0 
         and     currency == :currency
-        and     strftime('%m-%Y', date, 'unixepoch') == strftime('%m-%Y', :month, 'unixepoch')
+        and     strftime('%m-%Y', date, 'unixepoch', 'localtime') == strftime('%m-%Y', :month, 'unixepoch', 'localtime')
         order   by creationTimestamp desc
     """)
     fun getAllTransactions(currency: Currency, month: Date): Flowable<List<ReceiptListItem>>

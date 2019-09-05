@@ -17,24 +17,24 @@ class ReceiptsViewModel @Inject constructor(
     receiptsUseCase: ReceiptsUseCase
 ) : ViewModel() {
     val receipts =
-        mld(dummyReceipts())
-//        receiptsUseCase.transactions.toLiveData()
+//        mld(dummyReceipts())
+        receiptsUseCase.transactions.toLiveData()
 
     val availableCurrencies =
 //        mld(dummyCurrencies())
         receiptsUseCase.availableCurrencies.toLiveData()
 
     val availableMonths =
-//        receiptsUseCase.availableMonths.toLiveData()
-        mld(dummyMonths())
+        receiptsUseCase.availableMonths.toLiveData()
+//        mld(dummyMonths())
 
     val categories =
-//        receiptsUseCase.categories.toLiveData()
-        mld(dummySpendings())
+        receiptsUseCase.categories.toLiveData()
+//        mld(dummySpendings())
 
     val selectedCategory =
-//        receiptsUseCase.currentSpending.toLiveData()
-        mld(dummySpendings()[0])
+        receiptsUseCase.currentSpending.toLiveData()
+//        mld(dummySpendings()[0])
 
     fun fetchForCurrency(newCurrency: Currency) {
         logd("New currency fetched: ${newCurrency.currencyCode}")
