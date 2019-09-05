@@ -11,7 +11,6 @@ import com.lucianbc.receiptscan.R
 import com.lucianbc.receiptscan.base.BaseFragment
 import com.lucianbc.receiptscan.databinding.FragmentReceiptsBinding
 import com.lucianbc.receiptscan.presentation.receipt.ReceiptActivity
-import kotlinx.android.synthetic.main.fragment_category.*
 import kotlinx.android.synthetic.main.fragment_receipts.*
 
 class ReceiptsFragment :
@@ -76,10 +75,10 @@ class ReceiptsFragment :
         viewModel.receipts.observe(viewLifecycleOwner, Observer {
             receiptsAdapter.submitList(it)
         })
-        viewModel.currencies.observe(viewLifecycleOwner, Observer {
+        viewModel.availableCurrencies.observe(viewLifecycleOwner, Observer {
             currenciesCarousel.submitList(it)
         })
-        viewModel.months.observe(viewLifecycleOwner, Observer {
+        viewModel.availableMonths.observe(viewLifecycleOwner, Observer {
             monthsCarousel.submitList(it)
         })
         viewModel.categories.observe(viewLifecycleOwner, Observer {

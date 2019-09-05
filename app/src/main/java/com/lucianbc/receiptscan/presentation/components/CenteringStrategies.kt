@@ -41,7 +41,7 @@ class CategoriesPositioning(private val centerPercent: Float) : HorizontalCarous
     }
 
     override val decorator = object : RecyclerView.ItemDecoration() {
-        private val spacing = 40
+        private val spacing = 20
 
         override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
             super.getItemOffsets(outRect, view, parent, state)

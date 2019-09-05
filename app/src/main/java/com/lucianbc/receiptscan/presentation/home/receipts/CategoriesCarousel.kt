@@ -6,14 +6,13 @@ import android.view.View
 import com.lucianbc.receiptscan.domain.receipts.SpendingGroup
 import com.lucianbc.receiptscan.presentation.components.CategoriesPositioning
 import com.lucianbc.receiptscan.presentation.components.HorizontalCarousel
-import com.lucianbc.receiptscan.presentation.components.washedToActiveTransform
 
 class CategoriesCarousel(
     context: Context,
     attrs: AttributeSet
 ) : HorizontalCarousel(context, attrs) {
 
-    private val peakPercent = 0.25f
+    private val peakPercent = 0.17f
 
     override val positioningStrategy = CategoriesPositioning(peakPercent)
 

@@ -28,8 +28,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/categoriesCarousel"
                 tools:itemCount="3"
                 tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:layout_editor_absoluteX="-34dp"
-                tools:listitem="@layout/home_category_layout"
+                tools:listitem="@layout/home_month_layout"
                 tools:orientation="horizontal" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -55,7 +54,7 @@
                 tools:itemCount="3"
                 tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:layout_editor_absoluteX="0dp"
-                tools:listitem="@layout/home_month_layout"
+                tools:listitem="@layout/home_category_layout"
                 tools:orientation="horizontal" />
 
         <TextView

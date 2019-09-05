@@ -16,18 +16,25 @@ class ReceiptsViewModel @Inject constructor(
 ) : ViewModel() {
     val receipts = receiptsUseCase.list().toLiveData()
 
-    val currencies =
-        mld(
-            listOf("RON", "EUR", "GBP", "USD")
-                .map { Currency.getInstance(it) }
-        )
+    val availableCurrencies = mld(dummyCurrencies())
 
-    val months = mld(dummyMonths())
+    val availableMonths = mld(dummyMonths())
 
     val categories = mld(dummySpendings())
 
+    val selectedCategory = mld(dummySpendings()[0])
+
     fun fetchForCurrency(newCurrency: Currency) {
         logd("New currency fetched: ${newCurrency.currencyCode}")
+    }
+
+    fun fetchForMonth(newMonth: Date) {
+        logd("New month fetched $newMonth")
+    }
+
+    fun fetchForSpendingGroup(spendingGroup: SpendingGroup) {
+        logd("New spending group displayed")
+        selectedCategory.postValue(spendingGroup)
     }
 
     private fun dummyMonths(): List<Date> {
@@ -51,11 +58,7 @@ class ReceiptsViewModel @Inject constructor(
         )
     }
 
-    fun fetchForMonth(newMonth: Date) {
-        logd("New month fetched $newMonth")
-    }
-
-    fun fetchForSpendingGroup(spendingGroup: SpendingGroup) {
-        logd("New spending group displayed")
-    }
+    private fun dummyCurrencies(): List<Currency> =
+        listOf("RON", "EUR", "GBP", "USD")
+            .map { Currency.getInstance(it) }
 }
