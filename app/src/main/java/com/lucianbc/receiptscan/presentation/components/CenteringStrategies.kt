@@ -27,3 +27,28 @@ class Centering : HorizontalCarousel.PositioningStrategy {
         }
     }
 }
+
+class CategoriesPositioning : HorizontalCarousel.PositioningStrategy {
+    override val snap = StartSnapHelper()
+
+    override fun setPadding(recyclerView: RecyclerView) {
+        val ratio = 0.1
+        val fullWidth = recyclerView.width
+        val left = (ratio * fullWidth).toInt()
+        val childWidth = recyclerView.getChildAt(0)?.width ?: 0
+        val right = fullWidth - left - childWidth
+        recyclerView.setPadding(left, 0, right, 0)
+    }
+
+    override val decorator = object : RecyclerView.ItemDecoration() {
+        private val spacing = 40
+
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            super.getItemOffsets(outRect, view, parent, state)
+            if (parent.getChildAdapterPosition(view) != 0)
+                outRect.left = spacing
+            if (parent.getChildAdapterPosition(view) != parent.adapter?.itemCount?.minus(1) ?: -1)
+                outRect.right = spacing
+        }
+    }
+}
