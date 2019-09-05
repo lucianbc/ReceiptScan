@@ -7,14 +7,11 @@ import com.lucianbc.receiptscan.domain.receipts.Group
 import com.lucianbc.receiptscan.domain.receipts.ReceiptListItem
 import com.lucianbc.receiptscan.domain.receipts.ReceiptsUseCase
 import com.lucianbc.receiptscan.domain.receipts.SpendingGroup
-import com.lucianbc.receiptscan.presentation.displayName
-import com.lucianbc.receiptscan.util.logd
-import com.lucianbc.receiptscan.util.mld
 import java.util.*
 import javax.inject.Inject
 
 class ReceiptsViewModel @Inject constructor(
-    receiptsUseCase: ReceiptsUseCase
+    private val receiptsUseCase: ReceiptsUseCase
 ) : ViewModel() {
     val receipts =
 //        mld(dummyReceipts())
@@ -37,17 +34,15 @@ class ReceiptsViewModel @Inject constructor(
 //        mld(dummySpendings()[0])
 
     fun fetchForCurrency(newCurrency: Currency) {
-        logd("New currency fetched: ${newCurrency.currencyCode}")
+        receiptsUseCase.fetchForCurrency(newCurrency)
     }
 
     fun fetchForMonth(newMonth: Date) {
-        logd("New month fetched $newMonth")
+        receiptsUseCase.fetchForMonth(newMonth)
     }
 
     fun fetchForSpendingGroup(spendingGroup: SpendingGroup) {
-        logd("New spending group displayed")
-        spendingGroup.displayName
-//        selectedCategory.postValue(spendingGroup)
+        receiptsUseCase.fetchForCategory(spendingGroup)
     }
 
     private fun dummyMonths(): List<Date> {
