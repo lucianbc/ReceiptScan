@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.lucianbc.receiptscan.domain.receipts.SpendingGroup
 import com.lucianbc.receiptscan.presentation.components.HorizontalCarousel
+import com.lucianbc.receiptscan.presentation.components.StartSnapHelper
 
 class CategoriesCarousel(
     context: Context,
@@ -38,7 +39,7 @@ class CategoriesCarousel(
 }
 
 class CategoriesPositioning : HorizontalCarousel.PositioningStrategy {
-    override val snap = null
+    override val snap = StartSnapHelper()
 
     override fun setPadding(recyclerView: RecyclerView) {
         val ratio = 0.1

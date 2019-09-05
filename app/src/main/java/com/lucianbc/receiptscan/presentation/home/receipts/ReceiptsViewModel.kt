@@ -43,7 +43,7 @@ class ReceiptsViewModel @Inject constructor(
         val ron = Currency.getInstance("RON")
 
         return listOf(
-            SpendingGroup(Group.Total, 66000f, ron),
+            SpendingGroup(Group.Total, 600f, ron),
             SpendingGroup(Group.Categorized(Category.Grocery), 140f, ron),
             SpendingGroup(Group.Categorized(Category.Transportation), 140f, ron),
             SpendingGroup(Group.Categorized(Category.Coffee), 140f, ron),
