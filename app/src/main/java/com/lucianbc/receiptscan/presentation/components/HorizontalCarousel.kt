@@ -31,6 +31,7 @@ abstract class HorizontalCarousel(
 
     protected fun <T : ViewHolder> initialize(newAdapter: Adapter<T>) {
         clipToPadding = false
+        overScrollMode = View.OVER_SCROLL_NEVER
         positioningStrategy.decorator?.let(::addItemDecoration)
         snapHelper.attachToRecyclerView(this)
         layoutManager = LinearLayoutManager(context, HORIZONTAL, reversed)
