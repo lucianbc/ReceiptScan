@@ -138,11 +138,11 @@ interface AppDao {
     """)
     fun selectExports(): Flowable<List<Export>>
 
-    @Query("select currency from receipt where isDraft == 0")
+    @Query("select distinct currency from receipt where isDraft == 0")
     fun selectCurrencies(): Flowable<List<Currency>>
 
     @Query("""
-        select  distinct(date(date, '%Y-%m')) 
+        select  date 
         from    receipt 
         where   isDraft == 0 and currency == :currency
     """)
@@ -153,7 +153,7 @@ interface AppDao {
         from    receipt
         where   isDraft == 0 
         and     currency == :currency
-        and     date(date, '%Y-%m') == date(:month, '%Y-%m')
+        and     strftime('%m-%Y', date, 'unixepoch') == strftime('%m-%Y', :month, 'unixepoch')
         group   by category, currency
     """)
     fun selectSpendingsByCategory(currency: Currency, month: Date): Flowable<List<SpendingsCategory>>
@@ -163,7 +163,7 @@ interface AppDao {
         from    receipt
         where   isDraft == 0
         and     currency == :currency
-        and     date(date, '%Y-%m') == date(:month, '%Y-%m')
+        and     strftime('%m-%Y', date, 'unixepoch') == strftime('%m-%Y', :month, 'unixepoch')
     """)
     fun selectAllSpendingTotal(currency: Currency, month: Date): Flowable<Float>
 
@@ -173,7 +173,7 @@ interface AppDao {
         where   isDraft == 0 
         and     currency == :currency
         and     category == :category
-        and     date(date, '%Y-%m') == date(:month, '%Y-%m')
+        and     strftime('%m-%Y', date, 'unixepoch') == strftime('%m-%Y', :month, 'unixepoch')
         order   by creationTimestamp desc
     """)
     fun getTransactionsForCategory(currency: Currency, month: Date, category: Category): Flowable<List<ReceiptListItem>>
@@ -183,7 +183,7 @@ interface AppDao {
         from    receipt 
         where   isDraft == 0 
         and     currency == :currency
-        and     date(date, '%Y-%m') == date(:month, '%Y-%m')
+        and     strftime('%m-%Y', date, 'unixepoch') == strftime('%m-%Y', :month, 'unixepoch')
         order   by creationTimestamp desc
     """)
     fun getAllTransactions(currency: Currency, month: Date): Flowable<List<ReceiptListItem>>
