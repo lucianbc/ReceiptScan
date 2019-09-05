@@ -3,6 +3,8 @@ package com.lucianbc.receiptscan.presentation
 import com.lucianbc.receiptscan.R.drawable.*
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.model.Category.*
+import com.lucianbc.receiptscan.domain.receipts.Group
+import com.lucianbc.receiptscan.domain.receipts.SpendingGroup
 
 val Category.icon
     get() = when(this) {
@@ -19,3 +21,16 @@ val Category.displayName
         NotAssigned -> "Others"
         else -> name
     }
+
+val SpendingGroup.icon
+    get() = when(this.group) {
+        is Group.Categorized -> group.value.icon
+        Group.Total -> ic_coin_24dp
+    }
+
+val SpendingGroup.displayName
+    get() = when(this.group) {
+        is Group.Categorized -> group.value.displayName
+        Group.Total -> "Total"
+    }
+

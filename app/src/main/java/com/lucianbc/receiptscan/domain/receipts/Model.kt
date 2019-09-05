@@ -26,3 +26,14 @@ data class Product (
     val name: String,
     val price: Float
 )
+
+data class SpendingGroup (
+    val group: Group,
+    val total: Float,
+    val currency: Currency
+)
+
+sealed class Group {
+    data class Categorized(val value: Category): Group()
+    object Total: Group()
+}
