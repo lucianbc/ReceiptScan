@@ -6,13 +6,14 @@ import android.view.View
 import com.lucianbc.receiptscan.domain.receipts.SpendingGroup
 import com.lucianbc.receiptscan.presentation.components.CategoriesPositioning
 import com.lucianbc.receiptscan.presentation.components.HorizontalCarousel
+import kotlinx.android.synthetic.main.home_category_layout.view.*
 
 class CategoriesCarousel(
     context: Context,
     attrs: AttributeSet
 ) : HorizontalCarousel(context, attrs) {
 
-    override val positioningStrategy = CategoriesPositioning()
+    override val positioningStrategy = CategoriesPositioning(0.25f)
 
     var onGroupChanged : ((SpendingGroup) -> Unit)? = null
 
@@ -31,5 +32,6 @@ class CategoriesCarousel(
     fun submitList(list: List<SpendingGroup>) = adapter.submitList(list)
 
     override fun applyTransform(child: View, gaussianFactor: Double) {
+        println("${child.categoryItemName.text} - $gaussianFactor")
     }
 }

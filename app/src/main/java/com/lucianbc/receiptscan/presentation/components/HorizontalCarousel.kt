@@ -20,7 +20,7 @@ abstract class HorizontalCarousel(
     open protected val spread
         get() = width / 4
 
-    private val center
+    open protected val peak
         get() = (left + right) / 2
 
     var onSnapChanged : ((Int) -> Unit)? = null
@@ -102,7 +102,7 @@ abstract class HorizontalCarousel(
     }
 
     private fun gaussianFactor(x: Int) =
-        magnitude * Math.E.pow(-(x - center).pow(2) / (2 * spread * spread).toDouble())
+        magnitude * Math.E.pow(-(x - peak).pow(2) / (2 * spread * spread).toDouble())
 
     private fun Int.pow(p: Int) = toDouble().pow(p)
 

@@ -28,15 +28,15 @@ class Centering : HorizontalCarousel.PositioningStrategy {
     }
 }
 
-class CategoriesPositioning : HorizontalCarousel.PositioningStrategy {
+class CategoriesPositioning(private val centerPercent: Float) : HorizontalCarousel.PositioningStrategy {
     override val snap = StartSnapHelper()
 
     override fun setPadding(recyclerView: RecyclerView) {
-        val ratio = 0.1
+        val ratio = centerPercent
         val fullWidth = recyclerView.width
-        val left = (ratio * fullWidth).toInt()
         val childWidth = recyclerView.getChildAt(0)?.width ?: 0
-        val right = fullWidth - left - childWidth
+        val left = (ratio * fullWidth - childWidth / 2).toInt()
+        val right = fullWidth - (ratio * fullWidth + childWidth / 2).toInt()
         recyclerView.setPadding(left, 0, right, 0)
     }
 
