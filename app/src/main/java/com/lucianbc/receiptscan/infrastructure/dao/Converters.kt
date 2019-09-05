@@ -21,11 +21,13 @@ class Converters {
 
         @TypeConverter
         @JvmStatic
-        fun fromTimestamp(value: Long?) = value?.toDate()
+        fun fromTimestamp(value: Long?): Date? {
+            return value?.times(1000)?.toDate()
+        }
 
         @TypeConverter
         @JvmStatic
-        fun toTimestamp(value: Date?) = value?.time
+        fun toTimestamp(value: Date?) = value?.time?.div(1000)
 
         @TypeConverter
         @JvmStatic
