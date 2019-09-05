@@ -20,6 +20,7 @@ interface ReceiptsUseCase : ISourcesManager {
 
 interface ISourcesManager {
     val availableCurrencies: Flowable<List<Currency>>
+    val availableMonths: Flowable<List<Date>>
     val categories: Flowable<List<SpendingGroup>>
     val currentSpending: Flowable<SpendingGroup>
     val transactions: Flowable<List<ReceiptListItem>>

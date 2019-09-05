@@ -30,7 +30,10 @@ class CurrenciesCarousel(
         }
     }
 
-    fun submitList(list: List<Currency>) = adapter.submitList(list)
+    fun submitList(list: List<Currency>) {
+        adapter.submitList(list)
+        adapter.notifyDataSetChanged()
+    }
 
     override fun applyTransform(child: View, gaussianFactor: Double) {
         washedToBlackTextTransform(

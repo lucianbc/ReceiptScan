@@ -3,6 +3,7 @@ package com.lucianbc.receiptscan.presentation.components
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
@@ -39,15 +40,17 @@ abstract class HorizontalCarousel(
             override fun onChanged() {
                 super.onChanged()
                 post {
-                    positioningStrategy.setPadding(this@HorizontalCarousel)
-                    smoothScrollToPosition(0)
-                    snapHelper?.getSnapPosition()?.let(::updateSnapPosition)
-                    addOnScrollListener(object : OnScrollListener() {
-                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                            super.onScrolled(recyclerView, dx, dy)
-                            onScrollChanged()
-                        }
-                    })
+                    if (adapter?.itemCount != 0) {
+                        positioningStrategy.setPadding(this@HorizontalCarousel)
+                        smoothScrollToPosition(0)
+                        snapHelper?.getSnapPosition()?.let(::updateSnapPosition)
+                        addOnScrollListener(object : OnScrollListener() {
+                            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                                super.onScrolled(recyclerView, dx, dy)
+                                onScrollChanged()
+                            }
+                        })
+                    }
                 }
             }
         })

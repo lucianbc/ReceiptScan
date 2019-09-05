@@ -30,7 +30,10 @@ class MonthsCarousel (
         }
     }
 
-    fun submitList(list: List<Date>) = adapter.submitList(list)
+    fun submitList(list: List<Date>) {
+        adapter.submitList(list)
+        adapter.notifyDataSetChanged()
+    }
 
     override fun applyTransform(child: View, gaussianFactor: Double) {
         washedToBlackTextTransform(

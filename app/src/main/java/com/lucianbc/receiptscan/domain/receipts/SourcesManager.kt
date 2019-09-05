@@ -23,7 +23,7 @@ class SourcesManager @Inject constructor(
     val currentCurrency = currencySource
         .mergeWith(availableCurrencies.firstOrEmpty())
 
-    val availableMonths = currentCurrency
+    override val availableMonths = currentCurrency
         .flatMap {
             repository
                 .getAvailableMonths(it)
@@ -68,10 +68,11 @@ class SourcesManager @Inject constructor(
 
     private fun<T> Flowable<List<T>>.firstOrEmpty(): Flowable<T> {
         return this.flatMap {
-            if (it.isEmpty())
-                Flowable.empty()
-            else
-                Flowable.just(it[0])
+            when {
+                it.isEmpty() -> Flowable.empty()
+                it[0] == null -> Flowable.empty()
+                else -> Flowable.just(it[0])
+            }
         }
     }
 }

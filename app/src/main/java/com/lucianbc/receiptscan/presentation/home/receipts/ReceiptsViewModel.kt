@@ -1,6 +1,7 @@
 package com.lucianbc.receiptscan.presentation.home.receipts
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.toLiveData
 import com.lucianbc.receiptscan.domain.model.Category
 import com.lucianbc.receiptscan.domain.receipts.Group
 import com.lucianbc.receiptscan.domain.receipts.ReceiptListItem
@@ -15,15 +16,25 @@ import javax.inject.Inject
 class ReceiptsViewModel @Inject constructor(
     receiptsUseCase: ReceiptsUseCase
 ) : ViewModel() {
-    val receipts = mld(dummyReceipts())//receiptsUseCase.list().toLiveData()
+    val receipts =
+        mld(dummyReceipts())
+//        receiptsUseCase.transactions.toLiveData()
 
-    val availableCurrencies = mld(dummyCurrencies())
+    val availableCurrencies =
+//        mld(dummyCurrencies())
+        receiptsUseCase.availableCurrencies.toLiveData()
 
-    val availableMonths = mld(dummyMonths())
+    val availableMonths =
+//        receiptsUseCase.availableMonths.toLiveData()
+        mld(dummyMonths())
 
-    val categories = mld(dummySpendings())
+    val categories =
+//        receiptsUseCase.categories.toLiveData()
+        mld(dummySpendings())
 
-    val selectedCategory = mld(dummySpendings()[0])
+    val selectedCategory =
+//        receiptsUseCase.currentSpending.toLiveData()
+        mld(dummySpendings()[0])
 
     fun fetchForCurrency(newCurrency: Currency) {
         logd("New currency fetched: ${newCurrency.currencyCode}")
@@ -36,7 +47,7 @@ class ReceiptsViewModel @Inject constructor(
     fun fetchForSpendingGroup(spendingGroup: SpendingGroup) {
         logd("New spending group displayed")
         spendingGroup.displayName
-        selectedCategory.postValue(spendingGroup)
+//        selectedCategory.postValue(spendingGroup)
     }
 
     private fun dummyMonths(): List<Date> {
@@ -61,7 +72,8 @@ class ReceiptsViewModel @Inject constructor(
     }
 
     private fun dummyCurrencies(): List<Currency> =
-        listOf("RON", "EUR", "GBP", "USD")
+        listOf("RON")
+//        listOf("RON", "EUR", "GBP", "USD")
             .map { Currency.getInstance(it) }
 
     private fun dummyReceipts(): List<ReceiptListItem> {
