@@ -8,6 +8,7 @@ import com.lucianbc.receiptscan.infrastructure.dao.AppDao
 import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.zipWith
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -17,8 +18,12 @@ class ReceiptsRepositoryImpl @Inject constructor(
     override fun getAvailableCurrencies() =
         appDao.selectCurrencies()
 
-    override fun getAvailableMonths(currency: Currency) =
-        appDao.selectMonths(currency)
+    override fun getAvailableMonths(currency: Currency): Flowable<List<Date>> {
+        val sft = SimpleDateFormat("MM-yyyy", Locale.US)
+        return appDao.selectMonths(currency).map {
+            it.map { date -> sft.format(date).run(sft::parse) }.toSet().toList()
+        }
+    }
 
     override fun getAllSpendings(currency: Currency, month: Date): Flowable<List<SpendingGroup>> {
         val categorized = appDao.selectSpendingsByCategory(currency, month)
