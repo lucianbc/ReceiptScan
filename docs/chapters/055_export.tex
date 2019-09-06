@@ -1,45 +1,5 @@
 \section{Export}
 
-Funcționalitatea de export a datelor dă utilizatorului ocazia de a scoate datele sale din aplicație și de a le valorifica în alte moduri mai complexe. La finalul procesului de export, utilizatorul are acces la un link de descărcare a bonurilor fiscale, arhivate în format \emph{p}. Figura \ref{exportForm} prezintă formularul pentru exportarea bonurilor. Opțiunile disponibile sunt:
-
-\begin{itemize}
-  \item
-    \textbf{Conținut}: doar text sau text și imagine. Exportarea atât a datelor textuale, cât și a imaginilor conduce la un consum mai mare de date, de aceea este implementată și opțiunea \emph{doar text}. În cazul exportului imaginilor, fiecare obiect va conține un câmp cu numele imaginii aferente.
-  \item
-    \textbf{Format}: CSV sau JSON. Această opțiune oferă flexibilitate în disponibilitatea datelor. Formatul CSV exportă datele într-o manieră relațională, în două fișiere: \emph{transactions.csv} și \emph{products.csv}. Formatul JSON exportă un fișier pentru fiecare bon, ce conține datele tranzacției și o listă imbricată de produse.
-  \item
-    \textbf{Intervalul calendaristic}: Intervalul în care bonurule trebuie să se afle pentru a fi exportate.
-\end{itemize}
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=\textwidth]{ExportForm.png}
-  \caption{Formularul de export}
-  \label{exportForm}
-\end{figure}
-
-Procesul de export funcționează în felul următor:
-
-\begin{enumerate}
-\item
-  Utilizatorul completează formularul prezentat mai sus și datele exportului sunt salvate în baza de date locală cu statusul \emph{uploading}.
-\item
-  Aplicația afișează o notificare și trimite bonurile în cloud. La final, sesiunea de export este salvată cu statusul \emph{waiting download link}.
-\item
-  Bonurile sunt procesate în cloud pentru a fi trnsformate (în cazul în care formatul selectat a fost CSV) și arhivate.
-\item
-  Serviciul cloud trimite o notificare către dispozitiv ce conține \emph{link-ul} de descărcare a datelor. Acesta este salvat în baza de date locală, împreună cu statusul \emph{complete}.
-\end{enumerate}
-
-Figura \ref{exportsScreen} prezintă ecranul ce afișează export-urile utilizatorului. Un element conține intervalul calendaristic aferent exportului și statusul acestuia. Atunci când sesiunea de export este finalizată, două butoane sunt afișate, cu funcționalitatea de a copia link-ul de descărcare pe clipboard sau de a descărca datele arhivate pe dispozitiv.
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=\screenwidth]{ExportsScreen.png}
-  \caption{Lista de export-uri}
-  \label{exportsScreen}
-\end{figure}
-
 \subsection{Implementare}
 
 La nivelul domeniului, funcționalitatea de export este modelată de interfața \texttt{ExportUseCase}. Aceasta definește funcțiile de listare a tuturor exporturilor de pe dispozitiv, creeare a unui nou export și marcarea unui export ca finalizat la primirea unei notificări.

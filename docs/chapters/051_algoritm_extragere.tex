@@ -1,6 +1,6 @@
-\section{Înțelegerea imaginilor}
+\section{Algoritmul de extragere a informației}
 
-Așa cum am precizat mai devreme, înțelegerea conținutului bonurilor fiscale din imagini reprezintă principala provocare a acestui proiect. În mod natural, această funcționalitate se desparte în două sarcini:
+Înțelegerea conținutului bonurilor fiscale din imagini reprezintă principala provocare a acestui proiect și funcționalitatea în jurul căreia este construită întreaga aplicație. În mod natural, aceasta se desparte în două sarcini:
 
 \begin{itemize}
   \item 
@@ -9,11 +9,11 @@ Așa cum am precizat mai devreme, înțelegerea conținutului bonurilor fiscale 
   Extragerea informațiilor din textul neprocesat;
 \end{itemize}
 
-Metode mai bune pentru a rezolva această provocare pot ține cont de imagini și pentru a doua sarcină și pot folosi metode mai avansate, de \emph{machine learning}, odată cu colectarea mai multor date. De aceea am implementat funcționalitatea de colectare de date, care va fi discutată într-o secțiune viitoare. Aceste opțiuni sunt subiectul unor cercetări viitoare.
+Metode mai bune pentru a rezolva această provocare pot ține cont de imagini și pentru a doua sarcină și pot folosi metode mai avansate, de \emph{machine learning}, pe măsură ce sunt colectate mai multe date. Aceste opțiuni sunt subiectul unor cercetări viitoare.
 
 \subsection{Recunoașterea textului}
 
-O necesitate pentru rezolvarea acestei sarcini este aceea ca procesarea să se facă pe dispozitiv. Astfel, datele utilizatorului nu părăsesc dispozitivul decât cu acordul său.
+O constrângere pentru rezolvarea acestei sarcini este aceea ca procesarea să se facă pe dispozitiv. Astfel, datele utilizatorului nu părăsesc dispozitivul decât cu acordul său.
 
 O soluție \emph{open source} populară pentru rezolvarea problemelor OCR este \emph{Tesseract} \cite{Tesseract}. Pentru dezvoltatorii de aplicații mobile, Google oferă librăria \emph{Firebase Vision}, cu suport gratuit pentru OCR pe dispozitiv. Comparația dintre cele două soluții a fost făcută astfel:
 
@@ -28,6 +28,10 @@ O soluție \emph{open source} populară pentru rezolvarea problemelor OCR este \
   Preprocesarea a constat în aplicarea unui algoritm care să elimine fundalul, să transforme imaginea î alb-negru și să uniformizeze luminozitatea;
   \item
   Asupra ambelor rezultate a fost aplicat un algoritm care să grupeze chenarele de text pe linii;
+  \item 
+  Metrica după care au fost comparate cele două soluții este cea a acurateții textului recunoscut;
+  \item 
+  Cele două script-uri folosite pentru a rula cele două soluții se găsesc în anexa \ref{apx:Anexa1}.
 \end{itemize}
 
 Anexa \ref{apx:Anexa1} cuprinde cele două script-uri folosite pentru comparație. Rezultatele obținute sunt prezentate în figura ... .
@@ -75,26 +79,4 @@ Având textul din imagine organizat în grupuri de cuvinte apropiate (vechile li
 
 Implementarea detaliată a algoritmului de extragere a informațiilor este prezentat în Anexa \ref{apx:Apendix3}.
 
-\subsection{Implementare}
 
-La nivelul domeniului, algoritmul de OCR este ascuns sub interfața \texttt{Scannable}, care este implementată la nivelul infrastructurii. Aceasta expune două metode, \texttt{ocrElements()} și \texttt{image()}, ce furnizează elementele textuale și imaginea sub abstractizarea \texttt{Observable} din RxJava.
-
-\lstinputlisting[style=javaCodeStyle, caption=Interfețele Scannable și ExtractUseCase]{./code/ScannableExtractUseCase.kt}
-
-\texttt{ExtractUseCase} modelează și orchestrează funcționalitățile aferente ecranului de scanare:
-
-\begin{itemize}
-  \item 
-  Valoarea \texttt{preview} expune un flux de elemente OCR care să fie afișate pe ecran, deasupra camerei, pentru a ajuta utilizatorul în capturarea imaginii;
-
-  \item
-  Funcția \texttt{fetchPreview} permite livrarea unui nou cadru surprins de cameră, care să fie procesat asincron, iar rezultatul să fie livrat către \texttt{preview};
-
-  \item
-  Funcția \texttt{extract} declanșează procesarea imaginii bonului și salvarea informațiilor în baza de date, returnând id-ul entității salvate;
-
-  \item
-  Valoarea \texttt{state} marchează daca o imagine este procesată pentru extragerea unui bon sau nu, sau dacă a fost întâmpinată o eroare;
-\end{itemize}
-
-Procesarea unei imagini durează în funcție de performanțele telefonului, timp de câteva secunde. Părăsirea ecranului de scanare este permisă în acest timp deoarece obiectul \texttt{ExtractUseCase} nu este distrus odată cu obiectul vizual, ceea ce nu întrerupe procesarea.

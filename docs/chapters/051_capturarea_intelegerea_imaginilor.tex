@@ -1,0 +1,23 @@
+\section{Capturarea și înțelegerea imaginilor}
+
+La nivelul domeniului, algoritmul de OCR este ascuns sub interfața \texttt{Scannable}, care este implementată la nivelul infrastructurii. Aceasta expune două metode, \texttt{ocrElements()} și \texttt{image()}, ce furnizează elementele textuale și imaginea sub abstractizarea \texttt{Observable} din RxJava.
+
+\lstinputlisting[style=javaCodeStyle, caption=Interfețele Scannable și ExtractUseCase]{./code/ScannableExtractUseCase.kt}
+
+\texttt{ExtractUseCase} modelează și orchestrează funcționalitățile aferente ecranului de scanare:
+
+\begin{itemize}
+  \item 
+  Valoarea \texttt{preview} expune un flux de elemente OCR care să fie afișate pe ecran, deasupra camerei, pentru a ajuta utilizatorul în capturarea imaginii;
+
+  \item
+  Funcția \texttt{fetchPreview} permite livrarea unui nou cadru surprins de cameră, care să fie procesat asincron, iar rezultatul să fie livrat către \texttt{preview};
+
+  \item
+  Funcția \texttt{extract} declanșează procesarea imaginii bonului și salvarea informațiilor în baza de date, returnând id-ul entității salvate;
+
+  \item
+  Valoarea \texttt{state} marchează daca o imagine este procesată pentru extragerea unui bon sau nu, sau dacă a fost întâmpinată o eroare;
+\end{itemize}
+
+Procesarea unei imagini durează în funcție de performanțele telefonului, timp de câteva secunde. Părăsirea ecranului de scanare este permisă în acest timp deoarece obiectul \texttt{ExtractUseCase} nu este distrus odată cu obiectul vizual, ceea ce nu întrerupe procesarea.
