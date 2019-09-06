@@ -78,7 +78,11 @@ Arhitectura dezvoltată pentru această aplicație este inspirată de cea prezen
 
 O caracteristică importantă a arhitecturii este aceea că abstractizarea descrește din centru înspre margini. Dependințele în cadrul acesteia sunt orientate către centru. Astfel, un nivel mai abstract nu depinde de un detaliu, ci invers, detaliile depind de abstractizări. Această caracteristică se realizează urmând principiul inversării dependințelor. Pentru a inversa dependințele, un nivel mai înalt definește o interfață care este implementată la un nivel inferior. Această interfață este injectată mai apoi în componenta ce necestiă un serviciu implementat la un nivel inferior. Injectarea depentințelor este exemplificată în programul \ref{lst:diExample}.
 
-\lstinputlisting[style=javaCodeStyle, caption=ReceiptsUseCaseImpl.kt]{./code/DiExample.kt}
+\lstinputlisting[
+  style=javaCodeStyle, 
+  caption={ReceiptsUseCaseImpl.kt}, 
+  label=lst:diExample
+  ]{./code/DiExample.kt}
 
 La nivelul unui \emph{usecase} este necesar accesul la baza de date. Dar la acest nivel detaliul implementării bazei de date nu este relevant. Aceasta poate fi \emph{SQL} sau o simplă colecție în memorie. De aceea este definită interfața \texttt{ReceiptsRepository} care apoi este implementată la nivelul \emph{infrastructure}.
 
@@ -101,7 +105,7 @@ Această aplicație folosește trei medii de persistență pentru stocarea datel
 
 Aceasta este o bază de date relațională ce este preinstalată pe sistemul de operare Android. Modelul de date stocat în această bază de date este unul simplu, prezentat în Figura \ref{sqldata}. Aceste tabele sunt generate cu ajutorul librăriei \emph{Room}, folosind codul de mai jos:
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{./figures/ReceiptScanDb.png}
     \caption{Modelul de date SQL \label{sqldata}}
