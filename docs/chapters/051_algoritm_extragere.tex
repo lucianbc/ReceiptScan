@@ -63,7 +63,7 @@ Performanța superioară a \emph{Firebase Vision} ar fi suficientă pentru a ale
 
 \subsection{Extragerea informațiilor din text}
 
-Procesarea textului rezultat în urma procesului de OCR se face pe baza unor reguli observate în majoritatea bonurilor fiscale. Firebase Vision returnează textul și chenarele de text, grupate în blocuri, linii și elemente, în funcție de coordonatele geometrice din imagine. Această organizare pe blocuri nu este de folos în procesarea de față, dar organizarea pe linii este, din moment ce informația de pe bonurile fiscale este așezată în format cheie-valoare, pe linii. De aceea, prima etapă în extragerea informațiilor este renunțarea la structura de blocuri și organizarea în linii raportate la întregul document. Această etapă se face după algoritmul:
+Procesarea textului rezultat în urma procesului de OCR se face pe baza unor reguli observate în majoritatea bonurilor fiscale. Firebase Vision returnează textul și chenarele de text, grupate în blocuri, linii și elemente, în funcție de coordonatele geometrice din imagine. Această organizare pe blocuri nu este de folos în procesarea de față, dar organizarea pe linii este, din moment ce informația din bonurile fiscale este așezată în format cheie-valoare, pe linii. De aceea, prima etapă în extragerea informațiilor este renunțarea la structura de blocuri și organizarea în linii raportate la întregul document. Această etapă se face după algoritmul:
 
 \begin{enumerate}
   \item
@@ -74,7 +74,25 @@ Procesarea textului rezultat în urma procesului de OCR se face pe baza unor reg
   Grupează elementele OCR după distanța relativă dintre punctele lor de mijloc: elementele la o distanță mai mică de jumătate din media înălțimii tuturor elementelor se află în același grup;
 \end{enumerate}
 
-Implementarea acestui algoritm se găsește în Anexa \ref{apx:Anexa2}.
+Implementarea acestui algoritm se găsește în Anexa \ref{apx:Anexa2}. Acest proces este ilustrat și în figura \ref{fig:ocrProcessing}. Organizarea la nivel de \textbf{bloc} este reprezentată în albastru, cea de \textbf{linie} în verde, iar cea de \textbf{element} în roșu. Se observă ca în organizarea dorită se renunță la structurile de blocuri, liniile se extind pe toată lățimea bonului, iar elementele devin fostele linii.
+
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \includegraphics[width=5.5cm]{fibBlocks.jpg}
+    \caption{Organizarea rezultatului OCR}
+    \label{fig:ocrOutputBoxes}
+  \end{subfigure}
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \includegraphics[width=5.5cm]{myBlocks.jpg}
+    \caption{Organizarea elementelor OCR dorită}
+    \label{fig:desiredBoxes}
+  \end{subfigure}
+  \caption{Procesul de organizare a rezultatului OCR}
+  \label{fig:ocrProcessing}
+\end{figure}
 
 Având textul din imagine organizat în grupuri de cuvinte apropiate (vechile linii returnate de \emph{Firebase Vision}) și linii raportate la întreaga imagine, ordonate de sus în jos, informațiile relevante sunt extrase după următoarele reguli:
 
