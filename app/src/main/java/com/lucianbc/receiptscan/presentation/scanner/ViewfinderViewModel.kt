@@ -30,7 +30,7 @@ class ViewfinderViewModel @Inject constructor(
         try {
             factory
                 .create(frame)
-                .let(extractUseCase::fetchPreview)
+                .let(extractUseCase::feedPreview)
         } catch (e: IllegalArgumentException) {
             loge("Camera passed a frame with errors", e)
         }
@@ -43,7 +43,7 @@ class ViewfinderViewModel @Inject constructor(
         try {
             factory
                 .create(image)
-                .let(extractUseCase::fetchPreview)
+                .let(extractUseCase::feedPreview)
         } catch (e: IllegalArgumentException) {
             loge("Camera passed a frame with errors", e)
         }

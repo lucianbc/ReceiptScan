@@ -127,7 +127,7 @@ class ExtractUseCaseImplTest {
         val source = Observable
             .interval(50, 2, TimeUnit.MILLISECONDS)
             .subscribe {
-                subject.fetchPreview(dummyScannable)
+                subject.feedPreview(dummyScannable)
             }
 
         Thread.sleep(TimeUnit.SECONDS.toMillis(sec))

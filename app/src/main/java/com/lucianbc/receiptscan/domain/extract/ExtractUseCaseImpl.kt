@@ -20,7 +20,7 @@ class ExtractUseCaseImpl @AssistedInject constructor(
 
     override val preview: Flowable<OcrElements>
 
-    override fun fetchPreview(frame: Scannable) = _frameSource.onNext(frame)
+    override fun feedPreview(frame: Scannable) = _frameSource.onNext(frame)
 
     override fun extract(frame: Scannable): Single<DraftId> {
         return (
