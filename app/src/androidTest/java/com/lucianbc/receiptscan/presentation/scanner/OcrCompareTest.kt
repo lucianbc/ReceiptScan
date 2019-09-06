@@ -2,6 +2,7 @@ package com.lucianbc.receiptscan.presentation.scanner
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import com.google.android.gms.tasks.Tasks
@@ -25,7 +26,13 @@ class OcrCompareTest {
 
     private fun readImage(): Bitmap {
         val context = InstrumentationRegistry.getInstrumentation().context
-        val imageStream = context.assets.open("resizedReceipt.jpg")
-        return BitmapFactory.decodeStream(imageStream)
+        val imageStream = context.assets.open("receipt.jpg")
+        return BitmapFactory.decodeStream(imageStream).rotate(90f)
+    }
+
+    private fun Bitmap.rotate(deg: Float): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(deg)
+        return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
     }
 }
