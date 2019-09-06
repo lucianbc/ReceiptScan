@@ -1,0 +1,33 @@
+\section{Colectarea bonuri fiscale}\label{spec:collecting}
+
+Așa cum am menționat mai sus, această aplicație este construită având în vedere siguranța și confidențialitatea datelor. Totuși, lipsa de date care să facă legătura între imagini ale chitanțelor comerciale și conținutul acestora este un impediment în a rezolva problema în cauză prin metode avansate, care să ofere o performanță sporită. De exemplu, construirea unui astfel de set de date ar conduce la întocmirea unui \emph{benchmark} asupra caruia să fie testate noi metode. 
+
+Astfel este motivată implementarea acestei funcționalități. Colectarea trebuie să se facă în \emph{mod anonim}, numai cu \emph{acordul utilizatorului} și să aibă un \emph{impact minim asupra experienței utilizatorului}.
+
+\begin{itemize}
+\item
+  \textbf{Scop}: Utilizatorul salvează un bon, acesta este sincronizat în cloud numai dacă utilizatorul permite colectarea de date;
+\item
+  \textbf{Condiție de succes}: Bonul este trimis cu succes către server;
+\item
+  \textbf{Condiții de eșec}: Colectarea este permisă, utilizatorul salvează un bon, acesta nu este sincronizat în cloud; Datele nu pot fi accesate la momentul sincronizării;
+\item
+  \textbf{Precondiții}: Colectarea este permisă sau nu
+\end{itemize}
+
+\subsection*{Mențiuni}\label{menux21biuni-2}
+
+Acțiunea de sincronizare se face în background, fără ca atenția utilizatorului să fie atrasă. Sincronizarea se face numai pe conexiune Wi-Fi și poate fi amânată până când conexiunea este disponibilă.
+
+Se sincronizează toate informațiile aferente bonului, inclusiv imaginea și elementele OCR.
+
+\subsection*{Principalul scenariu}\label{principalul-scenariu-3}
+
+\begin{enumerate}
+\item
+  Utilizatorul finalizează salvarea unui bon cu succes;
+\item
+  În consecința acțiunii de salvare, precondiția este interogată;
+\item
+  Dacă este permisă colectarea, bonul este sincronizat în cloud;
+\end{enumerate}

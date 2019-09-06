@@ -9,36 +9,7 @@ Specificațiile sunt definite în jurul noțiunii de \emph{usecase} (caz de util
 \input{chapters/031_intelegere_imagini.tex}
 \input{chapters/032_gestionare_drafturi.tex}
 \input{chapters/033_setari.tex}
-
-\section{Colectare bonuri fiscale}\label{spec:collecting}
-
-\begin{itemize}
-\item
-  \textbf{Scop}: Utilizatorul salvează un bon, acesta este sincronizat în cloud numai dacă utilizatorul permite colectarea de date;
-\item
-  \textbf{Condiție de succes}: Bonul este trimis cu succes către server;
-\item
-  \textbf{Condiții de eșec}: Colectarea este permisă, utilizatorul salvează un bon, acesta nu este sincronizat în cloud; Datele nu pot fi accesate la momentul sincronizării;
-\item
-  \textbf{Precondiții}: Colectarea este permisă sau nu
-\end{itemize}
-
-\subsection{Mențiuni}\label{menux21biuni-2}
-
-Acțiunea de sincronizare se face în background, fără ca atenția utilizatorului să fie atrasă. Sincronizarea se face numai pe conexiune Wi-Fi și poate fi amânată până când conexiunea este disponibilă.
-
-Se sincronizează toate informațiile aferente bonului, inclusiv imaginea și elementele OCR.
-
-\subsection{Principalul scenariu}\label{principalul-scenariu-3}
-
-\begin{enumerate}
-\item
-  Utilizatorul finalizează salvarea unui bon cu succes;
-\item
-  În consecința acțiunii de salvare, precondiția este interogată;
-\item
-  Dacă este permisă colectarea, bonul este sincronizat în cloud;
-\end{enumerate}
+\input{chapters/034_colectare_date.tex}
 
 \section{Export}\label{export}
 
