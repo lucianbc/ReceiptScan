@@ -1,7 +1,5 @@
 \section{Gestionare Drafturi}\label{spec:drafts}
 
-\subsection{Implementare}
-
 La nivelul modelului, aceste opțiuni sunt reprezentate prin interfața \texttt{DraftsUseCase}. Atât funcționalitatea de listare, cât și cea de editare se folosesc de funcționalitatea \emph{Room} prin care atunci când apare o modificare la nivelul bazei de date, o nouă valoare este emisă pentru interogările deja executate. Astfel, este ușoară o implementare reactivă pentru aceste funcționalități.
 
 \lstinputlisting[style=javaCodeStyle, caption=Interfața Drafts Use Case]{./code/DraftsUseCase.kt}
