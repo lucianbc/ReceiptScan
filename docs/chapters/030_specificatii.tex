@@ -7,58 +7,9 @@ Specificațiile sunt definite în jurul noțiunii de \emph{usecase} (caz de util
 În continuare este prezentat fiecare caz de utilizare astfel: o scurtă descriere a funcționalității însoțită de \emph{screenshot-uri} din aplicație, acolo unde sunt necesare care este urmată de o prezentare schematică. Această schemă dă structura în care este implementată funcționalitatea și ajută la definirea testelor. Din punct de vedere al terminologiei, \textbf{mențiunile} dau detalii și cerințe non-funcționale, \textbf{principalul scenariu} descrie pașii necesari pentru realizarea scopului, \textbf{variațiile} definesc puncte ce pot fi implementate în moduri multiple, cum ar fi mai multe surse de date și care sunt relevante pentru scop, iar \textbf{extensiile} sunt scenarii secundare, ce servesc scopul principal.
 
 \input{chapters/031_intelegere_imagini.tex}
+\input{chapters/032_gestionare_drafturi.tex}
 
-\section{Editare draft}\label{editare-draft}
-
-\begin{itemize}
-\item
-  \textbf{Scop}: Validarea informațiilor extrase din imagine de către utilizator;
-\item
-  \textbf{Condiție de succes}: Modificările făcute de utilizator se reflectă în baza de date; Bonul este validat și marcat ca final;
-\item
-  \textbf{Condiții de eșec}: Modificările nu pot fi persistate; Modificările sunt invalide;
-\end{itemize}
-
-\subsection{Mențiuni}\label{menux21biuni-1}
-
-Algoritmul de validare poate fi subiectul unor modificări ulterioare și trebuie să fie ușor de înlocuit.
-
-Validarea considerată la momentul scrierii presupune ca niciun câmp să nu fie null sau fără conținut.
-
-\subsection{Principalul scenariu}\label{principalul-scenariu-1}
-
-\begin{enumerate}
-\item
-  Utilizatorul accesează un bon;
-\item
-  Utilizatorul modifică câmpurile dorite;
-\item
-  Utilizatorul cere validarea bonului; Validarea se efectuează cu succes;
-\item
-  Bonul este scos din lista \emph{drafts} și pus în lista bonurilor validate;
-\end{enumerate}
-
-\subsection{Variații}\label{variaux21bii-1}
-
-\begin{itemize}
-\item
-  Utilizatorul poate modifica valori, dar fără a valida bonul;
-\item
-  Utilizatorul poate valida bonul, ceea ce îl scoate din lista de \emph{drafts} și îl pune în lista de bonuri valide;
-\item
-  Accesarea unui bon se face fie prin alegerea acestuia din listă, fie în urma scanării unei imagini; (Înțelegerea imaginilor)
-\end{itemize}
-
-\subsection{Extensii}\label{extensii-1}
-
-\begin{itemize}
-\item
-  Utilizatorul poate vedea imaginea capturată, cu și fără elementele OCR;
-\item
-  Utilizatorul poate vedea toate bonurile din lista \emph{drafts} și poate naviga către unul din ele;
-\end{itemize}
-
-\section{Gestionare setări}\label{gestionare-setux103ri}
+\section{Gestionare setări}\label{spec:setari}
 
 \begin{itemize}
 \item
