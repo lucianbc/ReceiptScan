@@ -4,46 +4,10 @@
 
 Specificațiile sunt definite în jurul noțiunii de \emph{usecase} (caz de utilizare), așa cum acestea sunt definite în lucrarea \emph{Structuring use cases with goals} \cite{cockburn1997structuring} și inspirate din exemplul prezentat în \emph{The Pragmatic Programmer} \cite{Hunt:2000:PPJ:320326}. Așadar, \textbf{scopul} acestor \emph{usecases} este de a defini specificațiile, \textbf{conținutul} este proza consistentă (descriere în cuvinte astfel încât să nu apară contradicții), \textbf{pluralitatea} este de unul sau mai multe scenarii per \emph{usecase}, iar \textbf{structura} este semi-formală.
 
-În continuare este prezentat fiecare caz de utilizare astfel: o scurtă descriere a funcționalității însoțită de \emph{screenshot-uri} din aplicație, acolo unde sunt necesare care este urmată de o prezentare schematică. Această schemă dă structura în care este implementată funcționalitatea și ajută la definirea testelor. Din punct de vedere al terminologiei, \textbf{mențiunile} dau detalii și cerințe non-funcționale, \textbf{principalul scenariu} descrie pașii necesari pentru realizarea scopului, \textbf{variațiile} definesc puncte ce pot fi implementate în moduri multiple, cum ar fi mai multe surse de date și care sunt relevante pentru scop, iar \textbf{extensiile} sunt scenarii secundare, ce servesc scopul principal.
+În continuare este prezentat fiecare caz de utilizare astfel: o scurtă descriere a fiecărei funcționalități însoțită de \emph{screenshot-uri} din aplicație, acolo unde sunt necesare care este urmată de o prezentare schematică. Această schemă dă structura în care este implementată funcționalitatea și ajută la definirea testelor. Din punct de vedere al terminologiei, \textbf{mențiunile} dau detalii și cerințe non-funcționale, \textbf{principalul scenariu} descrie pașii necesari pentru realizarea scopului, \textbf{variațiile} definesc puncte ce pot fi implementate în moduri multiple, cum ar fi mai multe surse de date și care sunt relevante pentru scop, iar \textbf{extensiile} sunt scenarii secundare, ce servesc scopul principal.
 
 \input{chapters/031_intelegere_imagini.tex}
 \input{chapters/032_gestionare_drafturi.tex}
 \input{chapters/033_setari.tex}
 \input{chapters/034_colectare_date.tex}
-
-\section{Export}\label{export}
-
-\begin{itemize}
-\item
-  \textbf{Scop}: Accesarea datelor în afara aplicației și a dispozitivului;
-\item
-  \textbf{Condiție de succes}: Utilizatorul selectează formatul, conținutul și perioada pentru export și primește un link la care poate accesa datele;
-\item
-  \textbf{Condiție de eșec}: Nu există date înregistrate în perioada selectată; Datele nu sunt trimise cu succes; Utilizatorul nu primește link-ul aferent;
-\end{itemize}
-
-\subsection{Mențiuni}\label{menux21biuni-3}
-
-Pentru a consuma cât mai puține resurse (timp, baterie), exportul se face cu minim de procesare pe dispozitiv;
-
-Datele salvate pe cloud au o dată de expirare, după care sunt șterse;
-
-Odată ce datele sunt încărcate și procesate în cloud, aplicația primește o notificare ce conține link-ul de descărcare;
-
-Datele pot fi descărcate într-o arhivă zip;
-
-\subsection{Variații}\label{variaux21bii-2}
-
-\begin{itemize}
-\item
-  Pentru a oferi maximum de flexibilitate utilizatorilor, datele pot fi accesate in format JSON sau CSV și pot conține fie doar text, fie text și imagini;
-\end{itemize}
-
-\subsection{Extensii}\label{extensii-2}
-
-\begin{itemize}
-\item
-  În cazul lipsei de conectivitate, acțiunea de export este programată pentru o dată ulterioară, odată ce telefonul are conexiune;
-\item
-  Toate sesiunile de export sunt înregistrare într-o listă și sunt eliminate odată ce datele aferente sunt șterse din cloud;
-\end{itemize}
+\input{chapters/035_export.tex}
