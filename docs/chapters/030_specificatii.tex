@@ -4,93 +4,9 @@
 
 Specificațiile sunt definite în jurul noțiunii de \emph{usecase} (caz de utilizare), așa cum acestea sunt definite în lucrarea \emph{Structuring use cases with goals} \cite{cockburn1997structuring} și inspirate din exemplul prezentat în \emph{The Pragmatic Programmer} \cite{Hunt:2000:PPJ:320326}. Așadar, \textbf{scopul} acestor \emph{usecases} este de a defini specificațiile, \textbf{conținutul} este proza consistentă (descriere în cuvinte astfel încât să nu apară contradicții), \textbf{pluralitatea} este de unul sau mai multe scenarii per \emph{usecase}, iar \textbf{structura} este semi-formală.
 
-\section{Înțelegerea imaginilor}\label{understanding_spec}
+În continuare este prezentat fiecare caz de utilizare astfel: o scurtă descriere a funcționalității însoțită de \emph{screenshot-uri} din aplicație, acolo unde sunt necesare care este urmată de o prezentare schematică. Această schemă dă structura în care este implementată funcționalitatea și ajută la definirea testelor. Din punct de vedere al terminologiei, \textbf{mențiunile} dau detalii și cerințe non-funcționale, \textbf{principalul scenariu} descrie pașii necesari pentru realizarea scopului, \textbf{variațiile} definesc puncte ce pot fi implementate în moduri multiple, cum ar fi mai multe surse de date și care sunt relevante pentru scop, iar \textbf{extensiile} sunt scenarii secundare, ce servesc scopul principal.
 
-\begin{itemize}
-\item
-  \textbf{Scop}: Capturarea unei imagini și extragerea informațiilor relevante din aceasta;
-\item
-  \textbf{Condiție de succes}: Prezența unei înregistrări în baza de date ce modelează bonul fiscal în starea de \emph{draft};
-\item
-  \textbf{Condiții de eșec}: Imaginea nu poate fi capturată; modulul OCR nu funcționează; o imagine este deja în curs de procesare;
-\item
-  \textbf{Precondiții}: Valorile predefinite pentru categorie și monedă;
-\end{itemize}
-
-\subsection{Mențiuni}
-
-Informațiile relevante de extras dintr-o imagine sunt:
-
-\begin{itemize}
-\item
-  numele comerciantului;
-\item
-  data tranzacției;
-\item
-  suma totală;
-\item
-  moneda;
-\item
-  categoria tranzacției;
-\item
-  produse:
-
-  \begin{itemize}
-  \item
-    numele produsului;
-  \item
-    prețul aferent;
-  \end{itemize}
-\item
-  elementele OCR:
-  \begin{itemize}
-  \item
-    coordonatele casetelor ce înconjoară o unitate de text;
-  \item
-    textul aferent;
-  \end{itemize}
-\end{itemize}
-
-Imaginile se salvează astfel încât să nu fie accesibile din galerie.
-
-\subsection{Principalul scenariu}\label{principalul-scenariu}
-
-\begin{enumerate}
-\item
-  Utilizatorul capturează o imagine;
-\item
-  Modulul OCR este apelat; Textul și chenarele aferente sunt extrase;
-\item
-  Rezultatul OCR este procesat pentru a obține conținutul bonului;
-\item
-  Bonul fiscal este salvat în stadiu de draft pentru a fi editat;
-  (Editare draft)
-\end{enumerate}
-
-\subsection{Variații}\label{variaux21bii}
-
-\begin{itemize}
-\item
-  Imaginea poate fi capturată utilizând camera telefonului sau importată
-  din galerie;
-\item
-  Moneda și categoria pot avea valori prestabilite, ce se stabilesc din
-  setări; (Editare setări)
-\end{itemize}
-
-\subsection{Extensii}\label{extensii}
-
-\begin{itemize}
-\item
-  Pentru a ajuta utilizatorul atunci când folosește camera, procesarea
-  imaginilor venite de la cameră se face continuu, la o rată maximă
-  configurabilă;
-\item
-  Nu pot fi procesate mai multe imagini în același timp. Starea ultimei
-  procesări este accesibilă permanent. Dacă se primește o cerere de
-  procesare înainte ca ultima să se fi încheiat este semnalată o eroare.
-\end{itemize}
-
+\input{chapters/031_intelegere_imagini.tex}
 
 \section{Editare draft}\label{editare-draft}
 

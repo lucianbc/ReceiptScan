@@ -77,15 +77,6 @@ Implementarea detaliată a algoritmului de extragere a informațiilor este preze
 
 \subsection{Implementare}
 
-Figura \ref{fig:scanner} prezintă ecranul de scanare, care este interfața cu utilizatorul a algoritmului de extragere a informațiilor. Acesta permite utilizatorului să obțină o imagine a bonului fiscal folosind camera telefonului sau importând-o din galerie. De asemenea, ecranul permite utilizatorului activarea sau dezactivarea blitz-ului. Odată ce utilizatorul atinge ecranul sau importă o imagine din galerie, este afișat un ecran de încărcare, în timp ce procesarea se face în background. La finalul procesării, utilizatorul este redirecționat către un ecran de unde poate face modificări asupra datelor extrase.
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=\screenwidth]{Scanner.png}
-  \caption{Ecranul de Scanare}
-  \label{fig:scanner}
-\end{figure}
-
 La nivelul domeniului, algoritmul de OCR este ascuns sub interfața \texttt{Scannable}, care este implementată la nivelul infrastructurii. Aceasta expune două metode, \texttt{ocrElements()} și \texttt{image()}, ce furnizează elementele textuale și imaginea sub abstractizarea \texttt{Observable} din RxJava.
 
 \lstinputlisting[style=javaCodeStyle, caption=Interfețele Scannable și ExtractUseCase]{./code/ScannableExtractUseCase.kt}
