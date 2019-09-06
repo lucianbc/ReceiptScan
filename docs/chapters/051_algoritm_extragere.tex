@@ -34,9 +34,30 @@ O soluție \emph{open source} populară pentru rezolvarea problemelor OCR este \
   Cele două script-uri folosite pentru a rula cele două soluții se găsesc în anexa \ref{apx:Anexa1}.
 \end{itemize}
 
-Anexa \ref{apx:Anexa1} cuprinde cele două script-uri folosite pentru comparație. Rezultatele obținute sunt prezentate în figura ... .
+În urma a mai multor teste, am observat că \emph{Tesseract} este mai susceptibil la zgomot și nu oferă rezultate de aceeași calitate ca \emph{Firebase Vision}. Un exemplu ușor este imaginea \ref{fig:exampleReceipt}. Textele extrase de cele două soluții sunt prezentate în figura \ref{fig:ocrResults}, unde se vede cantitatea de zgomot mai ridicată în rezultatul obținut cu \emph{Tesseract}. De asemenea, \emph{Tesseract} a emis alte câteva caractere non-utf8 de zgomot, ce nu au putut fi redate în acest text. De menționat este și efortul necesar pentru a integra \emph{Tesseract} într-o aplicație mobilă. În același timp, \emph{Firebase Vision} este disponibilă ca o dependință \emph{gradle}.
 
-De menționat este și efortul necesar pentru a integra \emph{Tesseract} într-o aplicație mobilă. În același timp, \emph{Firebase Vision} este disponibilă ca o dependință \emph{gradle}.
+\begin{figure}[hb]
+  \centering
+  \includegraphics[width=0.5\textwidth,angle=-90]{receipt.jpg}
+  \caption{Exemplu bon}
+  \label{fig:exampleReceipt}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.48\textwidth}
+  \lstinputlisting[frame=single,breaklines=true,autogobble]{./samples/firebaseVisionOcrResult.txt}
+  \caption{Firebase Vision OCR result}
+  \label{fig:firebaseResult}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.48\textwidth}
+  \lstinputlisting[frame=single,breaklines=true,autogobble]{./samples/tesseractOcrResult.txt}
+  \caption{Tesseract OCR Result}
+  \label{fig:tesseractResult}
+  \end{subfigure}
+  \caption{Textul extras de cele două soluții OCR}
+  \label{fig:ocrResults}
+\end{figure}
 
 Performanța superioară a \emph{Firebase Vision} ar fi suficientă pentru a alege această librărie. La aceasta se adaugă și ușurința integrării și lipsa necesității de preprocesare. Dezavantajul major al acestei librării este integrarea unui serviciu extern, care nu este open source în codul aplicației, dar acesta nu este unul foarte mare pentru versiunea curentă a aplicației. Așadar, pentru sarcina de OCR am ales soluția \emph{Firebase Vision}.
 
