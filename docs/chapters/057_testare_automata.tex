@@ -1,0 +1,14 @@
+\section{Testare automată}
+
+Pentru implementarea de teste automate, structura codului are o mare importanță. Arhitectura implementată valorifică decuplarea elementelor, ceea ce asigură și ușurința în a le testa. De asemenea, injectarea dependințelor facilitează înlocuirea acestora cu obiecte \emph{mock}, ce au un comportament definit în cadrul testului, pentru a testa modul în care funcționează o componentă în orice caz.
+
+În cadrul acestui proiect am implementat o suită de teste unitare pentru a testa logica de la nivelul domeniului. De asemenea, am structurat codul în așa fel încât marea parte a computațiilor ce pot fi greșite să se întâmple la nivelul domeniului, pentru a reduce nevoia de a testa celelalte nivele. 
+
+Pentru rularea testelor am folosit librăria \emph{JUnit 4}, iar pentru a modela dependințele componentelor testate am folosit \emph{Mockito} și extensia pentru limbajul \emph{Kotlin} - \emph{Mockito-Kotlin}. De asemenea, o mare importanță a avut-o suportul din \emph{RxJava} pentru teste. Obiectele din \emph{RxJava} oferă metoda \texttt{.testObserver()}, care permite testarea codului asincron într-un mod clar și intuitiv.
+
+Structurarea specificațiilor în modul semi-formal permite, pe lângă modelarea codului, și definirea testelor într-un mod ușor de înțeles. De exemplu, specificația \ref{spec:updateWhenFetch} \emph{"Utilizatorul selectează o nouă monedă, categorie sau lună, iar datele sunt actualizate;"} se traduce în testul \ref{lst:newValTest}.
+
+\clearpage
+
+\lstinputlisting[style=javaCodeStyle, caption=Test Emisie, label=lst:newValTest]{./code/NewValTest.kt}
+
