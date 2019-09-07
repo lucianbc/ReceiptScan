@@ -1,8 +1,10 @@
 \chapter{Introducere}\label{introducere}
+\pagenumbering{arabic}
+\setcounter{page}{1}
 
 Această lucrare prezintă \AppNameB, o aplicație mobilă de scanare a bonurilor fiscale și vizualizare a cheltuielilor, disponibilă pentru platforma \emph{Android}.
 
-\section{Motivație}
+% \section{Motivație}
 
 Urmărirea și analizarea cheltuielilor este o sarcină importantă pentru alcătuirea unui buget personal și pentru o organizare mai bună a activităților financiare. Popularizarea în ultimii ani a plăților electronice și cu cardul a facilitat apariția a tot mai multe astfel de servicii automate. Majoritatea băncilor oferă astăzi o aplicație mobilă cu funcționalitatea de a urmări și clasifica tranzacțiile clienților.
 
@@ -12,7 +14,7 @@ O altă problemă a serviciilor oferite de bănci pentru urmărirea cheltuielilo
 
 Având în vedere dezavantajele soluțiilor curente, am dezvoltat \AppName, o aplicație care să ofere o mai mare vizibilitate asupra tranzacțiilor financiare. Aceasta permite scanarea bonurilor fiscale, înțelegerea automată a acestora, prezentarea grafică și stocarea acestora într-o bază de date locală și exportul acestora în cloud, de unde pot fi descărcate pentru o analiză mai amănunțită utilizând uneltele utilizatorului.
 
-\section{Obiective}
+% \section{Obiective}
 
 În procesul de dezvoltare a aplicației \AppName{} mi-am propus:
 \begin{enumerate}
@@ -24,10 +26,10 @@ Având în vedere dezavantajele soluțiilor curente, am dezvoltat \AppName, o ap
   \textbf{Implementarea unor standarde înalte ale structurii codului}: Calitatea codului și organizarea acestuia au un puternic impact asupra succesului unui proiect software pe termen mediu și lung. În cadrul acestui proiect mi-am propus explorarea bunelor practici în dezvoltarea aplicațiilor \emph{Android} și construirea unei arhitecturi care să faciliteze testarea și decuplarea sistemului și care să fie ușor de înțeles și implementat.
 \end{enumerate}
 
-\section{Lucrări asemănătoare}\label{related_intro}
+% \section{Lucrări asemănătoare}\label{related_intro}
 
 Analizarea și procesarea chitanțelor financiare pe baza imaginilor obținute folosind camera foto a telefoanelor a stârnit un interes moderat în comunitatea științifică și tehnică. \emph{Janssen et al.} prezintă în lucrarea \emph{Receipts2Go} \cite{Receipts2Go} o abordare bazată pe OCR și expresii regulate pentru a extrage datele despre tranzacții, dar nu include lista de produse. \emph{Raoui-Outach et al.} prezintă în lucrarea \emph{Deep Learning for automatic sale receipt understanding} \cite{DL_receipt_understanding} o abordare de procesare bazată pe \emph{deep learning}.
 
-\section{Structura lucrării}\label{structura_intro}
+% \section{Structura lucrării}\label{structura_intro}
 
 Această lucrare este structurată după cum urmează. Capitolul \ref{specs} prezintă specificațiile aplicației \AppName într-un mod semi-formal. Capitolul \ref{technical} motivează platforma aleasă și descrie tehnologiile folosite, arhitectura aplicației și detaliile de persistență. În capitolul \ref{implementation} sunt prezentate detaliile de implementare și provocările tehnice întâmpinate. Lucrarea se încheie în capitolul \ref{conclusions} prin prezentarea concluziilor și a observațiilor de final.

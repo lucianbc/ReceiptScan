@@ -108,16 +108,16 @@
 
     \pagenumbering{gobble}
 
-    \tableofcontents
+    \input{front/010_abstract_ro.tex}
+    \input{front/011_abstract_en.tex}
 
-    \setcounter{page}{1}
-    \pagenumbering{arabic}
-    
+    \tableofcontents
+  
     \input{chapters/020_introducere.tex}
     \input{chapters/030_specificatii.tex}
     \input{chapters/040_tehnologii_arhitectura.tex}
     \input{chapters/050_descriere.tex}
-    \input{chapters/060_concluzie.tex}
+    % \input{chapters/060_concluzie.tex}
     
     \begin{appendices}
     \input{chapters/081_appendix1.tex}
