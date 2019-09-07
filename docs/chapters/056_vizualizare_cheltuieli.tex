@@ -1,0 +1,32 @@
+\section{Vizualizarea datelor}
+
+Funcționalitatea de vizualizare a datelor este modelată de \texttt{ReceiptsUseCase}. Pentru a ușura gestionarea și testarea stării, am definit interfața \texttt{ISourceManager}, care este implementată separat, iar implementarea interfeței \texttt{ReceiptsUseCase} folosește \emph{design pattern-ul} delegării pentru a implementa interfața de gestionare a stării.
+
+\lstinputlisting[style=javaCodeStyle, caption=ReceiptsUseCase]{./code/ReceiptsUseCase.kt}
+
+Gestionarea stării folosește o serie de operatori \emph{RxJava} pentru a obține comportamentul dorit. Aceasta trebuie să emită valori noi fie atunci când sursa de date (baza de date \emph{sqlite}) suferă modificări (de exemplu, atunci când o nouă chitanță este inserată), fie atunci când una dintre funcțiile \texttt{fetchFor*} este apelată. De asemenea, sursele de date sunt dependente unele de altele, astfel:
+\begin{enumerate}
+  \item \texttt{availableCurrencies} nu depinde de alte surse de date; această interogare se execută prima;
+  \item \texttt{availableMonths} depinde de monedă; prima monedă din rezultatul interogării precedente este folosită pentru a executa această interogare;
+  \item \texttt{categories} depinde de interogările precedente. Categoriile sunt interogate numai pentru luna și moneda selectată; 
+  \item \texttt{currentSpending} depinde de interogarea precedentă; valoarea din interogarea precedentă cu cea mai mare sumă a cheltuielilor dă valoare acestei interogări;
+  \item \texttt{transactions} depinde de monedă, luna selectată și categoria selectată;
+\end{enumerate}
+
+Pentru ca starea să fie actualizată corespunzător, următoarele tehnici sunt folosite:
+\begin{enumerate}
+  \item Fiecărei funcții \texttt{fetchFor*} îi corespunde un \emph{BehaviorProcessor}, capabil să păstreze ca stare ultima valoare emisă. Atunci când funcția este apelată, emite argumentul în acest procesor.
+  \item Fiecare procesor este combinat folosint operatorul \emph{mergeWith} cu interogarea din baza de date aferentă pentru a obține actualizări atunci când sursa de date se modifică; combinației îi sunt aplicați operatorii \texttt{.replay(1).autoConnect()} pentru a reține ca stare ultima valoare emisă; Aceste combinații devin surse de parametrii;
+  \item Pentru interogările dependente, sursele de parametrii sunt combinate folosind operatorul \texttt{combineLatest} pentru a emite noi valori de fiecare dată când una dintre sursele unitare este actualizată; apoi aceste combinații sunt redirecționate către interogările din baza de date;
+\end{enumerate}
+
+Din punct de vedere vizual, acest ecran folosește 3 \emph{RecyclerViews} orizontale pentru a selecta moneda, categoria și luna dintr-un carusel și un \emph{RecyclerView} vertical pentru lista de tranzacții. Selectorii pentru lună și monedă au ca element activ pe cel din mijloc și pentru a discretiza scroll-ul pentru aceștia este folosită clasa predefinită \texttt{LinearSnapHelper}. În schimb, selectorul de categorie are ca element activ pe cel din stânga. Pentru a obține efectul de \emph{snap} în acest caz, am implementat clasa \texttt{StartSnapHelper}.
+
+Din moment ce acest ecran reutilizează același comportament de carusel vertical pentru selectorii menționați mai sus, am implementat clasa abstractă \texttt{HorizontalCarousel} și diferite implementări pentru interfața \texttt{PositioningStrategy}, ce are ca scop modificarea comportamentului la poziționare a clasei \texttt{HorizontalCarousel}.
+
+Funcționalitățile asociate unui singur bon validat sunt modelate în subinterfața \texttt{Manage}, unde sunt definite cele trei tipuri de export din specificații. Pentru ca datele să fie preluate de aplicații externe, rezultatele acestor funcții sunt atașate unor obiecte \texttt{Intent}. Aplicațiile care acceptă un intent configurat cu acele date sunt vizibile în ecranul de selectare a aplicației țintă. 
+
+Funcția ce lansează intent-ul pentru a trimite atât imaginea, cât și textul, este prezentată în programul \ref{lst:intent}. Câmpul de acțiune face ca acest intent să fie consumat de aplicații externe care acceptă tipul setat. Acestea pot consuma oricare dintre datele \emph{extra} sau \emph{parcelable}.
+
+\lstinputlisting[style=javaCodeStyle,label=lst:intent ,caption=Lansare intent]{./code/IntentConfig.kt}
+
