@@ -1,4 +1,15 @@
 \section{Colectarea Datelor}
 
-Motivația colectării datelor a fost prezentată anterior. Totuși, această aplicație este bazată pe ideea de a pune utilizatorii în posesia propriilor date și de a face asta într-un mod transparent. De aceea colectarea datelor se face numai cu acordul utilizatorului și este dezactivată la instalare. În cazul în care aceasta este activată, datele sunt colectate în mod anonim. Acestea sunt trimise având un ID unic generat prima dată când funcționalitatea este folosită și nu supraviețuiește la reinstalarea aplicației.
+La nivelul domeniului, funcționalitatea de colectare de date are o reprezentare simplă, dată de interfața \texttt{ReceiptCollector}. Atunci când \texttt{DraftsUseCase.Manage::moveToValid} se execută cu succes, metoda \texttt{send} este apelată și aceasta declanșează procesul de colectare a bonului curent.
 
+\lstinputlisting[style=javaCodeStyle, caption={Interfața ReceiptCollector}, label={lst:receiptCollector}]{./code/ReceiptCollector.kt}
+
+Constrângerea acestei funcționalități de a avea un impact minim asupra experienței utilizatorului este rezolvată prin implementarea acesteia ca \texttt{Worker}, ceea ce permite executarea întârziată, în \emph{background} și sub anumite condiții. Din moment ce această acțiune nu este critică pentru utilizator, ea se execută numai atunci când dispozitivul este conectat la o rețea \emph{UNMETERED} (Wi-Fi).
+
+Worker-ul primește ca parametru id-ul bonului care trebuie sincronizat în cloud. La instanțiere, îi sunt injectate un obiect de acces la baza de date și opțiunea de colectare, așa cum este prezentată în programul \ref{lst:settingsInterfaces}. Dacă această opțiune este activată, bonul este extras din baza de date și trimis în cloud, împreună cu imaginea aferentă.
+
+Așa cum este specificat, colectarea se face în mod anonim. Totuși, un identificator care să arate dacă anumite date provin de la același dispozitiv poate fi util. De aceea bonurile sunt trimise împreună cu un \emph{UUID}. Acest identificator este generat prima dată când este cerut și salvat în \emph{shared preferences}. De menționat este că acest identificator nu supraviețuiește la reinstalarea aplicației.
+
+Această funcționalitate, la fel ca cea de export, utilizează serviciile cloud \emph{Firebase}. Autentificarea se face pe baza cheiei de aplicație generată din consola \emph{Firebase} atunci când aplicația este atașată unui proiect. Această cheie este salvată în fișierul \emph{google-services.json} și distribuită împreună cu aplicația.
+
+Stocarea datelor textuale se face în colecția \emph{collected} din \emph{Firebase Firestore}, iar imaginile se stochează în \emph{Firebase Cloud Storage}, în directorul \emph{collected}.
