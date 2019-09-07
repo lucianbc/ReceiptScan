@@ -82,7 +82,7 @@ class ReceiptSenderWorker @AssistedInject constructor(
                 .setConstraints(
                     Constraints
                         .Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .setRequiredNetworkType(NetworkType.UNMETERED)
                         .build()
                 )
                 .setInputData(
