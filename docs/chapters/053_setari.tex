@@ -1,10 +1,7 @@
-\section{Setări}
+\section{Gestionare setări}
 
-% Ecranul de setări controlează valorile predefinite utilizate în extragerea datelor despre bonuri și indicatorul care permite sau nu colectarea datelor. Modificarea acestor valori nu este inclusă explicit în domeniul aplicației, de aceea această funcționalitate este implementată numai la nivelul prezentării și infrastructurii. Interfețele definite de model, \texttt{CollectingOption} și \texttt{ReceiptDefaults} sunt implementate de clasa \texttt{PreferencesDao}, care este folosită pentru a accesa mediul de stocare \texttt{SharedPreferences}. 
+Modificarea setărilor nu face parte din domeniul problemei acestei aplicații, de aceea nu are o reprezentare la acest nivel. În schimb, domeniul definește interfețele \texttt{ReceiptDefaults} și \texttt{CollectingOption}, care conțin valori ce sunt modificate prin intermediul setărilor.
 
-% \begin{figure}[h]
-%   \centering
-%   \includegraphics[width=\screenwidth]{SettingsScreen.png}
-%   \caption{Ecranul de setări}
-%   \label{settingsScreen}
-% \end{figure}
+\lstinputlisting[style=javaCodeStyle, caption={Interfețele ReceiptsDefaults și CollectingOption}, label={lst:settingsInterfaces}]{./code/settingsInterfaces.kt}
+
+Valorile din setări sunt persistate în \emph{shared preferences}, așa cum este arătat în secțiunea \ref{technical:sharedPreferences}. La nivelul infrastructurii este definită clasa \texttt{PreferencesDao} cu scopul de a accesa și persista valorile din \emph{shared preferences}. Tot această clasă implementează cele două interfețe din programul \ref{lst:settingsInterfaces} și este injectată acolo unde interfețele sunt cerute.
