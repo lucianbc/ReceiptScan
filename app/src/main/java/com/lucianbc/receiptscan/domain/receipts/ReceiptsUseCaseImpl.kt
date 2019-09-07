@@ -1,6 +1,5 @@
 package com.lucianbc.receiptscan.domain.receipts
 
-import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -9,10 +8,6 @@ class ReceiptsUseCaseImpl @Inject constructor(
     private val manageFactory: ManageReceiptUseCase.Factory,
     private val sourcesManager: SourcesManager
 ) : ReceiptsUseCase, ISourcesManager by sourcesManager {
-
-    override fun list(): Flowable<List<ReceiptListItem>> =
-        repository.listReceipts()
-
 
     override fun fetch(receiptId: ReceiptId): ReceiptsUseCase.Manage {
         return repository

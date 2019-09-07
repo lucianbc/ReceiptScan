@@ -7,7 +7,6 @@ import java.util.*
 
 interface ReceiptsUseCase : ISourcesManager {
 
-    fun list(): Flowable<List<ReceiptListItem>>
     fun fetch(receiptId: ReceiptId): Manage
 
     interface Manage {
