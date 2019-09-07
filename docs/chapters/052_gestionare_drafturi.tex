@@ -4,7 +4,7 @@ Operațiunile permise asupra unui draft sunt modelate la nivelul domeniului prin
 
 \lstinputlisting[style=javaCodeStyle, caption={Interfața Drafts Use Case}, label={lst:draftsUseCase}]{./code/DraftsUseCase.kt}
 
-Editarea câmpurilor text se face în manieră \emph{on the fly}, ceea ce înseamnă că nu este necesar un ecran separat drept formular și apăsarea unui buton de persistare a modificărilor. La nivelul interfeței grafice, câmpurile textuale sunt reprezentate prin câmpuri \texttt{EditText}, care permit tastarea în interior. De fiecare dată când utilizatorul face modificări asupra acestor câmpuri, o funcție \emph{callback} este declanșată, care apelează funcția de actualizare valorii în baza de date.
+Editarea câmpurilor text se face în manieră \emph{on the fly}, ceea ce înseamnă că nu este necesar un ecran separat drept formular și apăsarea unui buton de persistare a modificărilor. La nivelul interfeței grafice, câmpurile textuale sunt reprezentate prin câmpuri \texttt{EditText}, care permit tastarea în interior. De fiecare dată când utilizatorul face modificări asupra acestor câmpuri, o funcție \emph{callback} este declanșată, care apelează funcția de actualizare a valorii în baza de date.
 
 Pentru ca actualizarea să nu se producă mult prea des, funcțiilor de actualizare le este aplicat operatorul \texttt{throttleLast}. Funcționarea acestuia este ilustrată în figura \ref{fig:throttle}\cite{ThrottleLast}. Acest operator emite obiecte numai după ce un anumit timp a trecut. Aplicarea acestui operator unei funcții se face prin crearea unui obiect \texttt{PublishSubject} și este ilustrată în programul \ref{lst:throttle}.
 

@@ -4,4 +4,4 @@ Modificarea setărilor nu face parte din domeniul problemei acestei aplicații, 
 
 \lstinputlisting[style=javaCodeStyle, caption={Interfețele ReceiptsDefaults și CollectingOption}, label={lst:settingsInterfaces}]{./code/settingsInterfaces.kt}
 
-Valorile din setări sunt persistate în \emph{shared preferences}, așa cum este arătat în secțiunea \ref{technical:sharedPreferences}. La nivelul infrastructurii este definită clasa \texttt{PreferencesDao} cu scopul de a accesa și persista valorile din \emph{shared preferences}. Tot această clasă implementează cele două interfețe din programul \ref{lst:settingsInterfaces} și este injectată acolo unde interfețele sunt cerute.
+Valorile din setări sunt persistate în \emph{shared preferences}, așa cum este arătat în secțiunea \ref{technical:sharedPreferences}. La nivelul infrastructurii este definită clasa \texttt{PreferencesDao} cu scopul de a accesa și persista valorile din \emph{shared preferences}. Tot această clasă implementează cele două interfețe din programul \ref{lst:settingsInterfaces} și este injectată unde interfețele sunt cerute.
