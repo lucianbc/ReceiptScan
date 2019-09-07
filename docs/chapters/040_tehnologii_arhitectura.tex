@@ -76,7 +76,7 @@ Arhitectura dezvoltată pentru această aplicație este inspirată de cea prezen
   \label{fig:arhitectura}}
 \end{figure}
 
-O caracteristică importantă a arhitecturii este aceea că abstractizarea descrește din centru înspre margini. Dependințele în cadrul acesteia sunt orientate către centru. Astfel, un nivel mai abstract nu depinde de un detaliu, ci invers, detaliile depind de abstractizări. Această caracteristică se realizează urmând principiul inversării dependințelor. Pentru a inversa dependințele, un nivel mai înalt definește o interfață care este implementată la un nivel inferior. Această interfață este injectată mai apoi în componenta ce necestiă un serviciu implementat la un nivel inferior. Injectarea depentințelor este exemplificată în programul \ref{lst:diExample}.
+O caracteristică importantă a arhitecturii este aceea că abstractizarea descrește din centru înspre margini. Dependințele în cadrul acesteia sunt orientate către centru. Astfel, un nivel mai abstract nu depinde de un detaliu, ci invers, detaliile depind de abstractizări. Această caracteristică se realizează urmând principiul inversării dependințelor. Pentru a inversa dependințele, un nivel mai înalt definește o interfață care este implementată la un nivel inferior. Această interfață este injectată mai apoi în componenta ce necesită un serviciu implementat la un nivel inferior. Injectarea dependințelor este exemplificată în programul \ref{lst:diExample}.
 
 \lstinputlisting[
   style=javaCodeStyle, 
