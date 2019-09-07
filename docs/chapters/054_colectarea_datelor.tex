@@ -10,6 +10,6 @@ Worker-ul primește ca parametru id-ul bonului care trebuie sincronizat în clou
 
 Așa cum este specificat, colectarea se face în mod anonim. Totuși, un identificator care să arate dacă anumite date provin de la același dispozitiv poate fi util. De aceea bonurile sunt trimise împreună cu un \emph{UUID}. Acest identificator este generat prima dată când este cerut și salvat în \emph{shared preferences}. De menționat este că acest identificator nu supraviețuiește la reinstalarea aplicației.
 
-Această funcționalitate, la fel ca cea de export, utilizează serviciile cloud \emph{Firebase}. Autentificarea se face pe baza cheiei de aplicație generată din consola \emph{Firebase} atunci când aplicația este atașată unui proiect. Această cheie este salvată în fișierul \emph{google-services.json} și distribuită împreună cu aplicația.
+Această funcționalitate, la fel ca cea de export, utilizează serviciile cloud \emph{Firebase}. Autentificarea se face pe baza cheii de aplicație generată din consola \emph{Firebase} atunci când aplicația este atașată unui proiect. Această cheie este salvată în fișierul \emph{google-services.json} și distribuită împreună cu aplicația.
 
 Stocarea datelor textuale se face în colecția \emph{collected} din \emph{Firebase Firestore}, iar imaginile se stochează în \emph{Firebase Cloud Storage}, în directorul \emph{collected}.

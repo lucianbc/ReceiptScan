@@ -17,13 +17,13 @@ La nivelul domeniului, algoritmul de OCR este ascuns sub interfața \texttt{Scan
   Funcția \texttt{extract} declanșează procesarea imaginii bonului și salvarea informațiilor în baza de date, returnând id-ul entității salvate;
 
   \item
-  Valoarea \texttt{state} marchează daca o imagine este procesată pentru extragerea unui bon sau nu, sau dacă a fost întâmpinată o eroare;
+  Valoarea \texttt{state} marchează dacă o imagine este procesată pentru extragerea unui bon sau nu, sau dacă a fost întâmpinată o eroare;
 \end{itemize}
 
 Procesarea unei imagini durează în funcție de performanțele telefonului, timp de câteva secunde. Părăsirea ecranului de scanare este permisă în acest timp deoarece obiectul \texttt{ExtractUseCase} nu este distrus odată cu obiectul vizual, ceea ce nu întrerupe procesarea.
 
 Pentru implementarea vizorului am folosit librăria \emph{CameraView}\cite{CameraView}. O constrângere a acesteia este aceea că imaginea surprinsă este pusă automat pe un \emph{thread} secundar și este accesată printr-un \emph{callback}. Această abordare intră în conflict utilizarea \emph{RxJava}. La o inspecție a codului acestei librării am observat existența unei metode \emph{package private} de a obține imaginea capturată în mod \emph{sincron}. Așadar, într-un modul nou am implementat decoratorul \texttt{RxPictureResult} în pachetul librăriei, care să expună imaginea capturată într-un \texttt{Observable}.
 
-Procesarea cadrelor pentru a afișa în timp real textul recunoscut de modului \emph{OCR} este limitată la maxim 15 cadre pe secundă pentru a nu suprasolicita dispozitivul. \emph{CameraView} livrează cadre la o rezoluție scăzută pentru procesarea în timp real, ceea ce scade timpul de procesare al acestora, dar si calitatea textului extras. Aceasta nu este o problemă deoarece afișarea în timp real are doar rolul de a ghida utilizatorul. Dacă o porțiune de text este recunoscută la o rezoluție scăzută, atunci aceasta va fi recunoscută și în imaginea capturată la rezoluție întreagă. Pentru afișarea chenarelor am implementat obiectul vizual \texttt{OcrOverlay}, care este așezat deasupra vizorului.
+Procesarea cadrelor pentru a afișa în timp real textul recunoscut de modului \emph{OCR} este limitată la maxim 15 cadre pe secundă pentru a nu suprasolicita dispozitivul. \emph{CameraView} livrează cadre la o rezoluție scăzută pentru procesarea în timp real, ceea ce scade timpul de procesare al acestora, dar și calitatea textului extras. Aceasta nu este o problemă deoarece afișarea în timp real are doar rolul de a ghida utilizatorul. Dacă o porțiune de text este recunoscută la o rezoluție scăzută, atunci aceasta va fi recunoscută și în imaginea capturată la rezoluție întreagă. Pentru afișarea chenarelor am implementat obiectul vizual \texttt{OcrOverlay}, care este așezat deasupra vizorului.
 
 

@@ -16,7 +16,7 @@ Gestionarea stării folosește o serie de operatori \emph{RxJava} pentru a obți
 Pentru ca starea să fie actualizată corespunzător, următoarele tehnici sunt folosite:
 \begin{enumerate}
   \item Fiecărei funcții \texttt{fetchFor*} îi corespunde un \emph{BehaviorProcessor}, capabil să păstreze ca stare ultima valoare emisă. Atunci când funcția este apelată, emite argumentul în acest procesor.
-  \item Fiecare procesor este combinat folosint operatorul \emph{mergeWith} cu interogarea din baza de date aferentă pentru a obține actualizări atunci când sursa de date se modifică; combinației îi sunt aplicați operatorii \texttt{.replay(1).autoConnect()} pentru a reține ca stare ultima valoare emisă; Aceste combinații devin surse de parametrii;
+  \item Fiecare procesor este combinat folosind operatorul \emph{mergeWith} cu interogarea din baza de date aferentă pentru a obține actualizări atunci când sursa de date se modifică; combinației îi sunt aplicați operatorii \texttt{.replay(1).autoConnect()} pentru a reține ca stare ultima valoare emisă; Aceste combinații devin surse de parametrii;
   \item Pentru interogările dependente, sursele de parametrii sunt combinate folosind operatorul \texttt{combineLatest} pentru a emite noi valori de fiecare dată când una dintre sursele unitare este actualizată; apoi aceste combinații sunt redirecționate către interogările din baza de date;
 \end{enumerate}
 

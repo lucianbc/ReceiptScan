@@ -17,6 +17,6 @@ Pentru ca actualizarea să nu se producă mult prea des, funcțiilor de actualiz
   \label{fig:throttle}
 \end{figure}
 
-Baza de date este actualizată cu valori compuse de tipul \texttt{Draft}. De aceea funcția \texttt{update} primește o nouă valoare singulară și o funcție care are ca argumente noua valoare unitară și vechea valoare \texttt{Draft} și emite valoarea compusă nouă, ce este persistată. Implementarea acestei funcții se face folosint funcția \texttt{copy} ce este definită automat pentru clase de date în \emph{Kotlin}.
+Baza de date este actualizată cu valori compuse de tipul \texttt{Draft}. De aceea funcția \texttt{update} primește o nouă valoare singulară și o funcție care are ca argumente noua valoare unitară și vechea valoare \texttt{Draft} și emite valoarea compusă nouă, ce este persistată. Implementarea acestei funcții se face folosind funcția \texttt{copy} ce este definită automat pentru clase de date în \emph{Kotlin}.
 
 Obiectul vizual din \emph{Android} predefinit pentru afișarea imaginilor  nu permite gestul de \emph{zoom}. Pentru a oferi această funcționalitate pentru imaginea draftului curent, am folosit librăria \emph{PhotoView} \cite{PhotoView}. 
