@@ -38,10 +38,11 @@ class FormViewModel @Inject constructor() : ViewModel() {
         }
 
     private fun format(): Session.Format? =
-        formatOption.value?.let {
-            when(it) {
-                R.id.contentCsv -> Session.Format.CSV
-                else -> Session.Format.JSON
-            }
-        }
+        Session.Format.JSON
+//        formatOption.value?.let {
+//            when(it) {
+//                R.id.contentCsv -> Session.Format.CSV
+//                else -> Session.Format.JSON
+//            }
+//        }
 }

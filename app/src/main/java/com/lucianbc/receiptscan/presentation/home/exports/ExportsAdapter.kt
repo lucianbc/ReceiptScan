@@ -8,6 +8,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -58,6 +59,9 @@ class ExportsAdapter(private val activityStarter: (Intent) -> Unit)
                 val clipService = view.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("download url", value.downloadLink)
                 clipService.primaryClip = clip
+                Toast
+                    .makeText(view.context, "Download link copied to clipboard", Toast.LENGTH_SHORT)
+                    .show()
             }
             view.downloadBtn.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW).setData(Uri.parse(value.downloadLink))

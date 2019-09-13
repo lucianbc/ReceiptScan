@@ -11,7 +11,7 @@ class OptionsAdapter(fm: FragmentManager)
 
     private val fragmentList = listOf(
         ContentFragment(),
-        ContentFormatFragment(),
+//        ContentFormatFragment(),
         DateRangeFragment()
     )
 
