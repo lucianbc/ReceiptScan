@@ -1,15 +1,19 @@
+import com.lucianbc.receiptscan.buildsrc.Dependencies
+import com.lucianbc.receiptscan.buildsrc.Config
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion Config.compileSdk
+    buildToolsVersion Config.buildTools
 
 
     defaultConfig {
         applicationId "com.lucianbc.receiptscan"
-        minSdkVersion 24
-        targetSdkVersion 29
+        minSdkVersion Config.minSdk
+        targetSdkVersion Config.targetSdk
         versionCode 1
         versionName "1.0"
 
@@ -34,4 +38,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation Dependencies.Google.material
 }
