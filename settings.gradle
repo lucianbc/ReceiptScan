@@ -1,1 +1,3 @@
-include ':app', ':rxcameraview', ':ui-homescreen'
+include ':app'
+include ':rxcameraview'
+include 'ui:homescreen'
