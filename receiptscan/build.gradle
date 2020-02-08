@@ -4,6 +4,7 @@ import com.lucianbc.receiptscan.buildsrc.Config
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
     compileSdkVersion Config.compileSdk
