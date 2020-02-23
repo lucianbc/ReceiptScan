@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setupBottomNavMenu()
-        setupActionBar()
+//        setupActionBar()
     }
 
     private fun setupBottomNavMenu() {
@@ -36,6 +36,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(navController, appBarConfig)
+        return NavigationUI.navigateUp(navController, null)
     }
 }
