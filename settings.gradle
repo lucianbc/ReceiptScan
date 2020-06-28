@@ -1,4 +1,3 @@
 include ':app'
 include ':receiptscan'
 include ':rxcameraview'
-include 'ui:homescreen'
