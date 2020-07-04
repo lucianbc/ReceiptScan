@@ -20,13 +20,17 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        button.setOnClickListener {
-            navigate()
-        }
+        setNavigation()
     }
 
-    private fun navigate() {
-        val action = HomeFragmentDirections.actionHomeToScanner()
-        this.findNavController().navigate(action)
+    private fun setNavigation() {
+        button.setOnClickListener {
+            HomeFragmentDirections.actionHomeToScanner()
+                .let(this.findNavController()::navigate)
+        }
+        button2.setOnClickListener {
+            HomeFragmentDirections.actionHomeToReceiptView()
+                .let(this.findNavController()::navigate)
+        }
     }
 }
