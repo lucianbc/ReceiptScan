@@ -2,4 +2,8 @@
     <string name="app_name">receiptscan</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_dest_exports">Exports</string>
+    <string name="home_dest_pending">Pending</string>
+    <string name="home_dest_dashboard">Dashboard</string>
+    <string name="home_dest_settings">Settings</string>
 </resources>
