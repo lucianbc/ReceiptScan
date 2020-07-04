@@ -16,7 +16,7 @@ object Dependencies {
     }
 
     object Androidx {
-        private const val navVersion = "2.2.0"
+        private const val navVersion = "2.3.0"
         const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${navVersion}"
         const val navigationUi = "androidx.navigation:navigation-ui-ktx:${navVersion}"
         const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${navVersion}"
