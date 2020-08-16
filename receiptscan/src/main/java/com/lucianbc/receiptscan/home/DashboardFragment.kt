@@ -24,5 +24,8 @@ class DashboardFragment : Fragment() {
         openScannerBtn.setOnClickListener {
             this.findNavController().navigate(HomeFragmentDirections.actionHomeToScanner())
         }
+        goToDetailsBtn.setOnClickListener {
+            this.findNavController().navigate(HomeFragmentDirections.actionHomeToReceiptView())
+        }
     }
 }
