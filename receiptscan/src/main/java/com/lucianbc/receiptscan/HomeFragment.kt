@@ -52,13 +52,13 @@ class HomeFragment : Fragment() {
             }
             navigationView.setOnNavigationItemSelectedListener {
                 val index = when(it.itemId) {
-                    R.id.dashboard -> 1
-                    R.id.pending -> 2
-                    R.id.exports -> 3
-                    R.id.settings -> 4
+                    R.id.dashboard -> 0
+                    R.id.pending -> 1
+                    R.id.exports -> 2
+                    R.id.settings -> 3
                     else -> null
                 }
-                index?.let(pager::setCurrentItem)
+                index?.let { i -> pager.setCurrentItem(i, false) }
                 true
             }
         }
