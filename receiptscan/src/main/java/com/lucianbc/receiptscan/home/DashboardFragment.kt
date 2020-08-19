@@ -21,11 +21,6 @@ class DashboardFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        openScannerBtn.setOnClickListener {
-            this.findNavController().navigate(HomeFragmentDirections.actionHomeToScanner())
-        }
-        goToDetailsBtn.setOnClickListener {
-            this.findNavController().navigate(HomeFragmentDirections.actionHomeToReceiptView())
-        }
+
     }
 }
