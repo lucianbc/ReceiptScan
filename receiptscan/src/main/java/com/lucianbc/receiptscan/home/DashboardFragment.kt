@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.lucianbc.receiptscan.HomeFragmentDirections
 import com.lucianbc.receiptscan.R
+import com.lucianbc.receiptscan.home.dashboard.DashboardBottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 class DashboardFragment : Fragment() {
@@ -21,6 +22,11 @@ class DashboardFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        dashboardFab.setOnClickListener {
+            openBottomSheet()
+        }
     }
+
+    private fun openBottomSheet() =
+        DashboardBottomSheetDialog().show(childFragmentManager)
 }
