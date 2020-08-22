@@ -7,14 +7,28 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lucianbc.receiptscan.R
+import kotlinx.android.synthetic.main.dashboard_bottom_sheet.*
 
-class DashboardBottomSheetDialog : BottomSheetDialogFragment() {
+private typealias Callback = () -> Unit
+
+class DashboardBottomSheetDialog(private val onSnap: Callback?, private val onManuallyInput: Callback?) : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.dashboard_bottom_sheet, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        snapInputBtn.setOnClickListener {
+            dismiss()
+            onSnap?.invoke()
+        }
+        manuallyInputBtn.setOnClickListener {
+            dismiss()
+            onManuallyInput?.invoke()
+        }
     }
 
     fun show(fm: FragmentManager) {

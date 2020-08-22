@@ -28,5 +28,12 @@ class DashboardFragment : Fragment() {
     }
 
     private fun openBottomSheet() =
-        DashboardBottomSheetDialog().show(childFragmentManager)
+        DashboardBottomSheetDialog(
+            onSnap = {
+                findNavController().navigate(HomeFragmentDirections.actionHomeToScanner())
+            },
+            onManuallyInput = {
+                findNavController().navigate(HomeFragmentDirections.actionHomeToReceiptView())
+            }
+        ).show(childFragmentManager)
 }
