@@ -4,15 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
+    android:layout_height="@dimen/list_item_height"
     android:background="?android:attr/selectableItemBackground"
     >
 
     <ImageView
         android:id="@+id/sheetItemIcon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="@dimen/list_item_icon"
+        android:layout_height="@dimen/list_item_icon"
+        android:layout_marginStart="@dimen/list_item_padding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,11 +22,14 @@
         android:id="@+id/sheetItemCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="@dimen/list_item_icon_text_space"
+        android:layout_marginEnd="@dimen/list_item_padding"
         app:layout_constraintBottom_toBottomOf="@+id/sheetItemIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/sheetItemIcon"
         app:layout_constraintTop_toTopOf="@+id/sheetItemIcon"
-        tools:text="Item value"/>
+        tools:text="Item value" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
