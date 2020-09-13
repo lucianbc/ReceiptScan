@@ -1,20 +1,16 @@
-import com.lucianbc.receiptscan.buildsrc.Dependencies
-import com.lucianbc.receiptscan.buildsrc.Config
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
-    compileSdkVersion Config.compileSdk
-    buildToolsVersion Config.buildTools
-
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "com.lucianbc.receiptscan"
-        minSdkVersion Config.minSdk
-        targetSdkVersion Config.targetSdk
+        minSdkVersion 23
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -40,7 +36,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation Dependencies.Google.material
-    implementation Dependencies.Androidx.navigationFragment
-    implementation Dependencies.Androidx.navigationUi
+    implementation "com.google.android.material:material:1.2.0-alpha04"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.0"
 }
