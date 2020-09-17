@@ -7,6 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.fragment_scanner.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -37,10 +42,9 @@ class ScannerFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     @AfterPermissionGranted(CAMERA_PERMISSION_REQUEST)
     private fun checkCameraPermission() {
-        println("Check permissions")
         val perm = Manifest.permission.CAMERA
         if (EasyPermissions.hasPermissions(requireActivity(), perm))
-            println("Has permission")
+            startCamera()
         else
             EasyPermissions.requestPermissions(
                 this,
@@ -66,6 +70,25 @@ class ScannerFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             CAMERA_PERMISSION_REQUEST -> checkCameraPermission()
         }
     }
+
+    private fun startCamera() {
+        val context = requireContext()
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
+        cameraProviderFuture.addListener({
+            val cameraProvider = cameraProviderFuture.get()
+            cameraProvider.bindToLifecycle(this, cameraSelector, preview)
+        }, ContextCompat.getMainExecutor(context))
+    }
+
+    private val cameraSelector = CameraSelector.Builder()
+        .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+        .build()
+
+    private val preview = Preview.Builder()
+        .build()
+        .also {
+            it.setSurfaceProvider(viewFinder.createSurfaceProvider())
+        }
 
     companion object {
         const val CAMERA_PERMISSION_REQUEST = 100

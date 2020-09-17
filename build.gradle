@@ -3,6 +3,8 @@ buildscript {
     ext {
         kotlin_version = '1.4.10'
         dagger_version = '2.22.1'
+        camerax_version = '1.0.0-beta08'
+        cameraxView_version = '1.0.0-alpha15'
     }
 
     repositories {
