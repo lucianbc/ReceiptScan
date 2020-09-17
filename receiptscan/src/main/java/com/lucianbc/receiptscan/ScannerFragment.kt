@@ -76,19 +76,20 @@ class ScannerFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
+
+            val cameraSelector = CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build()
+
+            val preview = Preview.Builder()
+                .build()
+                .also {
+                    it.setSurfaceProvider(viewFinder.createSurfaceProvider())
+                }
+
             cameraProvider.bindToLifecycle(this, cameraSelector, preview)
         }, ContextCompat.getMainExecutor(context))
     }
-
-    private val cameraSelector = CameraSelector.Builder()
-        .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-        .build()
-
-    private val preview = Preview.Builder()
-        .build()
-        .also {
-            it.setSurfaceProvider(viewFinder.createSurfaceProvider())
-        }
 
     companion object {
         const val CAMERA_PERMISSION_REQUEST = 100
