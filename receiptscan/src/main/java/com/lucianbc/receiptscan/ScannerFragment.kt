@@ -5,10 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.fragment_scanner.*
@@ -87,8 +87,23 @@ class ScannerFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                     it.setSurfaceProvider(viewFinder.createSurfaceProvider())
                 }
 
-            cameraProvider.bindToLifecycle(this, cameraSelector, preview)
+            val camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview)
+            camera.cameraControl.setupTouchToFocus()
         }, ContextCompat.getMainExecutor(context))
+    }
+
+    private fun CameraControl.setupTouchToFocus() {
+        viewFinder.setOnTouchListener { v, event ->
+            if (event.action != MotionEvent.ACTION_UP)
+                return@setOnTouchListener false
+            v.performClick()
+            val factory = SurfaceOrientedMeteringPointFactory(
+                viewFinder.width.toFloat(), viewFinder.height.toFloat())
+            val point = factory.createPoint(event.x, event.y)
+            val action = FocusMeteringAction.Builder(point, FocusMeteringAction.FLAG_AF).build()
+            this.startFocusAndMetering(action)
+            return@setOnTouchListener true
+        }
     }
 
     companion object {
