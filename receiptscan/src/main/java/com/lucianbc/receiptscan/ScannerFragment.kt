@@ -94,14 +94,16 @@ class ScannerFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private fun CameraControl.setupTouchToFocus() {
         viewFinder.setOnTouchListener { v, event ->
-            if (event.action != MotionEvent.ACTION_UP)
-                return@setOnTouchListener false
             v.performClick()
-            val factory = SurfaceOrientedMeteringPointFactory(
-                viewFinder.width.toFloat(), viewFinder.height.toFloat())
-            val point = factory.createPoint(event.x, event.y)
-            val action = FocusMeteringAction.Builder(point, FocusMeteringAction.FLAG_AF).build()
-            this.startFocusAndMetering(action)
+            if (event.action == MotionEvent.ACTION_UP) {
+                val factory = SurfaceOrientedMeteringPointFactory(
+                    viewFinder.width.toFloat(), viewFinder.height.toFloat())
+                val point = factory.createPoint(event.x, event.y)
+                val action = FocusMeteringAction.Builder(point,
+                    FocusMeteringAction.FLAG_AF or FocusMeteringAction.FLAG_AE)
+                    .build()
+                this.startFocusAndMetering(action)
+            }
             return@setOnTouchListener true
         }
     }
