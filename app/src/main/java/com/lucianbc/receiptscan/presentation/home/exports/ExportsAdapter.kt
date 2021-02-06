@@ -58,7 +58,7 @@ class ExportsAdapter(private val activityStarter: (Intent) -> Unit)
             view.copyToClipboardBtn.setOnClickListener {
                 val clipService = view.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("download url", value.downloadLink)
-                clipService.primaryClip = clip
+                clipService.setPrimaryClip(clip)
                 Toast
                     .makeText(view.context, "Download link copied to clipboard", Toast.LENGTH_SHORT)
                     .show()
