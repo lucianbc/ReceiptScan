@@ -22,7 +22,7 @@ buildscript {
 }
 
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.23.1"
+    id "com.diffplug.gradle.spotless" version "3.27.0"
 }
 
 allprojects {
@@ -30,7 +30,6 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
-
     }
 }
 
@@ -39,7 +38,8 @@ subprojects {
     spotless {
         kotlin {
             target "**/*.kt"
-            ktlint("0.33.0")
+            trimTrailingWhitespace()
+            ktlint("0.40.0")
         }
     }
 }
