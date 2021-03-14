@@ -6,14 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.lucianbc.receiptscan.v2.ui.ComposableSampleTheme
 import com.lucianbc.receiptscan.v2.ui.components.ScreenTitle
-import com.lucianbc.receiptscan.v2.ui.screens.SettingsScreen
 import androidx.activity.compose.setContent
+import com.lucianbc.receiptscan.v2.ui.screens.DraftsScreen
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SettingsScreen()
+            DraftsScreen()
         }
     }
 }
