@@ -39,7 +39,7 @@ subprojects {
         kotlin {
             target "**/*.kt"
             trimTrailingWhitespace()
-            ktlint("0.40.0")
+            ktlint("0.40.0").userData([disabled_rules: "no-wildcard-imports"])
         }
     }
 }
