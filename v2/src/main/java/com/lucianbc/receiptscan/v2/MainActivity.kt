@@ -7,12 +7,13 @@ import androidx.compose.ui.platform.setContent
 import androidx.ui.tooling.preview.Preview
 import com.lucianbc.receiptscan.v2.ui.ComposableSampleTheme
 import com.lucianbc.receiptscan.v2.ui.components.ScreenTitle
+import com.lucianbc.receiptscan.v2.ui.screens.SettingsScreen
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen()
+            SettingsScreen()
         }
     }
 }
