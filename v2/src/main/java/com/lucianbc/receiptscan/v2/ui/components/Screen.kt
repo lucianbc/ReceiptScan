@@ -9,7 +9,7 @@ import com.lucianbc.receiptscan.v2.ui.ComposableSampleTheme
 @Composable
 fun Screen(content: @Composable () -> Unit) {
     ComposableSampleTheme {
-        Column(modifier = Modifier.fillMaxHeight()) {
+        Column(modifier = Modifier.fillMaxHeight().fillMaxWidth()) {
             content()
         }
     }
