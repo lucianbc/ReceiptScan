@@ -23,11 +23,12 @@ fun DraftsScreen() {
                 .fillMaxHeight()
                 .padding(horizontal = 8.dp)
         ) {
-            itemsIndexed(expenses) { index, item ->
+            itemsIndexed(expenses) { _, item ->
                 ExpenseListItem(name = item)
-                if (index != item.length - 1) {
-                    Spacer(modifier = Modifier.height(4.dp))
-                }
+
+                Spacer(modifier = Modifier
+                    .height(4.dp)
+                    .background(Color.Red))
             }
         }
     }
@@ -39,7 +40,7 @@ private val expenses = (1..10).map { "Expense $it" }
 fun ExpenseListItem(name: String) {
     Row(
         modifier = Modifier
-            .clickable {  }
+            .clickable { }
             .fillMaxWidth()
             .background(color = Color(0xffF7F9FA), shape = RoundedCornerShape(8.dp))
             .padding(32.dp)
