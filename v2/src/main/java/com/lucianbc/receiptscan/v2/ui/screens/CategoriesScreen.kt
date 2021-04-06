@@ -11,16 +11,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.lucianbc.receiptscan.v2.R
 import com.lucianbc.receiptscan.v2.ui.components.Screen
@@ -57,25 +52,30 @@ fun TitleBar(title: String) {
 fun CategoryItem(category: Category) {
     Column(
         modifier = Modifier
-            .clickable {  }
+            .clickable { }
             .padding(vertical = 16.dp, horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Image(
-            contentDescription = "",
-            modifier = Modifier
-                .background(MaterialTheme.colors.secondary, shape = CircleShape)
-                .padding(16.dp)
-                .width(80.dp)
-                .height(80.dp),
-            painter = painterResource(id = category.icon()),
-        )
+        CategoryAvatar(category = category)
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = category.let { when(it) {
             Category.NotAssigned -> "Others"
             else -> it.name
         } })
     }
+}
+
+@Composable
+fun CategoryAvatar(category: Category, size: Int = 80, padding: Int = 16) {
+    Image(
+        contentDescription = "",
+        modifier = Modifier
+            .background(MaterialTheme.colors.secondary, shape = CircleShape)
+            .padding(padding.dp)
+            .width(size.dp)
+            .height(size.dp),
+        painter = painterResource(id = category.icon()),
+    )
 }
 
 enum class Category {
