@@ -16,9 +16,9 @@ fun Screen(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun Screen(title: String, content: @Composable () -> Unit) {
+fun Screen(title: String, icons: List<IconAction> = emptyList(), content: @Composable () -> Unit) {
     Screen {
-        ScreenTitle(title = title)
+        ScreenTitle(title = title, icons)
         Spacer(modifier = Modifier.height(64.dp))
         content()
     }
