@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,7 +26,7 @@ import kotlin.random.Random
 @Composable
 fun ExportsScreen() {
     val icons = listOf(
-        Icons.Default.Add to {}
+        rememberVectorPainter(Icons.Default.Add) to {}
     )
 
     Screen(title = "Exports", icons = icons) {
