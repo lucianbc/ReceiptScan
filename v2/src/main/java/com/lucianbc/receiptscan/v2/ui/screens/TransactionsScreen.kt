@@ -60,7 +60,7 @@ fun CategoryItem(name: String) {
 
     ConstraintLayout(
         modifier = Modifier
-            .background(Color.Cyan, RoundedCornerShape(roundness))
+            .background(Color(0xffc8d4eb), RoundedCornerShape(roundness))
     ) {
         val (iconRef, nameRef, valueRef) = createRefs()
         Icon(
