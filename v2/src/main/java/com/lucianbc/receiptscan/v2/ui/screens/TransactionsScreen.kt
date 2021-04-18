@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.lucianbc.receiptscan.v2.R
+import com.lucianbc.receiptscan.v2.ui.components.ExpenseListItem
 import com.lucianbc.receiptscan.v2.ui.components.Screen
 
 @Composable
@@ -29,20 +30,36 @@ fun TransactionsScreen() {
         painterResource(id = R.drawable.ic_baseline_filter_alt_24) to {}
     )
 
+    val spacing = 8.dp
+
     Screen("Transactions", icons = icons) {
-        LazyColumn {
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(spacing)) {
+            item {
+                Text(
+                    text = "Categories",
+                    style = MaterialTheme.typography.subtitle1,
+                    modifier = Modifier.padding(start = spacing)
+                )
+            }
             item(key = "categoriesRow") {
                 LazyRow(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(spacing),
+                    contentPadding = PaddingValues(horizontal = spacing, vertical = spacing)
                 ) {
                     itemsIndexed(categories) { _, it ->
                         CategoryItem(it)
                     }
                 }
             }
+            item {
+                Text(
+                    text = "Transactions",
+                    style = MaterialTheme.typography.subtitle1,
+                    modifier = Modifier.padding(start = spacing),
+                )
+            }
             itemsIndexed(transactions) { _, it ->
-                Text(text = it)
+                ExpenseListItem(name = it, modifier = Modifier.padding(horizontal = spacing))
             }
         }
     }
@@ -77,7 +94,7 @@ fun CategoryItem(name: String) {
         )
         Text(
             text = name,
-            style = MaterialTheme.typography.overline,
+            style = MaterialTheme.typography.caption,
             modifier = Modifier
                 .constrainAs(nameRef) {
                     top.linkTo(iconRef.bottom, 32.dp)
