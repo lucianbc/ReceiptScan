@@ -19,7 +19,6 @@ fun Screen(content: @Composable () -> Unit) {
 fun Screen(title: String, icons: List<IconAction> = emptyList(), content: @Composable () -> Unit) {
     Screen {
         ScreenTitle(title = title, icons)
-        Spacer(modifier = Modifier.height(64.dp))
         content()
     }
 }
