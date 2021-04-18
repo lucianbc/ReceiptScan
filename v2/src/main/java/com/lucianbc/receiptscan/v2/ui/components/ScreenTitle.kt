@@ -12,7 +12,9 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,7 +23,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 
 
-typealias IconAction = Pair<ImageVector, () -> Unit>
+typealias IconAction = Pair<Painter, () -> Unit>
 
 @Composable
 fun ScreenTitle(
@@ -91,15 +93,15 @@ fun ScreenBigTitlePreview() = ScreenTitle(title = "Exports")
 @Preview(showBackground = true, name = "With one icon")
 @Composable
 fun ScreenBigTitleWithIconPreview() = ScreenTitle(title = "Exports", icons = listOf(
-    Icons.Default.Add to {},
+    rememberVectorPainter(Icons.Default.Add) to {},
 ))
 
 @Preview(showBackground = true, name = "With multiple icon")
 @Composable
 fun ScreenBigTitleWithIconsPreview() = ScreenTitle(title = "Exports", icons = listOf(
-    Icons.Default.Add to {},
-    Icons.Default.Search to {},
-    Icons.Default.Share to {},
-    Icons.Default.AccountCircle to {},
+    rememberVectorPainter(Icons.Default.Add) to {},
+    rememberVectorPainter(Icons.Default.Search) to {},
+    rememberVectorPainter(Icons.Default.Share) to {},
+    rememberVectorPainter(Icons.Default.AccountCircle) to {},
 ))
 

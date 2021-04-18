@@ -87,7 +87,7 @@ enum class Category {
     Snack
 }
 
-private fun Category.icon(): Int {
+fun Category.icon(): Int {
     return when (this) {
         Category.NotAssigned -> R.drawable.ic_coin_24dp
         Category.Grocery -> R.drawable.ic_grocery
