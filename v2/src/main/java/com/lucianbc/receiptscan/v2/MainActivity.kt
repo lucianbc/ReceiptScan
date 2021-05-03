@@ -7,21 +7,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.lucianbc.receiptscan.v2.ui.ComposableSampleTheme
 import com.lucianbc.receiptscan.v2.ui.components.ScreenTitle
 import androidx.activity.compose.setContent
+import com.lucianbc.receiptscan.v2.ui.Navigation
 import com.lucianbc.receiptscan.v2.ui.screens.DraftsScreen
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            DraftsScreen()
+            Navigation()
         }
-    }
-}
-
-@Composable
-fun MainScreen() {
-    ComposableSampleTheme {
-        ScreenTitle(title = "Title here")
     }
 }
 
@@ -30,5 +24,5 @@ fun MainScreen() {
 )
 @Composable
 fun DefaultPreview() {
-    MainScreen()
+    Navigation()
 }
