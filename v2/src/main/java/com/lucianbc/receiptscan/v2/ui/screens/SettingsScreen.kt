@@ -19,12 +19,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lucianbc.receiptscan.v2.ui.components.Screen
 
+
+interface SettingsScreenParams {
+    fun goToCategories()
+
+    object Empty : SettingsScreenParams {
+        override fun goToCategories() {}
+    }
+}
+
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(params: SettingsScreenParams) {
     var enabled by remember { mutableStateOf(false) }
     Screen(title = "Settings") {
         SettingRow(key = "Default Currency", value = "RON") {}
-        SettingRow(key = "Default Category", value = "Grocery") {}
+        SettingRow(key = "Default Category", value = "Grocery", params::goToCategories)
         SettingRow(key = "Send Receipt Anonymously") {
             Switch(checked = enabled, onCheckedChange = { enabled = !enabled })
         }
@@ -57,5 +66,5 @@ fun SettingRow(key: String, value: String, onClick: OnClick = null) {
 @Composable
 @Preview
 fun SettingsScreenPreview() {
-    SettingsScreen()
+    SettingsScreen(SettingsScreenParams.Empty)
 }
