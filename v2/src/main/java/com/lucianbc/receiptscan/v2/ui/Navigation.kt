@@ -8,10 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
+import com.lucianbc.receiptscan.v2.ui.components.NavigationBarParams
 import com.lucianbc.receiptscan.v2.ui.screens.CategoriesScreen
 import com.lucianbc.receiptscan.v2.ui.screens.HomeScreen
 import com.lucianbc.receiptscan.v2.ui.screens.HomeScreenParams
-import com.lucianbc.receiptscan.v2.ui.screens.NavigationBarParams
 
 @ExperimentalFoundationApi
 @Composable
