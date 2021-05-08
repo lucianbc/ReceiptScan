@@ -22,11 +22,13 @@ fun DraftsScreen() {
                 .padding(horizontal = 8.dp)
         ) {
             itemsIndexed(expenses) { _, item ->
-                ExpenseListItem(name = item)
+                ExpenseListItem(name = item) {}
 
-                Spacer(modifier = Modifier
-                    .height(4.dp)
-                    .background(Color.Red))
+                Spacer(
+                    modifier = Modifier
+                        .height(4.dp)
+                        .background(Color.Red)
+                )
             }
         }
     }

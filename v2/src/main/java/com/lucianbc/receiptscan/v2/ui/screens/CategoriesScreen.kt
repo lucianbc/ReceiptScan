@@ -18,13 +18,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucianbc.receiptscan.v2.R
+import com.lucianbc.receiptscan.v2.ui.components.NavigationBarParams
 import com.lucianbc.receiptscan.v2.ui.components.Screen
+import com.lucianbc.receiptscan.v2.ui.components.TitleBar
+
 
 @ExperimentalFoundationApi
 @Composable
-fun CategoriesScreen() {
+fun CategoriesScreen(params: NavigationBarParams) {
     Screen {
-        TitleBar(title = "Categories")
+        TitleBar(title = "Categories", backEnabled = true, params = params)
         LazyVerticalGrid(
             cells = GridCells.Fixed(2)
         ) {
@@ -35,18 +38,6 @@ fun CategoriesScreen() {
     }
 }
 
-@Composable
-fun TitleBar(title: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(text = title, style = MaterialTheme.typography.h6)
-    }
-}
 
 @Composable
 fun CategoryItem(category: Category) {
@@ -58,10 +49,12 @@ fun CategoryItem(category: Category) {
     ) {
         CategoryAvatar(category = category)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = category.let { when(it) {
-            Category.NotAssigned -> "Others"
-            else -> it.name
-        } })
+        Text(text = category.let {
+            when (it) {
+                Category.NotAssigned -> "Others"
+                else -> it.name
+            }
+        })
     }
 }
 
@@ -102,5 +95,5 @@ fun Category.icon(): Int {
 @Preview
 @Composable
 fun CategoriesScreenPreview() {
-    CategoriesScreen()
+    CategoriesScreen(NavigationBarParams.Empty)
 }

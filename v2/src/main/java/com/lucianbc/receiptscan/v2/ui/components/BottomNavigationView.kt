@@ -7,7 +7,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -49,7 +49,7 @@ private fun BottomNavigationView(tabs: List<BottomNavigationItem>) {
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
-        val enabledScreenIndex = remember { mutableStateOf(0) }
+        val enabledScreenIndex = rememberSaveable { mutableStateOf(0) }
         Box(
             modifier = Modifier
                 .fillMaxWidth()

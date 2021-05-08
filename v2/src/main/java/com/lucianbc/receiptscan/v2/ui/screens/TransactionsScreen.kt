@@ -23,8 +23,16 @@ import com.lucianbc.receiptscan.v2.R
 import com.lucianbc.receiptscan.v2.ui.components.ExpenseListItem
 import com.lucianbc.receiptscan.v2.ui.components.Screen
 
+interface TransactionsScreenParams {
+    fun goToTransaction()
+
+    companion object Empty : TransactionsScreenParams {
+        override fun goToTransaction() {}
+    }
+}
+
 @Composable
-fun TransactionsScreen() {
+fun TransactionsScreen(params: TransactionsScreenParams) {
     val icons = listOf(
         rememberVectorPainter(Icons.Default.Search) to {},
         painterResource(id = R.drawable.ic_baseline_filter_alt_24) to {}
@@ -59,7 +67,11 @@ fun TransactionsScreen() {
                 )
             }
             itemsIndexed(transactions) { _, it ->
-                ExpenseListItem(name = it, modifier = Modifier.padding(horizontal = spacing))
+                ExpenseListItem(
+                    name = it,
+                    modifier = Modifier.padding(horizontal = spacing),
+                    onClick = params::goToTransaction
+                )
             }
         }
     }
@@ -119,4 +131,4 @@ private val transactions = (1..100).map { "transaction $it" }
 
 @Preview
 @Composable
-fun TransactionsScreenPreview() = TransactionsScreen()
+fun TransactionsScreenPreview() = TransactionsScreen(TransactionsScreenParams.Empty)

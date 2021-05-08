@@ -10,17 +10,21 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import com.lucianbc.receiptscan.v2.ui.components.BottomNavigationView
 
+interface HomeScreenParams : SettingsScreenParams, TransactionsScreenParams {
+    companion object Empty : HomeScreenParams by Empty
+}
+
 @Composable
-fun HomeScreen() {
+fun HomeScreen(params: HomeScreenParams) {
     BottomNavigationView {
         item("Home", rememberVectorPainter(image = Icons.Default.Home)) {
-            TransactionsScreen()
+            TransactionsScreen(params)
         }
         item("Drafts", rememberVectorPainter(image = Icons.Default.Email)) {
             DraftsScreen()
         }
         item("Settings", rememberVectorPainter(image = Icons.Default.Settings)) {
-            SettingsScreen()
+            SettingsScreen(params)
         }
         item("Exports", rememberVectorPainter(image = Icons.Default.KeyboardArrowUp)) {
             ExportsScreen()
@@ -31,4 +35,4 @@ fun HomeScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenPreview() = HomeScreen()
+fun HomeScreenPreview() = HomeScreen(HomeScreenParams)
