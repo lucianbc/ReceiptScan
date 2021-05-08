@@ -2,7 +2,7 @@
 buildscript {
     ext {
         kotlin_version = '1.4.32'
-        dagger_version = '2.28.3'
+        dagger_version = '2.35.1'
         compose_version = '1.0.0-beta05'
     }
 
@@ -16,8 +16,8 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        classpath 'com.google.gms:google-services:4.3.3'
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0'
+        classpath 'com.google.gms:google-services:4.3.5'
+        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5'
     }
 }
 
