@@ -11,13 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.lucianbc.receiptscan.v2.ui.screens.OnClick
 
 @Composable
-fun ExpenseListItem(name: String, modifier: Modifier = Modifier) {
+fun ExpenseListItem(name: String, modifier: Modifier = Modifier, onClick: OnClick) {
     Row(
         modifier = Modifier
             .then(modifier)
-            .clickable { }
+            .clickable { onClick?.invoke() }
             .fillMaxWidth()
             .background(color = Color(0xffF7F9FA), shape = RoundedCornerShape(8.dp))
             .padding(32.dp)

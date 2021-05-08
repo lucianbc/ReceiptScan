@@ -9,10 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.lucianbc.receiptscan.v2.ui.components.NavigationBarParams
-import com.lucianbc.receiptscan.v2.ui.screens.CategoriesScreen
-import com.lucianbc.receiptscan.v2.ui.screens.CurrenciesScreen
-import com.lucianbc.receiptscan.v2.ui.screens.HomeScreen
-import com.lucianbc.receiptscan.v2.ui.screens.HomeScreenParams
+import com.lucianbc.receiptscan.v2.ui.screens.*
 
 @ExperimentalFoundationApi
 @Composable
@@ -30,6 +27,9 @@ fun Navigation() {
         composable("currencies") {
             CurrenciesScreen(params)
         }
+        composable("transaction") {
+            ReceiptScreen()
+        }
     }
 }
 
@@ -40,6 +40,9 @@ private val createParams = { controller: NavController ->
 
         override fun goToCurrencies() =
             controller.navigate("currencies")
+
+        override fun goToTransaction() =
+            controller.navigate("transaction")
 
         override fun goBack() {
             controller.navigateUp()

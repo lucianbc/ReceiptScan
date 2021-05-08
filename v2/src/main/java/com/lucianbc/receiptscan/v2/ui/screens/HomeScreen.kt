@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import com.lucianbc.receiptscan.v2.ui.components.BottomNavigationView
 
-interface HomeScreenParams : SettingsScreenParams {
+interface HomeScreenParams : SettingsScreenParams, TransactionsScreenParams {
     companion object Empty : HomeScreenParams by Empty
 }
 
@@ -18,7 +18,7 @@ interface HomeScreenParams : SettingsScreenParams {
 fun HomeScreen(params: HomeScreenParams) {
     BottomNavigationView {
         item("Home", rememberVectorPainter(image = Icons.Default.Home)) {
-            TransactionsScreen()
+            TransactionsScreen(params)
         }
         item("Drafts", rememberVectorPainter(image = Icons.Default.Email)) {
             DraftsScreen()
