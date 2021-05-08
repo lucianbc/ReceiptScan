@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.lucianbc.receiptscan.v2.ui.screens.CategoriesScreen
 import com.lucianbc.receiptscan.v2.ui.screens.HomeScreen
 import com.lucianbc.receiptscan.v2.ui.screens.HomeScreenParams
+import com.lucianbc.receiptscan.v2.ui.screens.NavigationBarParams
 
 @ExperimentalFoundationApi
 @Composable
@@ -23,15 +24,19 @@ fun Navigation() {
             HomeScreen(params)
         }
         composable("categories") {
-            CategoriesScreen()
+            CategoriesScreen(params)
         }
     }
 }
 
-fun createParams(controller: NavController): HomeScreenParams {
-    return object : HomeScreenParams {
+private val createParams = { controller: NavController ->
+    object : HomeScreenParams, NavigationBarParams {
         override fun goToCategories() {
             controller.navigate("categories")
+        }
+
+        override fun goBack() {
+            controller.navigateUp()
         }
     }
 }

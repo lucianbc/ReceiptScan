@@ -9,8 +9,11 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,11 +23,12 @@ import androidx.compose.ui.unit.dp
 import com.lucianbc.receiptscan.v2.R
 import com.lucianbc.receiptscan.v2.ui.components.Screen
 
+
 @ExperimentalFoundationApi
 @Composable
-fun CategoriesScreen() {
+fun CategoriesScreen(params: NavigationBarParams) {
     Screen {
-        TitleBar(title = "Categories")
+        TitleBar(title = "Categories", backEnabled = true, params = params)
         LazyVerticalGrid(
             cells = GridCells.Fixed(2)
         ) {
@@ -35,8 +39,20 @@ fun CategoriesScreen() {
     }
 }
 
+interface NavigationBarParams {
+    fun goBack()
+
+    object Empty : NavigationBarParams {
+        override fun goBack() {}
+    }
+}
+
 @Composable
-fun TitleBar(title: String) {
+fun TitleBar(
+    title: String,
+    backEnabled: Boolean = false,
+    params: NavigationBarParams,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,6 +60,15 @@ fun TitleBar(title: String) {
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        if (backEnabled) {
+            Icon(
+                Icons.Default.ArrowBack,
+                "back",
+                modifier = Modifier
+                    .padding(end = 24.dp)
+                    .clickable(onClick = params::goBack)
+            )
+        }
         Text(text = title, style = MaterialTheme.typography.h6)
     }
 }
@@ -58,10 +83,12 @@ fun CategoryItem(category: Category) {
     ) {
         CategoryAvatar(category = category)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = category.let { when(it) {
-            Category.NotAssigned -> "Others"
-            else -> it.name
-        } })
+        Text(text = category.let {
+            when (it) {
+                Category.NotAssigned -> "Others"
+                else -> it.name
+            }
+        })
     }
 }
 
@@ -102,5 +129,5 @@ fun Category.icon(): Int {
 @Preview
 @Composable
 fun CategoriesScreenPreview() {
-    CategoriesScreen()
+    CategoriesScreen(NavigationBarParams.Empty)
 }
