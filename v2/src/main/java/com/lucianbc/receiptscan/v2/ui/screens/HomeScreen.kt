@@ -11,9 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.lucianbc.receiptscan.v2.ui.components.BottomNavigationView
 
 interface HomeScreenParams : SettingsScreenParams {
-    companion object Empty : HomeScreenParams {
-        override fun goToCategories() {}
-    }
+    companion object Empty : HomeScreenParams by Empty
 }
 
 @Composable
@@ -37,4 +35,4 @@ fun HomeScreen(params: HomeScreenParams) {
 
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenPreview() = HomeScreen(HomeScreenParams.Empty)
+fun HomeScreenPreview() = HomeScreen(HomeScreenParams)

@@ -22,9 +22,11 @@ import com.lucianbc.receiptscan.v2.ui.components.Screen
 
 interface SettingsScreenParams {
     fun goToCategories()
+    fun goToCurrencies()
 
     object Empty : SettingsScreenParams {
         override fun goToCategories() {}
+        override fun goToCurrencies() {}
     }
 }
 
@@ -32,7 +34,7 @@ interface SettingsScreenParams {
 fun SettingsScreen(params: SettingsScreenParams) {
     var enabled by remember { mutableStateOf(false) }
     Screen(title = "Settings") {
-        SettingRow(key = "Default Currency", value = "RON") {}
+        SettingRow(key = "Default Currency", value = "RON", params::goToCurrencies)
         SettingRow(key = "Default Category", value = "Grocery", params::goToCategories)
         SettingRow(key = "Send Receipt Anonymously") {
             Switch(checked = enabled, onCheckedChange = { enabled = !enabled })
