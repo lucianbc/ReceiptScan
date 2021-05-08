@@ -112,7 +112,7 @@ class StartSnapHelper : LinearSnapHelper() {
             velocityX, velocityY,
             -maxScrollDistance, maxScrollDistance,
             0, 0
-            )
+        )
         out[0] = scroller?.finalX ?: 0
         out[1] = scroller?.finalY ?: 0
         return out
