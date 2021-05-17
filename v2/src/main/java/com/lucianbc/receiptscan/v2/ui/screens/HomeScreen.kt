@@ -15,7 +15,7 @@ interface HomeScreenParams : SettingsScreenParams, TransactionsScreenParams {
 }
 
 @Composable
-fun HomeScreen(params: HomeScreenParams) {
+fun HomeScreen(params: HomeScreenParams, viewModel: SettingsViewModel) {
     BottomNavigationView {
         item("Home", rememberVectorPainter(image = Icons.Default.Home)) {
             TransactionsScreen(params)
@@ -24,7 +24,7 @@ fun HomeScreen(params: HomeScreenParams) {
             DraftsScreen()
         }
         item("Settings", rememberVectorPainter(image = Icons.Default.Settings)) {
-            SettingsScreen(params)
+            SettingsScreen(params, viewModel)
         }
         item("Exports", rememberVectorPainter(image = Icons.Default.KeyboardArrowUp)) {
             ExportsScreen()
@@ -35,4 +35,4 @@ fun HomeScreen(params: HomeScreenParams) {
 
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenPreview() = HomeScreen(HomeScreenParams)
+fun HomeScreenPreview() = HomeScreen(HomeScreenParams, SettingsViewModel.Empty)

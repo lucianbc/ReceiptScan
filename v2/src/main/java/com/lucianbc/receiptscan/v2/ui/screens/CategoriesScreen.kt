@@ -25,14 +25,17 @@ import com.lucianbc.receiptscan.v2.ui.components.TitleBar
 
 @ExperimentalFoundationApi
 @Composable
-fun CategoriesScreen(params: NavigationBarParams) {
+fun CategoriesScreen(params: NavigationBarParams, settingsViewModel: SettingsViewModel) {
     Screen {
         TitleBar(title = "Categories", backEnabled = true, params = params)
         LazyVerticalGrid(
             cells = GridCells.Fixed(2)
         ) {
             items(Category.values()) {
-                CategoryItem(it)
+                CategoryItem(it) {
+                    settingsViewModel.updateCategory(it)
+                    params.goBack()
+                }
             }
         }
     }
@@ -40,10 +43,10 @@ fun CategoriesScreen(params: NavigationBarParams) {
 
 
 @Composable
-fun CategoryItem(category: Category) {
+fun CategoryItem(category: Category, onClick: OnClick) {
     Column(
         modifier = Modifier
-            .clickable { }
+            .clickable { onClick?.invoke() }
             .padding(vertical = 16.dp, horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -95,5 +98,5 @@ fun Category.icon(): Int {
 @Preview
 @Composable
 fun CategoriesScreenPreview() {
-    CategoriesScreen(NavigationBarParams.Empty)
+    CategoriesScreen(NavigationBarParams.Empty, SettingsViewModel.Empty)
 }

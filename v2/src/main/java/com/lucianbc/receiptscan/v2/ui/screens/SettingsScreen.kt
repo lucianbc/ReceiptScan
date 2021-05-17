@@ -7,11 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,18 +20,37 @@ interface SettingsScreenParams {
     fun goToCategories()
     fun goToCurrencies()
 
+    val defaultCategory: State<Category>
+
     object Empty : SettingsScreenParams {
         override fun goToCategories() {}
         override fun goToCurrencies() {}
+        override val defaultCategory: State<Category> = derivedStateOf { Category.Restaurant }
+    }
+}
+
+interface SettingsViewModel {
+    val defaultCategory: State<Category>
+    fun updateCategory(category: Category)
+
+    companion object Empty : SettingsViewModel {
+        override val defaultCategory: State<Category>
+            get() = derivedStateOf { Category.Restaurant }
+
+        override fun updateCategory(category: Category) {}
     }
 }
 
 @Composable
-fun SettingsScreen(params: SettingsScreenParams) {
+fun SettingsScreen(params: SettingsScreenParams, viewModel: SettingsViewModel) {
     var enabled by remember { mutableStateOf(false) }
     Screen(title = "Settings") {
         SettingRow(key = "Default Currency", value = "RON", params::goToCurrencies)
-        SettingRow(key = "Default Category", value = "Grocery", params::goToCategories)
+        SettingRow(
+            key = "Default Category",
+            value = viewModel.defaultCategory.value.name,
+            params::goToCategories
+        )
         SettingRow(key = "Send Receipt Anonymously") {
             Switch(checked = enabled, onCheckedChange = { enabled = !enabled })
         }
@@ -68,5 +83,5 @@ fun SettingRow(key: String, value: String, onClick: OnClick = null) {
 @Composable
 @Preview
 fun SettingsScreenPreview() {
-    SettingsScreen(SettingsScreenParams.Empty)
+    SettingsScreen(SettingsScreenParams.Empty, SettingsViewModel.Empty)
 }
