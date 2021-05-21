@@ -20,12 +20,9 @@ interface SettingsScreenParams {
     fun goToCategories()
     fun goToCurrencies()
 
-    val defaultCategory: State<Category>
-
     object Empty : SettingsScreenParams {
         override fun goToCategories() {}
         override fun goToCurrencies() {}
-        override val defaultCategory: State<Category> = derivedStateOf { Category.Restaurant }
     }
 }
 
