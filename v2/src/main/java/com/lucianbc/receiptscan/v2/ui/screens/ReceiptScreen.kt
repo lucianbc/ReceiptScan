@@ -6,12 +6,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import com.lucianbc.receiptscan.v2.ui.components.Screen
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lucianbc.receiptscan.v2.domain.Category
+import com.lucianbc.receiptscan.v2.ui.components.Screen
 import java.text.SimpleDateFormat
 import java.util.*
 

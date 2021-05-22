@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import com.lucianbc.receiptscan.v2.ui.components.BottomNavigationView
+import com.lucianbc.receiptscan.v2.ui.viewModels.SettingsViewModel
 
 interface HomeScreenParams : SettingsScreenParams, TransactionsScreenParams {
     companion object Empty : HomeScreenParams by Empty

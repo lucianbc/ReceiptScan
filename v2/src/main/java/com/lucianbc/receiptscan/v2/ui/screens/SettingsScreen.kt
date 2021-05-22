@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lucianbc.receiptscan.v2.ui.components.Screen
+import com.lucianbc.receiptscan.v2.ui.viewModels.SettingsViewModel
 
 
 interface SettingsScreenParams {
@@ -26,26 +27,15 @@ interface SettingsScreenParams {
     }
 }
 
-interface SettingsViewModel {
-    val defaultCategory: State<Category>
-    fun updateCategory(category: Category)
-
-    companion object Empty : SettingsViewModel {
-        override val defaultCategory: State<Category>
-            get() = derivedStateOf { Category.Restaurant }
-
-        override fun updateCategory(category: Category) {}
-    }
-}
-
 @Composable
 fun SettingsScreen(params: SettingsScreenParams, viewModel: SettingsViewModel) {
     var enabled by remember { mutableStateOf(false) }
+    val defaultCategory by viewModel.defaultCategory.collectAsState()
     Screen(title = "Settings") {
         SettingRow(key = "Default Currency", value = "RON", params::goToCurrencies)
         SettingRow(
             key = "Default Category",
-            value = viewModel.defaultCategory.value.name,
+            value = defaultCategory.name,
             params::goToCategories
         )
         SettingRow(key = "Send Receipt Anonymously") {

@@ -1,17 +1,19 @@
 package com.lucianbc.receiptscan.v2.ui.viewModels
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.lucianbc.receiptscan.v2.ui.screens.Category
-import com.lucianbc.receiptscan.v2.ui.screens.SettingsViewModel
+import com.lucianbc.receiptscan.v2.domain.Category
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-class HomeViewModelImpl : ViewModel(), SettingsViewModel {
-    private val categoryMutable = mutableStateOf(Category.Restaurant)
+class HomeViewModelImpl : ViewModel(), SettingsViewModel, CategoriesViewModel {
+    private val _defaultCategory = MutableStateFlow(Category.NotAssigned)
 
-    override val defaultCategory: State<Category> = categoryMutable
+    override val defaultCategory = _defaultCategory
 
-    override fun updateCategory(category: Category) {
-        categoryMutable.value = category
+    override val categories: StateFlow<List<Category>> =
+        MutableStateFlow(Category.values().toList())
+
+    override fun setCategory(category: Category) {
+        _defaultCategory.value = category
     }
 }

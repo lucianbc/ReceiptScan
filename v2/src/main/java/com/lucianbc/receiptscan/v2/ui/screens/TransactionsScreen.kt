@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.lucianbc.receiptscan.v2.R
+import com.lucianbc.receiptscan.v2.domain.Category
 import com.lucianbc.receiptscan.v2.ui.components.ExpenseListItem
 import com.lucianbc.receiptscan.v2.ui.components.Screen
 

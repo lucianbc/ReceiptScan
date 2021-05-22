@@ -18,14 +18,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucianbc.receiptscan.v2.R
+import com.lucianbc.receiptscan.v2.domain.Category
 import com.lucianbc.receiptscan.v2.ui.components.NavigationBarParams
 import com.lucianbc.receiptscan.v2.ui.components.Screen
 import com.lucianbc.receiptscan.v2.ui.components.TitleBar
+import com.lucianbc.receiptscan.v2.ui.viewModels.CategoriesViewModel
 
 
 @ExperimentalFoundationApi
 @Composable
-fun CategoriesScreen(params: NavigationBarParams, settingsViewModel: SettingsViewModel) {
+fun CategoriesScreen(params: NavigationBarParams, viewModel: CategoriesViewModel) {
     Screen {
         TitleBar(title = "Categories", backEnabled = true, params = params)
         LazyVerticalGrid(
@@ -33,7 +35,7 @@ fun CategoriesScreen(params: NavigationBarParams, settingsViewModel: SettingsVie
         ) {
             items(Category.values()) {
                 CategoryItem(it) {
-                    settingsViewModel.updateCategory(it)
+                    viewModel.setCategory(it)
                     params.goBack()
                 }
             }
@@ -74,15 +76,6 @@ fun CategoryAvatar(category: Category, size: Int = 80, padding: Int = 16) {
     )
 }
 
-enum class Category {
-    NotAssigned,
-    Grocery,
-    Coffee,
-    Transportation,
-    Restaurant,
-    Snack
-}
-
 fun Category.icon(): Int {
     return when (this) {
         Category.NotAssigned -> R.drawable.ic_coin_24dp
@@ -98,5 +91,5 @@ fun Category.icon(): Int {
 @Preview
 @Composable
 fun CategoriesScreenPreview() {
-    CategoriesScreen(NavigationBarParams.Empty, SettingsViewModel.Empty)
+    CategoriesScreen(NavigationBarParams.Empty, CategoriesViewModel.Empty)
 }
