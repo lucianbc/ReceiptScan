@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,17 +31,22 @@ interface SettingsScreenParams {
 
 @Composable
 fun SettingsScreen(params: SettingsScreenParams, viewModel: SettingsViewModel) {
-    var enabled by remember { mutableStateOf(false) }
-    val defaultCategory by viewModel.defaultCategory.collectAsState()
+    val viewState by viewModel.settingsState.collectAsState()
+    
     Screen(title = "Settings") {
-        SettingRow(key = "Default Currency", value = "RON", params::goToCurrencies)
+        SettingRow(
+            key = "Default Currency",
+            value = viewState.defaultCurrency.currencyCode,
+            params::goToCurrencies,
+        )
         SettingRow(
             key = "Default Category",
-            value = defaultCategory.name,
-            params::goToCategories
+            value = viewState.defaultCategory.name,
+            params::goToCategories,
         )
         SettingRow(key = "Send Receipt Anonymously") {
-            Switch(checked = enabled, onCheckedChange = { enabled = !enabled })
+            Switch(checked = viewState.shareAnonymousData,
+                onCheckedChange = { viewModel.toggleSendReceiptAnonymously() })
         }
     }
 }
