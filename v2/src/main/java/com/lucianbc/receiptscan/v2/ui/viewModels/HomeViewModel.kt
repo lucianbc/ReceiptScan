@@ -9,7 +9,8 @@ import java.util.*
 class HomeViewModelImpl : ViewModel(),
     SettingsViewModel,
     CategoriesViewModel,
-    CollectDataViewModel {
+    CollectDataViewModel,
+    CurrenciesViewModel {
 
     override val categories: StateFlow<List<Category>> =
         MutableStateFlow(Category.values().toList())
@@ -21,7 +22,7 @@ class HomeViewModelImpl : ViewModel(),
             false,
         )
     )
-
+    
     override val settingsState: StateFlow<SettingsViewModel.ViewState> = _settingsState
 
     override fun setCategory(category: Category) {
@@ -31,5 +32,12 @@ class HomeViewModelImpl : ViewModel(),
     override fun toggleSendReceiptAnonymously() {
         _settingsState.value =
             _settingsState.value.run { copy(shareAnonymousData = !shareAnonymousData) }
+    }
+
+    override val currencies: StateFlow<List<Currency>> =
+        MutableStateFlow(Currency.getAvailableCurrencies().toList())
+
+    override fun setCurrency(currency: Currency) {
+        _settingsState.value = _settingsState.value.run { copy(defaultCurrency = currency) }
     }
 }

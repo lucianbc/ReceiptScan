@@ -9,22 +9,29 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucianbc.receiptscan.v2.ui.components.NavigationBarParams
 import com.lucianbc.receiptscan.v2.ui.components.Screen
 import com.lucianbc.receiptscan.v2.ui.components.TitleBar
+import com.lucianbc.receiptscan.v2.ui.viewModels.CurrenciesViewModel
 import java.util.*
 
+
 @Composable
-fun CurrenciesScreen(params: NavigationBarParams) {
+fun CurrenciesScreen(params: NavigationBarParams, viewModel: CurrenciesViewModel) {
+    val currencies by viewModel.currencies.collectAsState()
     Screen {
         TitleBar(title = "Currencies", params = params, backEnabled = true)
         LazyColumn {
-            itemsIndexed(Currency.getAvailableCurrencies().toList()) { _, it ->
-                CurrencyListItem(currency = it) {}
-
+            itemsIndexed(currencies) { _, it ->
+                CurrencyListItem(currency = it) {
+                    viewModel.setCurrency(it)
+                    params.goBack()
+                }
             }
         }
     }
@@ -52,4 +59,5 @@ fun CurrencyListItem(currency: Currency, onClick: OnClick) {
 
 @Preview
 @Composable
-fun CurrenciesScreenPreview() = CurrenciesScreen(params = NavigationBarParams.Empty)
+fun CurrenciesScreenPreview() =
+    CurrenciesScreen(params = NavigationBarParams.Empty, CurrenciesViewModel.Empty)

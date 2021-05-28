@@ -12,6 +12,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -28,12 +30,14 @@ import com.lucianbc.receiptscan.v2.ui.viewModels.CategoriesViewModel
 @ExperimentalFoundationApi
 @Composable
 fun CategoriesScreen(params: NavigationBarParams, viewModel: CategoriesViewModel) {
+    val categories by viewModel.categories.collectAsState()
+
     Screen {
         TitleBar(title = "Categories", backEnabled = true, params = params)
         LazyVerticalGrid(
             cells = GridCells.Fixed(2)
         ) {
-            items(Category.values()) {
+            items(categories) {
                 CategoryItem(it) {
                     viewModel.setCategory(it)
                     params.goBack()

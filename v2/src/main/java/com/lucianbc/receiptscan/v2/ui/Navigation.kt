@@ -32,7 +32,8 @@ fun Navigation() {
             CategoriesScreen(params, vm)
         }
         composable("currencies") {
-            CurrenciesScreen(params)
+            val vm = it.parentViewModel<HomeViewModelImpl>(controller = controller)
+            CurrenciesScreen(params, vm)
         }
         composable("transaction") {
             ReceiptScreen()
