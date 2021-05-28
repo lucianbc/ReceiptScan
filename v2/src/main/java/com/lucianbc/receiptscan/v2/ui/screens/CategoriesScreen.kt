@@ -12,27 +12,36 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucianbc.receiptscan.v2.R
+import com.lucianbc.receiptscan.v2.domain.Category
 import com.lucianbc.receiptscan.v2.ui.components.NavigationBarParams
 import com.lucianbc.receiptscan.v2.ui.components.Screen
 import com.lucianbc.receiptscan.v2.ui.components.TitleBar
+import com.lucianbc.receiptscan.v2.ui.viewModels.CategoriesViewModel
 
 
 @ExperimentalFoundationApi
 @Composable
-fun CategoriesScreen(params: NavigationBarParams) {
+fun CategoriesScreen(params: NavigationBarParams, viewModel: CategoriesViewModel) {
+    val categories by viewModel.categories.collectAsState()
+
     Screen {
         TitleBar(title = "Categories", backEnabled = true, params = params)
         LazyVerticalGrid(
             cells = GridCells.Fixed(2)
         ) {
-            items(Category.values()) {
-                CategoryItem(it)
+            items(categories) {
+                CategoryItem(it) {
+                    viewModel.setCategory(it)
+                    params.goBack()
+                }
             }
         }
     }
@@ -40,10 +49,10 @@ fun CategoriesScreen(params: NavigationBarParams) {
 
 
 @Composable
-fun CategoryItem(category: Category) {
+fun CategoryItem(category: Category, onClick: OnClick) {
     Column(
         modifier = Modifier
-            .clickable { }
+            .clickable { onClick?.invoke() }
             .padding(vertical = 16.dp, horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -71,15 +80,6 @@ fun CategoryAvatar(category: Category, size: Int = 80, padding: Int = 16) {
     )
 }
 
-enum class Category {
-    NotAssigned,
-    Grocery,
-    Coffee,
-    Transportation,
-    Restaurant,
-    Snack
-}
-
 fun Category.icon(): Int {
     return when (this) {
         Category.NotAssigned -> R.drawable.ic_coin_24dp
@@ -95,5 +95,5 @@ fun Category.icon(): Int {
 @Preview
 @Composable
 fun CategoriesScreenPreview() {
-    CategoriesScreen(NavigationBarParams.Empty)
+    CategoriesScreen(NavigationBarParams.Empty, CategoriesViewModel.Empty)
 }
