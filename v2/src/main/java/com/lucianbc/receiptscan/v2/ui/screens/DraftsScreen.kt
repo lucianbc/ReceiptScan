@@ -12,8 +12,16 @@ import androidx.compose.ui.unit.dp
 import com.lucianbc.receiptscan.v2.ui.components.ExpenseListItem
 import com.lucianbc.receiptscan.v2.ui.components.Screen
 
+interface DraftsScreenParams {
+    fun goToDraft()
+
+    companion object Empty : DraftsScreenParams {
+        override fun goToDraft() {}
+    }
+}
+
 @Composable
-fun DraftsScreen() {
+fun DraftsScreen(params: DraftsScreenParams) {
     Screen(title = "Drafts") {
         LazyColumn(
             contentPadding = PaddingValues(bottom = 50.dp),
@@ -22,7 +30,7 @@ fun DraftsScreen() {
                 .padding(horizontal = 8.dp)
         ) {
             itemsIndexed(expenses) { _, item ->
-                ExpenseListItem(name = item) {}
+                ExpenseListItem(name = item, onClick = params::goToDraft)
 
                 Spacer(
                     modifier = Modifier
@@ -39,5 +47,5 @@ private val expenses = (1..10).map { "Expense $it" }
 @Preview
 @Composable
 fun DraftsScreenPreview() {
-    DraftsScreen()
+    DraftsScreen(DraftsScreenParams.Empty)
 }

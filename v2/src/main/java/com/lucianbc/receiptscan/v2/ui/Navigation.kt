@@ -38,6 +38,9 @@ fun Navigation() {
         composable("transaction") {
             ReceiptScreen()
         }
+        composable("draft") {
+            EditableReceiptScreen()
+        }
     }
 }
 
@@ -59,6 +62,10 @@ private val createParams = { controller: NavController ->
 
         override fun goToTransaction() =
             controller.navigate("transaction")
+
+        override fun goToDraft() {
+            controller.navigate("draft")
+        }
 
         override fun goBack() {
             controller.navigateUp()

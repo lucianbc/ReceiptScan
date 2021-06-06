@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.lucianbc.receiptscan.v2.ui.components.BottomNavigationView
 import com.lucianbc.receiptscan.v2.ui.viewModels.SettingsViewModel
 
-interface HomeScreenParams : SettingsScreenParams, TransactionsScreenParams {
+interface HomeScreenParams : SettingsScreenParams, TransactionsScreenParams, DraftsScreenParams {
     companion object Empty : HomeScreenParams by Empty
 }
 
@@ -22,7 +22,7 @@ fun HomeScreen(params: HomeScreenParams, viewModel: SettingsViewModel) {
             TransactionsScreen(params)
         }
         item("Drafts", rememberVectorPainter(image = Icons.Default.Email)) {
-            DraftsScreen()
+            DraftsScreen(params)
         }
         item("Settings", rememberVectorPainter(image = Icons.Default.Settings)) {
             SettingsScreen(params, viewModel)
