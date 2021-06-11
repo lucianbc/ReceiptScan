@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.lucianbc.receiptscan.v2.ui.Navigation
 
+@ExperimentalFoundationApi
 class MainActivity : AppCompatActivity() {
 
     @SuppressLint("MissingSuperCall")
