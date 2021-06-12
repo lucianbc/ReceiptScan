@@ -16,7 +16,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucianbc.receiptscan.v2.domain.Category
+import com.lucianbc.receiptscan.v2.ui.components.BackButton
+import com.lucianbc.receiptscan.v2.ui.components.NavigationBarParams
 import com.lucianbc.receiptscan.v2.ui.components.Screen
+import com.lucianbc.receiptscan.v2.ui.viewModels.DraftViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,23 +30,32 @@ import java.util.*
 private fun ReceiptContainer(
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
+    onBack: () -> Unit = {},
     children: @Composable ColumnScope.() -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(scrollState)
-            .padding(top = 64.dp, bottom = 32.dp, start = 32.dp, end = 32.dp)
-            .then(modifier),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxHeight()
     ) {
-        children()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(scrollState)
+                .padding(top = 64.dp, bottom = 32.dp, start = 32.dp, end = 32.dp)
+                .then(modifier),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            children()
+        }
+
+        BackButton(standalone = true, onClick = onBack::invoke)
     }
 }
 
 
 @Composable
 fun ReceiptScreen() {
+    val receipt = receiptValue
     Screen {
         ReceiptContainer {
             CategoryAvatar(category = receipt.category)
@@ -194,17 +208,33 @@ private fun DialogLayout(props: MutableState<DialogProps?>) {
     }
 }
 
+interface EditableReceiptParams : NavigationBarParams {
+    fun goToCategories()
+    fun goToCurrencies()
+
+    object Empty : EditableReceiptParams {
+        override fun goToCategories() {}
+        override fun goToCurrencies() {}
+        override fun goBack() {}
+    }
+}
+
 @Composable
-fun EditableReceiptScreen() {
+fun EditableReceiptScreen(params: EditableReceiptParams, viewModel: DraftViewModel) {
     val scrollState = rememberScrollState()
     val dialog = remember { mutableStateOf<DialogProps?>(null) }
+    val receipt = viewModel.receipt.value
     Screen {
         DialogLayout(props = dialog)
 
-        ReceiptContainer(modifier = Modifier.weight(1f), scrollState = scrollState) {
+        ReceiptContainer(modifier = Modifier.weight(1f),
+            scrollState = scrollState,
+            onBack = params::goBack) {
             CategoryAvatar(category = receipt.category)
             HorizontalSpace()
-            EditableRow(label = "Category", value = receipt.category.name) { }
+            EditableRow(label = "Category",
+                value = receipt.category.name,
+                onClick = params::goToCategories)
             HorizontalSpace()
             EditableRow(label = "Merchant", value = receipt.merchant) {
                 dialog.value = merchantDialog
@@ -216,7 +246,9 @@ fun EditableReceiptScreen() {
                 dialog.value = totalDialog
             }
             HorizontalSpace()
-            EditableRow(label = "Currency", value = receipt.currency.show) {}
+            EditableRow(label = "Currency",
+                value = receipt.currency.show,
+                onClick = params::goToCurrencies)
             HorizontalSpace()
 
             HorizontalSpace()
@@ -294,7 +326,7 @@ private fun SpacedRow(content: @Composable RowScope.() -> Unit) {
     )
 }
 
-val receipt = Receipt(
+private val receiptValue = Receipt(
     category = Category.Grocery,
     merchant = "S.C. PROFI ROM FOOD S.R.L",
     date = Date(),
@@ -303,7 +335,7 @@ val receipt = Receipt(
     items = listOf(
         ReceiptItem("item", 4.2),
         ReceiptItem("item", 7.7),
-    ).repeat(1),
+    ).repeat(10),
 )
 
 private fun List<ReceiptItem>.repeat(times: Int) = (1..times)
@@ -344,5 +376,23 @@ fun ReceiptScreenPreview() {
 @Preview
 @Composable
 fun EditableReceiptScreenPreview() {
-    EditableReceiptScreen()
+    EditableReceiptScreen(EditableReceiptParams.Empty, object : DraftViewModel {
+        override val receipt: StateFlow<Receipt> = MutableStateFlow(receiptValue)
+
+        override fun setCategory(category: Category) {}
+
+        override fun setMerchant(merchant: String) {}
+
+        override fun setDate(date: Date) {}
+
+        override fun setTotal(price: Double) {}
+
+        override fun setCurrency(currency: Currency) {}
+
+        override fun updateItem(item: ReceiptItem) {}
+
+        override fun deleteItem(item: ReceiptItem) {}
+
+        override fun addItem(item: ReceiptItem) {}
+    })
 }

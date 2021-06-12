@@ -17,4 +17,6 @@ interface DraftViewModel {
     fun updateItem(item: ReceiptItem)
     fun deleteItem(item: ReceiptItem)
     fun addItem(item: ReceiptItem)
+
+    object Empty : DraftViewModel by Empty
 }

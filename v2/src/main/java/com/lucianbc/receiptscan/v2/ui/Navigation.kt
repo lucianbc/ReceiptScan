@@ -11,8 +11,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import com.lucianbc.receiptscan.v2.ui.components.NavigationBarParams
 import com.lucianbc.receiptscan.v2.ui.screens.*
+import com.lucianbc.receiptscan.v2.ui.viewModels.DraftViewModelImpl
 import com.lucianbc.receiptscan.v2.ui.viewModels.HomeViewModelImpl
 
 @ExperimentalFoundationApi
@@ -37,9 +39,38 @@ fun Navigation() {
         composable("transaction") {
             ReceiptScreen()
         }
-        composable("draft") {
-            EditableReceiptScreen()
+
+        navigation("draft-start", "draft") {
+            val navParams = object : EditableReceiptParams, NavigationBarParams {
+                override fun goToCategories() {
+                    controller.navigate("draft-categories")
+                }
+
+                override fun goToCurrencies() {
+                    controller.navigate("draft-currencies")
+                }
+
+                override fun goBack() {
+                    controller.navigateUp()
+                }
+            }
+
+            composable("draft-start") {
+                val vm = it.parentViewModel<DraftViewModelImpl>(controller = controller)
+                EditableReceiptScreen(navParams, vm)
+            }
+
+            composable("draft-categories") {
+                val vm = it.parentViewModel<DraftViewModelImpl>(controller = controller)
+                CategoriesScreen(params = navParams, viewModel = vm)
+            }
+
+            composable("draft-currencies") {
+                val vm = it.parentViewModel<DraftViewModelImpl>(controller = controller)
+                CurrenciesScreen(params = navParams, viewModel = vm)
+            }
         }
+
     }
 }
 
