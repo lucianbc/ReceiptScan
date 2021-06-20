@@ -37,7 +37,7 @@ fun Navigation() {
             CurrenciesScreen(params, vm)
         }
         composable("transaction") {
-            ReceiptScreen()
+            ReceiptScreen(params)
         }
 
         navigation("draft-start", "draft") {

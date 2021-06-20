@@ -54,10 +54,12 @@ private fun ReceiptContainer(
 
 
 @Composable
-fun ReceiptScreen() {
+fun ReceiptScreen(
+    params: NavigationBarParams,
+) {
     val receipt = receiptValue
     Screen {
-        ReceiptContainer {
+        ReceiptContainer(onBack = params::goBack) {
             CategoryAvatar(category = receipt.category)
             HorizontalSpace()
             Text(text = receipt.category.name)
@@ -370,7 +372,7 @@ val Currency.show: String
 @Preview
 @Composable
 fun ReceiptScreenPreview() {
-    ReceiptScreen()
+    ReceiptScreen(params = NavigationBarParams.Empty)
 }
 
 @Preview
