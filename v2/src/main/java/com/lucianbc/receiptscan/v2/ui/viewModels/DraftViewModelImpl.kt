@@ -36,7 +36,6 @@ class DraftViewModelImpl : ViewModel(), DraftViewModel, CategoriesViewModel, Cur
 
     override fun setTotal(price: Double) {}
 
-
     override fun setCurrency(currency: Currency) {}
 
     override fun updateItem(item: ReceiptItem) {}

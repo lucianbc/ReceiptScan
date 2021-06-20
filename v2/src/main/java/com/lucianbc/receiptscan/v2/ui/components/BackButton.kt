@@ -14,17 +14,13 @@ private val standaloneMargins = Modifier.padding(top = 16.dp, start = 16.dp)
 @Composable
 fun BackButton(standalone: Boolean = false, onClick: () -> Unit) {
     Icon(
-        Icons.Default.ArrowBack,
-        "back",
+        Icons.Default.ArrowBack, "back",
         modifier = Modifier
             .then(
                 if (standalone)
                     standaloneMargins
-                else Modifier
+                else Modifier,
             )
-            .clickable(onClick = {
-                onClick()
-//                println("Doing this here")
-            })
+            .clickable { onClick() },
     )
 }
