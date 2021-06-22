@@ -20,6 +20,9 @@ import com.lucianbc.receiptscan.v2.ui.components.BackButton
 import com.lucianbc.receiptscan.v2.ui.components.NavigationBarParams
 import com.lucianbc.receiptscan.v2.ui.components.Screen
 import com.lucianbc.receiptscan.v2.ui.viewModels.DraftViewModel
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.buttons
+import com.vanpra.composematerialdialogs.datetime.datepicker.datepicker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.text.SimpleDateFormat
@@ -140,6 +143,10 @@ private sealed class DialogProps(open val title: String) {
         val defaultValue2: String?,
         val onSave: (String, String) -> Unit,
     ) : DialogProps(title)
+
+    data class DateField(
+        override val title: String,
+    ) : DialogProps(title)
 }
 
 private val merchantDialog: DialogProps = DialogProps.SingleField(
@@ -154,6 +161,29 @@ private val totalDialog: DialogProps = DialogProps.SingleField(
     "",
 ) {}
 
+private val dateDialog: DialogProps = DialogProps.DateField(
+    "Date"
+)
+
+
+@Composable
+fun RenderDialog(dismiss: () -> Unit, title: String, text: @Composable () -> Unit) {
+    AlertDialog(
+        onDismissRequest = dismiss,
+        title = { Text(text = title) },
+        text = text,
+        confirmButton = {
+            Button(onClick = {}, enabled = false) {
+                Text("Save")
+            }
+        },
+        dismissButton = {
+            Button(onClick = dismiss) {
+                Text("Cancel")
+            }
+        }
+    )
+}
 
 @Composable
 private fun DialogLayout(props: MutableState<DialogProps?>) {
@@ -161,52 +191,53 @@ private fun DialogLayout(props: MutableState<DialogProps?>) {
     val dismiss = {
         props.value = null
     }
-    if (propsValue != null) {
-        AlertDialog(
-            onDismissRequest = dismiss,
-            title = { Text(text = propsValue.title) },
-            text = {
-                when (propsValue) {
-                    is DialogProps.SingleField -> {
-                        var currentValue by mutableStateOf(propsValue.defaultValue ?: "")
-                        Column {
-                            OutlinedTextField(value = currentValue,
-                                label = { Text(propsValue.label) },
-                                onValueChange = {
-                                    currentValue = it
-                                })
-                        }
-                    }
-                    is DialogProps.TwoFields -> {
-                        var value1 by mutableStateOf(propsValue.defaultValue1 ?: "")
-                        var value2 by mutableStateOf(propsValue.defaultValue2 ?: "")
 
-                        Column {
-                            OutlinedTextField(value = value1,
-                                onValueChange = { value1 = it },
-                                label = { Text(propsValue.label1) }
-                            )
+    val datePickerDialog = remember { MaterialDialog() }
+    datePickerDialog.build {
+        datepicker { date ->
+            println("Here date, $date")
+        }
+        buttons {
+            positiveButton("Ok")
+            negativeButton("Cancel")
+        }
+    }
 
-                            OutlinedTextField(
-                                value = value2,
-                                onValueChange = { value2 = it },
-                                label = { Text(propsValue.label2) },
-                            )
-                        }
-                    }
-                }
-            },
-            confirmButton = {
-                Button(onClick = {}, enabled = false) {
-                    Text("Save")
-                }
-            },
-            dismissButton = {
-                Button(onClick = dismiss) {
-                    Text("Cancel")
+
+    when (propsValue) {
+        null -> {
+            datePickerDialog.hide()
+        }
+        is DialogProps.DateField -> datePickerDialog.show()
+        is DialogProps.SingleField ->
+            RenderDialog(dismiss = dismiss, title = propsValue.title) {
+                var currentValue by remember { mutableStateOf(propsValue.defaultValue ?: "") }
+                Column {
+                    OutlinedTextField(value = currentValue,
+                        label = { Text(propsValue.label) },
+                        onValueChange = {
+                            currentValue = it
+                        })
                 }
             }
-        )
+        is DialogProps.TwoFields ->
+            RenderDialog(dismiss = dismiss, title = propsValue.title) {
+                var value1 by remember { mutableStateOf(propsValue.defaultValue1 ?: "") }
+                var value2 by remember { mutableStateOf(propsValue.defaultValue2 ?: "") }
+
+                Column {
+                    OutlinedTextField(value = value1,
+                        onValueChange = { value1 = it },
+                        label = { Text(propsValue.label1) }
+                    )
+
+                    OutlinedTextField(
+                        value = value2,
+                        onValueChange = { value2 = it },
+                        label = { Text(propsValue.label2) },
+                    )
+                }
+            }
     }
 }
 
@@ -242,7 +273,9 @@ fun EditableReceiptScreen(params: EditableReceiptParams, viewModel: DraftViewMod
                 dialog.value = merchantDialog
             }
             HorizontalSpace()
-            EditableRow(label = "Date", value = receipt.date.show) {}
+            EditableRow(label = "Date", value = receipt.date.show) {
+                dialog.value = dateDialog
+            }
             HorizontalSpace()
             EditableRow(label = "Total", value = receipt.total.show) {
                 dialog.value = totalDialog
