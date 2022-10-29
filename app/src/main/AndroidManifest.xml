@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        package="com.lucianbc.receiptscan">
+        xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -32,14 +31,14 @@
                 android:enabled="true"
                 android:exported="false" />
 
-        <activity android:name=".presentation.receipt.ReceiptActivity" />
+        <activity android:name=".presentation.receipt.ReceiptActivity" android:exported="true" />
         <activity
                 android:name=".presentation.draft.DraftReviewActivity"
                 android:windowSoftInputMode="adjustPan" />
         <activity
                 android:name=".presentation.scanner.ScannerActivity"
                 android:theme="@style/Scanner" />
-        <activity android:name=".presentation.home.MainActivity">
+        <activity android:name=".presentation.home.MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
