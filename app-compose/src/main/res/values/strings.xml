@@ -1,3 +1,7 @@
 <resources>
   <string name="app_name">ReceiptScan</string>
+  <string name="expenses">Expenses</string>
+  <string name="drafts">Drafts</string>
+  <string name="export">Export</string>
+  <string name="settings">Settings</string>
 </resources>
